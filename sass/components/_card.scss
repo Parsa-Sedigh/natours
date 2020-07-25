@@ -1,0 +1,384 @@
+@import "../abstracts/variables";
+
+//Functionality:
+.card {
+
+  /* What happens when we hover the .card element? The .card element rotates 180deg. But across which axis? Across y-axis.
+   So we have to use rotateY() and then use transition property in normal state. Currently the text on the rotating box would
+   inverted if we hover on the box. So we can define perspective.
+   Learn: The way that we define perspective is to define perspective on the parent of the element that we defined transform: rotate() on it.
+    (in this case that transform has rotateY() value.) . So in this case we can define perspective on .card and then create a child
+    element for .card , because we don't want to define perspective on .col-1-of-3 class(we don't want to manipulate that kind of
+    class, so we have to go one level deeper and create a child for .card and then move :hover {transform: rotateY(180deg);} and
+    also transition: all .8s; . Because NOW the element that we want to write a hover state for it is .card__side not .card . Also
+    we must change &:hover to &:hover &__side so we say when we hover on the .card then we want and we don't put the hover DIRECTLY
+    on the .&__side because later we will have more sides. Also it actually makes more sense that we really want our animation to start
+    taking place when we hover first on the .card and THEN .card__side .
+
+    So let's create a new <div> with class of .card__side we name it __side because it's one side of card and later we will add another
+    side.
+
+    Now with using perspective and other changes, it seems that when we hover on .card and .card__side , it seems that it was moving
+    towards you. So that's much better than before.
+    We must specify a big value for perspective property on the parent of element which we want a rotate on it. Why?
+    Imagine we specify 15rem here for perspective, the lower the value, the more dramatic perspective is (would cause more crazy
+    animation!).
+
+    For completing the implementation of hover effect, we have 2 sides right? But right now when we hover on .card we can see
+    the card from behind in reverse! and that's not what we want. We want to see something without hovering on it and also see
+    ANOTHER thing when we hover on the .card(second side). But right now we are seeing the first side of card in both
+    situations(hover out and hover).
+    Basically we want to see one part of card in the beginning and then when we hover on it, we want to see the other side of the card.
+
+    So for this task, we must create another child of .card which is another side of the card. So one part is front of the card and
+    the other one is back of the card. Now we need a way to distinguish them. So let's add a modifier to each of them as a second class.
+    That modifier is card__side--front and card__side--back
+    What's the difference between front side and back side of the card? The difference is that the back side IN THE beginning IS ALREADY
+    ROTATED. So it's already 180 degrees on the back and as soon as we hover on the card, then the rotate degrees for the back side changes
+    to 0 degree.
+    Now we have to change the :hover on .card . Because only the front side is what rotates 180deg.
+    So change hover from &:hover &__side {transform: rotateY(180deg);} to
+    &:hover &__side--front {transform: rotateY(180deg);}
+    and also create a hover state for back side of card: &:hover &__side--back {transform: rotateY(0deg);}
+    So we must make back side of card back to 0deg in it's rotation state. So we use 0deg in there.
+
+    Right now, those two sides of card are already visible and if we hover on one of them, they together rotates 180 degrees.
+    Why both? Because when we hover on them, the front side rotates 180 degrees to go to it's 180 degrees in it's Y-axis state
+    and also the back side rotates 180 degrees to go to it's 0 degree in rotation in Y-axis state.
+
+    Now in order to finally! create our desired effect, those 2 sides need to be ON TOP of another. How we can do that?
+    We simply can use absolute positioning and we do this positioning on both sides of card and we can give them absolute positioning
+    in the .card__side because they both have this class and then give their parent relative position.
+    After that it causes a problem. Because absolute positioning on an element, make that element to fit it's width to it's content and
+    now both sides have really small width because their width are now based on their content. So let's give both of them a width of 100%.
+    So because we want both of them to have this width, we declare it in &__side .
+
+    Now we must use backface-visibility property.
+    Learn: If we set this property to hidden, it basically hides the BACK SIDE OF the element.
+
+    But now we have a problem! The perspective is gone and the .card element has not height anymore.Yes, the card sides do have
+    height of 50rem as we defined, but their container which is .card does not longer have a height and why is that?
+    Learn: Because it's height is collapsed and that's very similar to when all of the children of a container have floated and therefore
+     that container would have 0 height and it would collapsed. So now all of the children of the .card which is container, have
+     position:absolute; therefore their parent collapsed and gets 0 height.(It doesn't matter parent have position: relative; it would
+     collapsed anyway!) . Now when this situation happens with floats, we use .clearfix class on parent. But with position: absolute; situation
+     there's actually no such thing. There's nothing we can do at least with pure css. So what we can do is to specify the
+     same height and give it to the collapsed container which in this case is .card .
+
+     With the trick that we used above, the perspective now is back.
+     Remember that we had timing function in transition property and if we don't specify it, it would use the simple one which is
+     linear by default. But here we want ease, so I specified it in transition property in &__side .With ease the animation would
+     a bit smoother.
+
+     Right now, the card moves in wrong direction in it's hover animation. In other words, we want the card to move in opposite
+     direction, so then it seems the card is continue moving after the front of card changes to back of the card or vice versa.
+     Again, in other words, when we hover over .card, when the card is going from front to back or vice versa, the rotation suddenly
+     gets reversed! and it's looks like it's not cotinusely. I'm talking about a small moment in rotation where you don't see any card and
+     that's the moment that is wrong.
+     What we can do is in &:hover &__side--front selector we must write -180deg and not 180deg.
+
+
+    */
+
+  /* Here, we need to specify a huge number of pixels(rems actually). Also for make this works on firefox, we have to use the -moz-
+   prefix. Because perspective property is a new property and therefore it's not already implemented in all of the browsers.*/
+  perspective: 150rem;
+  -moz-perspective: 150rem;
+  position: relative;
+  height: 52rem;
+
+  &__side {
+    transition: all .8s ease;
+
+    /* We must use equal height on .card__side and it's container which is .card . Because .card is height of entire card and
+    one of them is the common styles for both SIDES(not card itself) of the card.*/
+    height: 52rem;
+    position: absolute;
+    width: 100%;
+    backface-visibility: hidden;
+
+    /* Important: When we have an img (doesn't matter a markup <img> element or css defined image like background-image , if we have
+        this image until edges of a box and we used border-radius on that box, border-radius won't work on those edges
+        that image is until those edges! So we can use overflow: hidden ON CONTAINER of that image to solve this issue.
+        This issue is also on bonus html course from jonas-flexbox bonus and it's solved there too.)
+
+        Recap: The reason of this issue is image is overlapping the parent element. So to fix it, on parent element where the
+        border-radius is also defined, we can set overflow: hidden; So the reason was the image is overflowing it's parent in
+        the corners that the border-radius isn't applied. So we can simply hide those parts of image and then with this we can
+        see those parts which have border-radius.*/
+    overflow: hidden;
+
+    /* When an image is on the edges of a box, the border-radius on those edges doesn't work. So in our case, border-radius on front side and
+     on top right and top left corners doesn't apply. In this situation we must use overflow: hidden; on the parent of image  which
+     usually is a container like <div>.*/
+    border-radius: 0.8rem;
+
+    /* Because we used the rgba() in box-shadow properties a lot in our project, we can actually define a variable for all of the
+     shadows. Find similar shadows and define variables for them.
+     Basically earlier, we must do background blend modes in photoshop and then export it from there and then use it in css. But with this
+     new css property and it's values, you can do it right in css.*/
+    box-shadow: 0 2rem 4.5rem rgba($color-black, .2);
+
+    &--front {
+      background-color: $color-white;
+    }
+
+    &--back {
+      background-color: green;
+      /* Before we hover the .card, the back side of card must already flipped - So it's already at 180 degrees: */
+      transform: rotateY(180deg);
+
+      &-1 {
+        /* Important: Only background-image works for linear-gradient() and background-color property doesn't work for
+            linear-gradient() .*/
+        background-image: linear-gradient(to right bottom, $color-secondary-light, $color-secondary-dark);
+      }
+
+      &-2 {
+        background-image: linear-gradient(to right bottom, $color-primary-light, $color-primary-dark);
+      }
+
+      &-3 {
+        background-image: linear-gradient(to right bottom, $color-tertiary-light, $color-tertiary-dark);
+      }
+    }
+  }
+
+  &:hover &__side--front {
+    transform: rotateY(-180deg);
+  }
+
+  &:hover &__side--back {
+    transform: rotateY(0deg);
+  }
+
+  //Front side styling:
+  &__picture {
+    background-size: cover;
+
+    /* At the first time, when we define the background-image, the image would be very small, because the height of the element that
+     we are defining the background-image on it is very small. So we have to define height ourselves.*/
+    height: 23rem;
+
+    /* What is a background blend mode? This property describes how the elements, background-images, should blend. So in this case
+     we can blend the images with linear-gradient() which this linear-gradient() is also definable as a background-image in css.
+     So here, the background-image is not just the actual image and it also contains a gradient. So in background-image we would have:
+     background-1, background-2 .
+     Now there's a problem. Because right now, the background-1 which is defined first in background-image is on top of background-2 and
+     we can't see background-2 . Well, that's because we haven't blend them yet! So now we can define background-blend-mode for all of the
+     background images. So we define it in &__picture not on &--1 or ... . Because we want this property to be same on those 3 pictures.
+     background-blend-mode is a brand new css property, so it doesn't work at all on the IE and neither on edge.*/
+    background-blend-mode: screen;
+
+    /* For the value of clip-path property we can also use circle or ellips or ... in order to for example clip a perfect circle.
+     In parentheses of polygon() we define a couple of coordinates which start from top left corner.
+     Remember: clip-path is a very modern css property and in order to make it actually work across all the browsers, we should prefix
+     this property with webkit prefix and write it again.
+     IMPORTANT: First we must write the prefixed property and then the actual property. So first the prefixed property and then the
+      official version. Because here we're using a vendor prefix
+     So let's do this in header file, where we have another clip-path. */
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+
+    &--1 {
+
+      /* The url() for background-image works with both quotes and without quotes.
+       Important: As you can see we have an error in path of image in background-image and you might say: HEY! we must go 2 level
+        upwards and then go to img folder. BUt here you are just going 1 level up and it would give you error! WAIT A MINUTE!!!
+        Actually you are wrong in this case. We don't have any error actually.
+        Because when we want to specify a path in .scss file, we must specify the path relative to the COMPILED css file not this
+        .scss file. So in our case we have to specify the paths in .scss files, based on that css file in css folder. So actually
+        the path that we specified here is correct. So assume that we're in that compiled css file and we want to specify the path to
+        nat-5.jpg , we have to go ONE level up and then go to img folder. So the path here is correct.
+        So in our .scss files we must assume that this code will be written later in compiled css file.*/
+      background-image: linear-gradient(to right bottom, $color-secondary-light, $color-secondary-dark),
+      url(../img/nat-5.jpg);
+    }
+
+    &--2 {
+      background-image: linear-gradient(to right bottom, $color-primary-light, $color-primary-dark),
+      url(../img/nat-6.jpg);
+    }
+
+    &--3 {
+      background-image: linear-gradient(to right bottom, $color-tertiary-light, $color-tertiary-dark),
+      url(../img/nat-7.jpg);
+    }
+  }
+
+  &__heading {
+    font-size: 2.8rem;
+    font-weight: 300;
+    text-transform: uppercase;
+    color: $color-white;
+    position: absolute;
+    top: 12rem;
+    right: 2rem;
+    text-align: right;
+
+    /* Important: The <h4> element is a block level element so it has 100% width of it's parent, but right now because we used
+        position:absolute; on this block element, it is wiped out of normal flow, so it's width is fitted on it's content.
+        But we want to even make it's width lesser. So let's give it a width of 75%. Right now it has 100% width of it's parent,
+        but it doesn't matter because it has wiped out of normal flow so it's width which is by default 100% doesn't apply.
+        But we can give it an explicitly width by specifying width property. So if you now give it an EXPLICIT width,
+        it would have 100% width of it's parent back. But if you don't do this EXPLICITLY, the default width: 100%; which is
+        on the block elements by default, isn't apply on elements that have wiped out of normal flow (like having position: absolute;
+        or float or ...).
+        So if we didn't specify any width here, the width of this element would be fit to it's content although it's a block element
+        and must have 100% width of it's parent. Why it hasn't? Because it has been taken out of normal flow. But if we EXPLICITLY
+        set the width of a wiped out of normal flow element, it can take back it's width, for example set it to 100%.
+
+        Now for making the heading(it's content obviously not the heading itself!-The heading itself is <h4 class="card__heading">
+        and it's content is <span class="card__heading-span card__heading-span--1">The Sea Explorer) to be in two lines,
+        we can give some padding to it's content to make the content takes more space and therefore don't fit on width of it's
+        container and therefore goes to second line.
+        Now when you give the .card__heading-span , padding: 1rem 1.5rem , you see that besides "A" in SEA word, we don't have any
+        space like we have on the other side of that same line besides the "t" in The word and in the second line also, BESIDE "e" in
+        beginning of EXPLORER word, we also don't have any padding for left of "e".
+        That's because this <span class="card__heading-span card__heading-span--1"> is treated as ONE LINE of text.
+        So the left padding for this element is left of "The" in first line. So the fix to that is to use box-decoration-break property
+        to make all of the text inside the content box and make padding be normal! in box model.
+        Learn: What we want is actually treat these two entities or these 2 TEXT LINES as if they were two DIFFERENT elements. This magic
+         happens when we use the box-decoration-break property.
+         -webkit-box-decoration-break: clone; simply applies all the declarations that we have in the selector to all of the boxes that
+         we created by the element. So in this case we have 1 element <span class="card__heading-span card__heading-span--1"> but
+         two boxes that are in this element. So now these 2 boxes are both styled with same padding, which before the right padding for
+         first line wasn't same for left padding on that line and also for second line we had similar problem.
+
+        So you saw that if you didn't use -webkit-box-decoration-break property, we won't have the space correctly that padding on
+        &__heading-span causes it(the space without -webkit-box-decoration-break would be just in the beginning of The Sea explorer
+        and at the end of it).
+
+        But when you write: box-decoration-break: clone; it won't work like that at google chrome, without the -webkit- vendor prefix.
+     */
+    width: 75%;
+  }
+
+  /* We could nest &-span inside &__heading , but it's not a good practice. Because both of .card__heading and .card__heading-span
+   are separate elements (heading and heading-span).
+   card__heading-span is not really the child of <h4>(in html world, Yes! It is the child of card__heading but in css BEM methodology
+   it's not. So we can't nest .card__heading-span inside .card__heading.). So .card__heading-span is the whole new element and it's not a
+   modifier or an element of .card__heading. So card__heading-span in BEM is a new element. So we shouldn't nest it inside .card__heading.
+
+   Important: In BEM methodology in combination of sass, we only have to nest selectors IF the nested selector is an element of a block
+    or the nested element is a modifier of block__element. In other cases like this case(when we have two block__element1 and
+    block__element2 so we can't nest block__element2 inside block__element1 because they're separate things.)
+    In other words you can't nest anything that is nestable!!!*/
+  &__heading-span {
+    padding: 1rem 1.5rem;
+    -webkit-box-decoration-break: clone;
+
+    &--1 {
+      /* We want to set the opacity for each of the colors used in linear-gradient. So i used rgba() function for each color that I
+       used here.*/
+      background-image: linear-gradient(to right bottom,
+              rgba($color-secondary-light, .85),
+              rgba($color-secondary-dark, .85));
+    }
+    &--2 {
+      background-image: linear-gradient(to right bottom,
+              rgba($color-primary-light, .85),
+              rgba($color-primary-dark, .85));
+    }
+
+    &--3 {
+      background-image: linear-gradient(to right bottom,
+              rgba($color-tertiary-light, .85),
+              rgba($color-tertiary-dark, .85));
+    }
+  }
+
+  &__details {
+    padding: 3rem;
+
+    ul {
+      /* Or we could have card__list class so here it would be &__list and instead of li, it would be &__details .*/
+      //list-style: none;
+      list-style: none;
+
+      /* ACTUALLY, we give this a width of 80% because we want all of the <li>s that are inside this ul, to have an underline.
+      But we don't want that underline to go completely from left to right, so this unordered list should have lesser width of it's parent
+      to make those underlines not going from left side all way to right side. So this is why we give ul a width of 80%.*/
+      width: 80%;
+
+      /* We want this <ul> which has 80% width of it's parent to be centered inside it's parent:
+       Learn: For centering block elements inside another block element, it's not good to use absolute positioning in these cases.
+        the good way is to use margin: 0 auto;*/
+      margin: 0 auto;
+    }
+    li {
+      /* We want the text that is inside each <li> to be centered. */
+      text-align: center;
+      font-size: 1.5rem;
+      padding: 1rem;
+
+      /* We want all of the <>s except the last one to have border-bottom */
+      &:not(:last-child) {
+        border-bottom: 0.1rem solid $color-grey-light-2;
+      }
+    }
+  }
+
+  //Back side styling:
+  &__cta {
+    /* Important: We need to use position: absolute; because we want to center this class, horizontally and vertically inside its' container.
+
+       I didn't give a font-size to this so all of it's children would inherit that font-size, because their font-size is different
+        from each other.*/
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    /* With using translate() here, we transform the element back to to EXACT center.
+     Important: That -50% is the width of the element itself not it's parent! and in second argument, -50% is the height of element
+      itself again!*/
+    transform: translate(-50%, -50%);
+
+    /* I gave this class some width because if we don't do this, .cta element will adapt it's width to it's widest child and
+    if this .cta do this, the btn that is the widest child of .cta will force it's width to .cta and therefore the text that is
+    inside the btn would break up into two lines because the btn isn't fit inside the width of it's container which is forced by
+    the btn itself!!!
+
+    Important:
+     Now after giving a width to this .cta, the button gets out of centered place! So we can use text-align: center; on the
+     container of btn which is .cta . Because text-align: center affects on inline and also inline-block elements.
+     Even though the property says “text” align, it affects all elements inside the block-level element that are either inline or
+     inline-block elements. The property only affects the content inside the element to which it is applied, and not the element itself.
+     To center the element itself, the margin property can be used.
+     To center inline or inline-block using text-align: center; (HORIZONTALLY) you must place the <img> inside of a BLOCK-level element such
+     as a div . Since the text-align property only applies to block-level elements, you place text-align: center; on the
+     wrapping block-level element to achieve a horizontally centered <img> or any inline or inline-block element.
+
+
+    LEARN: When display: inline-block; is applied a <div> or something like that element(like <section> or...), it then
+     adjusts it's width according to the width of it's child element
+     */
+    width: 90%;
+    text-align: center;
+  }
+
+  &__price-box {
+    text-align: center;
+    /* We set color property here and not on elements that are inside this element, because those children would inherit this
+     property therefore we don't need to declare this property on each of them and we can just declare it on their container.*/
+    color: $color-white;
+    margin-bottom: 8rem;
+  }
+
+  &__price-only {
+    font-size: 1.4rem;
+    text-transform: uppercase;
+  }
+
+  &__price-value {
+    /* Usually when we have a huge text, it looks better to make it really thin instead of leave it to be a big and bold text
+     and that's what we're doing here. */
+    font-size: 6rem;
+    font-weight: 100;
+  }
+}
+
+/* If you go to <div class="card__side card__side--back card__side--back-1"> and go to it's styles and uncheck
+ transform: rotateY(180deg); when you hover over card it won't rotate and you can easily debug the back side of card.*/
+
+

@@ -1,0 +1,28 @@
+.header__logo-box {
+  /* After setting position: absolute; we can use top right and ... properties to put the element exactly where we want it to be.
+   But where does this measurement start? From where we are saying top: 40px; or top:4rem; ? So from where or counting from where
+   are these 4rem or 40px or anything else? There has to be some kind of reference!
+   That reference is the parent element which has it's position set to be relative. So in addition to set the position of an element
+   to be absolute, we must set the position of parent of that element to be relative too! So we put the position of .header to be
+   relative.*/
+  position: absolute;
+  top: 4rem;
+  left: 4rem;
+  animation-name: logoFromTop;
+  animation-duration: 2s;
+}
+
+
+
+.header__logo {
+  /* When you set height, the width will scale to height accordingly.So we don't have to specify it. In other words width will
+   figured out by the browser.
+   We could instead set the width and the height will figured out by the browser. But we can prefer to always specify the height. */
+  height: 3.5rem;
+}
+
+.header__logo:hover {
+  animation-name: logoHoverRotate, logoHoverFade;
+  animation-duration: 2s;
+
+}

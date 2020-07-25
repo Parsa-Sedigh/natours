@@ -1,0 +1,26 @@
+/* a @mixin is a reusable code that we can @include it in the declaration of a css class or css id. When we @include a @mixin
+the codes that are in that @mixin will be kind of extracted wherever we @include that @mixin.*/
+
+/* When an element has childes that ALL of those childes have floated, then that container of those childes would have 0 height.
+ For fixing this, we must use a clearfix class.
+ Now what does clearfix do? A clearfix will append a pseudo element after the element that are using this clearfix on that element,
+ which will clear the floats of all of the childes of that element that we're using a clearfix on it.
+ Important: When we @include this @mixin inside a selector, the & will copy the selector. So if we @include this @mixin in .row ,
+  the code of clearfix would be: .row::after {...}
+
+ In clearfix, we MUST specify the content property, otherwise the pseudo element won't appear on tha page BUT WE DON'T WANT TO SEE
+   this pseudo element on the page, so we specify nothing inside the quotes for value of content property.
+   clear:both; will clear both float:left; and float:right; on the childes of an element which we're using clearfix on it.*/
+@mixin clearfix {
+  &::after{
+    content: "";
+    display:table;
+    clear:both;
+  }
+}
+
+
+
+
+
+

@@ -1,0 +1,56 @@
+@import "../abstracts/variables";
+
+.feature-box {
+  /* We want the background to be white and a bit transparent at the same time. For making them at the same time we can use rgba() to
+  specify the color of background and also opacity. In second arg of rgba() the .8 means 20% opacity or transparency. YES! 20%. Because
+  the second param means we can see through 80 percent and so the remaining 20% is the color. */
+  background-color: rgba($color-white, .8);
+  font-size: 1.5rem;
+  padding: 2.5rem;
+
+  /* We want the text that is inside the .feature-box to be centered. */
+  text-align: center;
+  border-radius: 0.4rem;
+  box-shadow: 0 2rem 4.5rem rgba($color-black, .4);
+
+  /* Learn: We use transition property to specify the time for :hover effect and hover out effect.
+      In transition instead of all which is all properties, you can just write the property that you want to animate it and apply
+      transition on that property. Here we just write one property because we want to use transition on that one property.
+      So in the transition you could also write: all 0.4s*/
+  transition: transform 0.4s;
+  //transform: skewY(7deg);
+
+  &__icon {
+    /* The size of an icon can be changed using font-size property. */
+    font-size: 6.2rem;
+
+    /* Learn: Inline elements like <i> don't get margin or padding in vertical way. So i changed the display here to inline-block. */
+    display:inline-block;
+    margin-bottom: .5rem;
+
+    /* Now we want to have a gradient inside the icon:
+    We can use -webkit-background-clip and we can use text value for that property, because an icon is text in fact and also we
+    can use color property on icon because it's text.*/
+    background-image: linear-gradient(to right, $color-primary-light, $color-primary-dark);
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+  &__text {
+    /* We don't need to specify the font-size for this class, at least there. But you may ask why in website, the <p> element
+     that has this class, has 1.5rem font-size? Even without specifying that property in this class? Well because of inheritance.
+     So because <p> is a child of .feature-box , simply inherits font-size property from it's parent. So we just have to define
+     font-size on parent and it will automatically inherit by it's children unless you redeclare a new font-size on childes which
+     would overwrite the inherited value.*/
+  }
+
+  &:hover {
+    /* When we hover on a .feature-box , it goes up a little bit and it also scales.
+    I commented out the next line because it's for situation that we didn't use child direct selector in .section-features in
+    _home.scss file.*/
+    //transform: translateY(-2rem) scale(1.05) skewY(7deg);
+    transform: translateY(-2rem) scale(1.05)
+  }
+}
+
+
+

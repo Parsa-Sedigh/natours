@@ -1,0 +1,32 @@
+//COLORS
+/* It's better to add used colors in project in this file which can be like a color palette!
+ $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+$color-primary: #55c57a;
+$color-primary-light: #7ed56f;
+$color-primary-dark: #28b485;
+
+$color-secondary-light: #ffb900;
+$color-secondary-dark: #ff7730;
+
+$color-tertiary-light: #2998ff;
+$color-tertiary-dark: #5643fa;
+
+$color-grey-dark: #777;
+$color-white: #fff;
+$color-black: #000;
+$color-grey-light-1: #f7f7f7;
+$color-grey-light-2: #eee;
+
+//Font sizes:
+/* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
+ "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
+ the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
+ we define a default value for font-size in our code because we used this 1.6rem too much! So it's better to define a variable for it.*/
+$default-font-size: 1.6rem;
+
+//FOR GRID:
+$grid-width:114rem;
+
+/* It's very good to have some variables for gutter of grids. */
+$gutter-vertical:8rem;
+$gutter-horizontal:6rem;

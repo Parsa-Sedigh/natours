@@ -1,0 +1,132 @@
+/* Generally there are 2 types of animations in CSS. The first one is to just use the transition property and then change the
+ properties that we want to animate on an event like :hover and ... */
+
+@keyframes logoHoverRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(90deg);
+  }
+}
+
+@keyframes logoHoverFade {
+  0% {
+    content: "";
+    display: inline-block;
+    position: absolute;
+
+  }
+  100% {
+
+    transform: scaleX(2) scaleY(2.3);
+    opacity: 0;
+
+  }
+}
+
+@keyframes logoFromTop {
+  0% {
+    transform: translateY(-10rem);
+  }
+  80% {
+    transform: translateY(2rem);
+  }
+  100% {
+    transform: translateY(0rem);
+  }
+}
+
+@keyframes moveInFromLeft {
+  /* In here we can specify what we want to happen in each moment of time of animation.
+   0% is before the animation actually begins.
+   Important: For browser performance, it's best practice to only and ever animate 2 different properties. one is opacity and other
+   one is the transform property.That's what the browsers are optimized for (they are optimized for these 2 properties.)*/
+
+  0% {
+    /* How we want the element to look like before it starts to move in ? We want it to first be invisible. */
+    /* Element comes in from left.So where we want it to be in the beginning? We want it to be more on the left than it's actual
+     place in page in the beginning. So we can use transform property and for it's value we can make it to be more on the left
+     by translating it in X axis with a function named translateX(). So how much we want it to be in left than the actual place?
+     In other words we can specify the distance from the actual place in () of translateX. But you must also specify the final place of
+     the element you are animation at 100%. So we want it to be at it's actual place, so we say translateX(0) at the final step of
+     animation.
+
+     After specifying the steps of an animation, we must APPLY this animation to an element in DOM. For this task, for make animation
+     to actually work or apply, there are 2 properties that we have to really specify on the element we want this animation to apply
+     on it. There are animation-name and animation-duration .
+
+     We can set animation-delay property on the element we want to apply this animation on it.So with this property, before this animation
+     starts to play, it will first have some delay.
+
+     We can set animation-iteration-count property on the element we want to apply.So with this the animation will simply happen
+     multiple times.
+
+     And also we have animation-timing-function property.This is a function which defines how the animation will proceed.
+     So how fast or how slow the properties that we specified in the @keyframes of animation will happen in animation.
+     For example with ease-in function, the animation will start slower and then accelerate over time and with ease-out,
+     it would be opposite.
+
+     Instead of animation-name duration timing function and ... we can use a shorthand property named animation.
+
+     At the end of animation we will probably see a shake on text or ... , to fix this, we can declare backface-visibility property and
+     set it to hidden.
+      */
+    opacity: 0;
+    transform: translateX(-2rem) rotate(30deg);
+  }
+
+  60% {
+    opacity: 0.6;
+    transform: translateX(30rem);
+
+  }
+
+  80% {
+    opacity: 0.8;
+    transform: translateX(10rem);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0rem);
+  }
+}
+
+@keyframes moveInFromRight {
+  0% {
+
+    opacity: 0;
+    transform: translateX(20rem);
+  }
+
+  80% {
+
+    opacity: 0.8;
+    transform: translateX(-10rem) rotate(-20deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0rem);
+  }
+}
+
+@keyframes buttonMoveInFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(20rem);
+  }
+
+  80% {
+
+    opacity: 0.8;
+    transform: translateY(-10rem);
+
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0rem);
+  }
+}

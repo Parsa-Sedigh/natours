@@ -1,0 +1,96 @@
+@import "../abstracts/variables";
+
+.composition {
+  position: relative;
+  &__photo {
+
+    /* Important: We always have to define the width of the images in percentages, if possible. Because of responsive web design.
+        Because this way, the image will nicely scale with the width of their parent. So now because we use percentages for width
+        of images, when we increase or decrease the view port, the images will also increase or decrease based on their container and
+        the same thing applies to the left distance for third image. But currently we're missing media queries to make it look better
+        on other screen sizes but for now it's more than enough.*/
+    width: 55%;
+
+    /* In x-direction of box-shadow we would usually have 0 in that direction.
+     Now we want our images to be on top of another. The best way of doing it, is to use absolute positioning.
+     Learn: Now remember that as soon as we set position:absolute; on an element, this element will placed according to a
+      reference and that reference is the first parent that our absolutely positioned element encounters, which has it's position
+      set to relative.
+
+     So let's set position: relative; for .composition class. So now if we give a coordinate (0, 0) to an element that has
+     .composition__photo class and is inside .composition container, the element that has .composition__photo class, will go
+      to top left corner of it's container which has the .composition class.*/
+    box-shadow: 0 1.5rem 4rem rgba($color-black, 0.4);
+    border-radius: 0.4rem;
+    position: absolute;
+    z-index: 10;
+    transition: all .3s;
+
+    &--p1 {
+      left: 0;
+
+      /* We make the first image to be a bit higher in comparison to the text in other column. So with this, they aren't in the
+      same line. Because if they were on the same line, it would seem a bit strange.*/
+      top: -2rem;
+    }
+
+    &--p2 {
+      right: 0;
+      top: 2rem;
+    }
+
+    &--p3 {
+      left: 20%;
+      top: 10rem;
+    }
+
+    &:hover {
+      /* Let's make the hovered image bigger first and when something is bigger, it means it have a bigger box-shadow and a bit darker.
+       So let's also change the box-shadow property on :hover.
+       After these we want to when we hover on one of the images, we want to have the one that we hovered on it, be on top of other two>
+       How we must implement that? Well, we use the z-index. So let's set z-index on normal state of all of those 3 images first.
+       When I said normal state, I mean not hover state and then in hover state we set a z-index with higher value than normal state.
+       So now the when we hover on one of the images that have class of .composition__photo that image that we hovered on it, will be
+       on top. Because it has higher z-index rather than other photos.
+       Learn: Now for animation, we can specify the transition of all properties in 0.3 seconds. Remember we must specify this on the normal
+        state not hover state.
+
+       Also when we hover on an image, it would given a green border.But it would also have some space between the border and the
+       image that was hovered. But it's not just a border and that's not easy to implement. So we can't just say:
+       padding: 15px;
+       border: 5px solid $color-primary;
+      in hover state. Because with this approach our images won't have nice looking in hover state.
+      So we must use outline property in hover state. But instead if we had border instead of outline, it would look the same.BUT
+      WITH THE outline WE CAN DO SOMETHING THAT WITH border WE CAN'T DO AND THAT IS outline-offset.
+      Learn: The outline-offset gives us some space between the outline and the element on which we applied the outline property.
+
+      Currently, what's missing is to set things up so when we hover on one the images, the other two must decrease their size.
+      For doing this, we must say as soon as we hover on the element that have the .composition class then we select the photo that
+      is nested inside of the .composition element and then select one that is not hovered. So it would be:
+      .composition:hover .composition__photo:not(:hover) So we're saying when hover the .composition , then select the .composition__photo
+      elements which are not hovered. */
+
+      transform: scale(1.07) translateY(-1rem);
+      box-shadow: 0 2.5rem 4rem rgba($color-black, .7);
+      z-index: 20;
+      outline: 1.5rem solid $color-primary;
+      outline-offset: 2rem;
+    }
+
+    /* &:not(:hover) {transform: scale(0.9);} For making other images get smaller when we hover on one of them, this code doesn't
+     work. BECAUSE: Right now this code means scale(0.9) all of the images that are not hovered. So css would scale down all of the
+     images FROM THE BEGINNING and not when we hover on one of the images. So first we must specify when we hover on .composition,
+     then select the .composition__photo elements that aren't yet hovered and apply some styles on them.
+     TODO: There's still a question. Imagine we hover on .composition element but still we don't hover on one of the images,
+      therefore all of the elements that have .composition__photo must get's smaller because of scale(0.9) . It isn't true?
+      */
+
+  }
+
+  &:hover &__photo:not(:hover) {
+    transform: scale(0.9);
+  }
+}
+
+
+

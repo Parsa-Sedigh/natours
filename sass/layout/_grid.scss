@@ -1,0 +1,109 @@
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+.row {
+  /*First we need to define a width for the row and a standard is 1140 px. Now what's wrong with this? Yes, we must use rem instead
+   of px and we know that in our project, 10px=1rem (remember: The root font-size is 62.5% of browser font-size which browser font-size
+   is 16px so the root font-size would be 10px. So 1rem is 10px in our project. Always remember that 1rem is equal to root font-size
+   and 2 rem is equal to root font-size *2 and... . So 114rem is 1140px)
+   Learn: What's the difference between width and max-width? max-width means: If we have enough available space, then the element which
+    has the max-width, it will the EXACT width that we specified.(In this case 114rem). But if there's not enough width, so basically
+    if the viewport is smaller than the max-width value-in this case if the viewport is smaller than 114rem, then the browser will simply
+    fill 100% of the available space that it has. But if you were used width instead of max-width, when the screen is smaller than
+    width, the element which has the width bigger than current screen will be basically cut! instead of getting the 100% of screen and
+    this is bad!
+
+    For centering this row in the viewport, we must use margin: 0 auto. This is the trick for centering a block element which is
+    inside another block element. But wht this works? When we say margin must be auto, this means that the browser when is rendering
+    the page, will automatically figure out the margin that we want on the left and the right side(because we set margin: 0 auto) and
+    since right and left margins are set to auto, it means the left and right would be same. So the element would be centered.
+
+     */
+  max-width: $grid-width;
+  margin: 0 auto;
+
+  /* We want the last one row to not have a margin-bottom. Also instead of &:not we can say: &:last-child {margin-bottom: 0} but we can
+  do even better by using :not() pseudo selector and in parentheses of :not() we can specify another pseudo class or anything else,
+  which in this case it's :last-child.
+  Learn: <selector 1>:not(<selector 2>) we are selecting everything that has selector 1 , except elements that have selector2.
+  */
+  &:not(:last-child) {
+    margin-bottom: $gutter-vertical;
+  }
+
+  /* The result of this @include is the code that is in the clearFix @mixin which is:
+   &::after{
+    content: "";
+    display:table;
+    clear:both;
+  } */
+  @include clearfix;
+
+  /* Since all of the col-<x>-of-<y> are inside .row, we can nest them inside .row selector. But we COULD place them outside of
+   .row selector. So when you place a selector inside another selector, those styles for the nested selector will apply to the
+   elements that in html doc, are INSIDE that selector that we nested into it. For example if we have .h1 selector inside .p selector
+   all of the styles that we give to .h1 will apply to <h1> elements that are inside <p> element not all of the <h1> elements.*/
+  /* We used an attr selector or [class^="col"] instead of a @mixin. Because it is a better practice. But we could also create a @mixin and put
+   float: left;
+   background-color: blue;
+   &:not(:last-child) {
+    margin-right: $gutter-horizontal;
+  }
+  inside of that @mixin.
+  Also we COULD create a new class and put these code into that class and then add that class to classes of the columns in html.
+  So sth like: class="col col-1-of-2 .
+
+  In [] of attribute selector, we can specify an attribute. So it would be: [<attribute>] . Like: [src="xxx"] .
+
+  ^ means we want the beginning of what we are setting here. So [class^="col-"] would be select all of the elements that have the
+   class attr that is start with "col-" . Another one is: [class*="col-"] which will select all of the elements that have a class
+   which CONTAINS "col-" . Another one is [class$="col-"] which will select any class that ENDS with "col-"*/
+  [class^="col-"] {
+    float: left;
+
+    /* The gutter between each of the columns in one row is some kind of margin-right for the all of the columns except the last
+     column. Right? Because last column does not have a space at the right side of it. So it hasan't a gutter so it hasen't a margin-right.
+     So in all of the types of col-x-of-y we want all of the columns to have margin-right except the last column.*/
+    &:not(:last-child) {
+      margin-right: $gutter-horizontal;
+    }
+  }
+
+  /* Here inside parentheses of calc() function, we're writing native css not scss although we're inside a scss file, it doesn't matter
+   we can write css inside a scss file. So we know that for layout calculations, we must write native css inside parentheses of
+   calc() . So here we must do that as well. So instead of using the sass variables purely here, like 100% - $gutter-horizontal we must
+   do it in native css way. So the previous calculation in native css doesn't work. So we must write it in native css way. For this
+   task, we must wrap scss variables inside curly braces and then use # . So the prior code would be 100% - #{$gutter-horizontal}.
+   So this is native css that is working with scss variable.
+
+   The width of col-2-of-3 is (2* (width of col-1-of-3)) / 3 + $gutter between these 2 col-1-of-3
+
+   The width of .col-3-of-4 is equal to have 3 .col-1-of-4 plus the gutters between them and we have 2 gutter between them. Right?
+
+   For other projects you can change the value of $gutter-horizontal (the space between each of the columns in one row.)*/
+  .col-1-of-2 {
+    width: calc((100% - #{$gutter-horizontal}) / 2);
+  }
+
+  .col-1-of-3 {
+    width: calc((100% - 2 * #{$gutter-horizontal}) / 3);
+  }
+
+  .col-1-of-4 {
+    width: calc((100% - 3 * #{$gutter-horizontal}) / 4);
+  }
+
+  .col-2-of-3 {
+    width: calc((2 * (100% - 2 * #{$gutter-horizontal})) / 3 + #{$gutter-horizontal});
+  }
+
+  .col-2-of-4 {
+    width: calc((2 * (100% - 3 * #{$gutter-horizontal})) / 4 + #{$gutter-horizontal});
+  }
+
+  .col-3-of-4 {
+    width: calc((3 * (100% - 3 * #{$gutter-horizontal})) / 4 + 2 * #{$gutter-horizontal});
+  }
+
+}
+

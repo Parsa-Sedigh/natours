@@ -1,0 +1,31 @@
+@import "../abstracts/variables.scss";
+
+*, *::after, *::before {
+
+  /* By default, browsers apply some margin and some padding to some elements, like <h1> */
+  margin: 0;
+  padding: 0;
+
+  /* box-sizing changes the box model, so that the borders and paddings are no longer added to the total width or total height,
+   that we specify for a box. Without doing this, paddings and borders are added to the height and the width of the elements,so
+   with this we get rid of that behavior.
+   */
+  box-sizing: inherit;
+
+}
+
+/* You can argue that this html selector has a style that is related to typography(font-size), so it should go to _typography file. But
+we saw that when we convert our px units to rem, this font-size on html selector acts more like an OVERALL setting for how we size our
+entire page. So it's not so much related to _typography but it's more like a base definition (global definition) which defines what 1 rem
+should be.  */
+html {
+  //this defines what 1rem is:
+  font-size: 62.5%;
+
+}
+
+/* You could take body to _typography except the box-sizing property. So we have 2 body selectors, one in _typography and one
+ in this file which has only one style and that is box-sizing which is not related to typography.*/
+body {
+  box-sizing: border-box;
+}

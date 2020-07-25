@@ -1,0 +1,84 @@
+@import "../abstracts/_variables.scss";
+
+/* Because .section-about is very specific to home page, we put the css declarations of this element in _home.scss file. So this means
+ if the website grows and have more pages, nowhere else we would have again this .section-about element, at least not similar to this one.
+ If we would have that on other pages, we shouldn't place this in this file.
+
+ When you want to put a color in css declaration, it's better to first put it in _variables.scss file and then write the variable name
+ for that color, where you want to declare that css.*/
+/* Important: Why we didn't nest blocks like:
+     .section- {
+        &about {...}
+        &features {...}
+     }
+     ???
+     Because the blocks are independent stuff so we shouldn't nest them inside each other or another thing.*/
+.section-about {
+  background-color: $color-grey-light-1;
+  padding: 25rem 0;
+
+  /* height of .header is 95vh and in that .header declaration, we have a polygon() which in it's right side goes until 75vh.
+  So the difference is 20vh (95vh - 75vh). So we can move up this .section-about by giving it a negative margin-top . */
+  margin-top:-20vh;
+}
+
+.section-features {
+  /*padding: <left and right padding> <top and bottom> */
+  padding: 20rem 0;
+  background-image: linear-gradient(
+                  to right bottom,
+                  rgba($color-primary-light, 0.8),
+                  rgba($color-primary-dark, 0.8)),
+  url(../../img/nat-4.jpg);
+  background-size: cover;
+
+ /* It's not very good looking to use background-attachment: fixed; on this section. Because we skewed the entore section */
+
+  /* We want this section to be like skewed. We can use clip-path property. But we can also simply skew the entire section.
+  So use transform: skewY(). Now all of the things that are in this section also would skewed. So we need to fix that. Also
+  we need to fix the wide gap between this section and previous section. For fixing this, we can simply move up the entire
+  .section-feature , so it would covers the white gap.
+  Now for fixing the skewed stuff inside this section, we can simply just skewed them in opposite direction and equal value of
+  skewed section. So if we use skewY(-xdeg) for entire section, we need to use skewY(xdeg) for things that are inside that section.
+  So let's skew the boxes that are inside this section.
+  Now we could go ahead and go into the .feature-box and use skewY() in normal state and also hover state(I did this but commented it out.),
+  but we want to fix this issue differently. Because imagine that one day, we want to put something else here in .section-features ,
+  for example imagine we add a couple of other boxes with different names or ... and therefore what would we do? We would have to
+  add transform: skewY(7deg); again in those boxes and their :hover state as well, so we don't want to do that(currently we duplicated
+  transform: skewY(7deg); in both normal state and hover state of .feature-box as well and this is not good- so imagine we add
+  more boxes with different classes and more duplicates and this is not good.)
+
+  Instead we can use direct child selector here. Here we selects ALL(*) of the direct childes(>) of .section-features .
+
+  What's the difference between .section-features > * and .section-features ? In first selector, we select all of the DIRECT childes of
+  .section-features , but in second selector we selected all of the childes (like childes of a child of .section-features).
+  So the first selector selects just <div class="row"> but second selector selects all of the elements that are inside .section-features .
+
+  Learn: first selector > second selector : The direct child selector will only select direct descendents of the first selector if they
+   also matches second selector.a > b selects b's what are only children to the a, it will NOT select b what is child of b what is child of a.
+
+   Currently the background-image of this entire section is also skewed but we can't notice it very much. So it's not a big deal.*/
+  transform: skewY(-7deg);
+  margin-top: -10rem;
+
+  & > * {
+    /* Inside this selector, we apply styles to direct child of .section-features (in this case that direct child is just
+    <div class="row"> and not the elements that are inside this <div>)
+
+    Recap: We skewed in opposite direction to compensate for the skewing of entire direction.*/
+    transform: skewY(7deg);
+  }
+}
+
+.section-tours {
+  background-color: $color-grey-light-1;
+  padding: 25rem 0;
+  margin-top: -10rem;
+}
+
+.section-stories {
+  /* padding: <value1> <value2>
+   value1 is top and bottom and value2 is left and right.*/
+  padding: 15rem 0;
+}
+

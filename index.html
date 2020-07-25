@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width , initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/icon-font.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="shortcut icon" type="img/png" href="img/favicon.png">
+    <title>Natours 🚎 | Exciting tours for adventurous people</title>
+</head>
+<body>
+
+<!-- The <header> is obviously a block in BEM. Because it is a standalone component that is meaningful on it's own.So it's a block and
+ so all the elements that are inside it, should also have the header attached to them.For example: .logo-box can only exist in the header,
+ so it's an element. Because it's part of a block. but it has no standalone meaning. So we should add the header to the element's class name.
+ and also .logo must be .header__logo . Because this logo with this exact size and this exact <img> inside it, it only just exists
+ in the header.Right?So we say .header__logo
+  .-->
+<header class="header">
+
+    <!-- Why we put the <img> inside a <div> ? Because the <img> is an inline element and it's a better practice that we put
+    this <img> inside a small container and then position that container to where we want that image and it's container to be.
+     alt attr is to describe the image and it is important for SEO, but also in the case that some how the image fails to load,
+     then on the website instead of image the value of alt will appear.-->
+    <div class="header__logo-box">
+        <img src="img/logo-white.png" alt="Logo" class="header__logo">
+    </div>
+
+    <!-- <h1> is the SINGLE most important heading on the page which is important for google to figure out what our page is
+     all about and it's important that we basically put the TITLE of our web page in <h1> and then put text: is where life happens
+     in <h2>. Now in the primary-heading we have text : outdoors , so we could just put outdoors in <h1>, but that's not what we want,
+     because we don't want our primary text or title of the website to just say : outdoors, instead we want all of text :
+     outdoors is where life happens to be the title of our page in google, so we must somehow divide this text. So we can use <span>
+      element to give some parts of the text special style and some other parts another styles... (span is to style some text in a
+      different way than the rest of the text.)-->
+
+    <div class="header__text-box">
+
+        <!-- This element <h1> should be exactly in the center, no matter what is the size of the screen.So no matter width and
+         no matter the height of the window is, this element should always at the center.
+         So we must put all of this inside a different container than the <h1> box itself, because we are going to add something more into
+         this box (<a> element. and this <a> also should stay at the center of .header element. So we can't just center the <h1> and
+         <a> individually but we can center them all inside a container.)
+         Remember: We could treat this <h1> as a block on it's own (it's a standalone block)-->
+        <h1 class="heading-primary">
+            <span class="heading-primary--main heading-primary__main--animated">Outdoors</span>
+            <span class="heading-primary--sub heading-primary__sub--animated">is where life happens</span>
+        </h1>
+
+        <!-- Because we are going to have multiple buttons on the page, some of them will white some will be green but most
+         of their functionality would be the same and only the color changes, so we will put the styles that will change in
+         btn-white and btn-animated and styles that won't change in another class called btn. -->
+        <!-- There would be multiple buttons like this button, but we want an animation t happen on this particular button, so
+         we give it a class and in that class we specify the animation name and ... on this particular class.-->
+        <a href="#" class="btn btn--white btn--animated">Discover our tours</a>
+    </div>
+
+</header>
+
+<!-- Important: If you want to see the practices (I commented out the test-grid section) you can set the margin-top of .section-about to
+      10vh instead of current value.
+
+<section class="test-grid">
+    <div class="row">
+        <div class="col-1-of-2">
+            Col 1 of 2
+        </div>
+        <div class="col-1-of-2">
+            Col 1 of 2
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-1-of-3">
+            Col 1 of 3
+        </div>
+        <div class="col-1-of-3">
+            Col 1 of 3
+        </div>
+        <div class="col-1-of-3">
+            Col 1 of 3
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-1-of-3">
+            Col 1 of 3
+        </div>
+        <div class="col-2-of-3">
+            Col 2 of 3
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-1-of-4">
+            Col 1 of 4
+        </div>
+        <div class="col-1-of-4">
+            Col 1 of 4
+        </div>
+        <div class="col-1-of-4">
+            Col 1 of 4
+        </div>
+        <div class="col-1-of-4">
+            Col 1 of 4
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-1-of-4">
+            Col 1 of 4
+        </div>
+        <div class="col-1-of-4">
+            Col 1 of 4
+        </div>
+        <div class="col-2-of-4">
+            Col 2 of 4
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-1-of-4">
+            Col 1 of 4
+        </div>
+        <div class="col-3-of-4">
+            Col 3 of 4
+        </div>
+    </div>
+</section>
+-->
+
+<!-- <main> element tells search engines or screen readers that this is the really main part of our website. So in a website in overall in
+<body>, first we have the <header>, then the <main> part which contains the rest of the website and at the end we're gonna have <footer>.
+So a website in it's <body> element has 3 main parts: <header>, <main> and <footer>.
+So <main> is like a huge container that will contain most of our website. -->
+<main>
+
+    <section class="section-about">
+        <div class="u-center-text">
+            <!-- For centering this <h2> element, we can wrap it into a parent element and then center the text from that wrapper and
+            we can define a utility class. So what does the .u-center-text class does, is very simply center the text that is inside of it
+            and u in u-center-text stands for utility. But why we didn't call this utility class for example: heading-secondary-parent or
+            something like that? Because we want to REUSE this utility class. So utility classes are classes that we can use them again
+            in future, so they must have a general name.
+            Learn: Utility classes are very SIMPLE classes in css, which only have ONE SIMPLE GOAL.
+            In this case this utility class simply just center the text that inside it.
+            Now why we used text-align: center on parent of <h2> to center it? Because we know <h2> is a block element BUT in our
+            scss, we make it as a inline-block element. So if we set the parent of an inline-block element to have the
+            text-align=center; then the inline-block elements that are inside of that parent would be treated as text and therefore
+            they would be centered IN THEIR PARENT.
+
+          We want some space between <h2> and the elements that come after it. Like the image composition and some text.
+         (The .row that comes after the heading-secondary). So we could simply add some margin-bottom to the <h2>. (Remember:
+         We can't add margin-bottom to the .u-center-text utility class. Why? Because it most be a reusable class or a general class
+         that has just one goal and it shouldn't add some other stuff like space or anything else.)
+         What's wrong with this approach? We must start thinking ahead. We would have other <h2 class="heading-secondary"> further in
+         our website. So the space that they have is not always the same. So if we go ahead and add a margin-bottom to this class
+         then it would influence other <h2 class="heading-secondary"> that we would have across the page.
+         So we must use a utility class. So it would be u-margin-bottom-8 which 8 is 8rem.
+         Learn: So the u-margin-bottom-8 utility classes allows us to very easily set some margin across our page in a very simple way, which
+          at the same time allows our main components or blocks or elements to stay independent and reusable across the page.So that's the
+          reason we created a new utility class here.
+          So for other uses of <h2 class="heading-secondary"> we would define another utility class for it's specific margin.
+          Because <h2 class="heading-secondary"> would be used in other places, so it is a reusable element and we want it to be
+          independent.-->
+            <h2 class="heading-secondary u-margin-bottom-big">Exciting tours for adventurous people</h2>
+        </div>
+
+        <!-- We treat the image composition as a component which is a reusable piece of code or a module, that we can use on
+         another parts of our site. So a single component is independent and has it's own file.-->
+        <div class="row">
+            <div class="col-1-of-2">
+
+                <!-- It's not good to have a utility class with this name u-margin-bottom-2 which 2 means 2rem. Because it's hard coded
+                 right? We hard coded 2rem. What we can do is to use names instead of numbers here. So let's say small instead of 2
+                 so in future we can change the small to for example 3rem and all of the places that we used this class will change.
+                 But if you used u-margin-bottom-2 , then if you change the margin-bottom of this class to 3, you must change the name
+                 of the class to u-margin-bottom-3 and therefore you must change ALL of the places that you used this class to the new one.-->
+                <h3 class="heading-tertiary u-margin-bottom-small">You're going to fall in love with nature</h3>
+                <p class="paragraph">
+                    <!-- In emmet, you can write: lorem and then hit tab to get some filler text. -->
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias architecto at cum dolorem
+                    ducimus earum fugit in ipsam itaque laborum maxime molestiae nihil, nisi, pariatur quam quia quo
+                    soluta ut!
+                </p>
+
+                <h3 class="heading-tertiary u-margin-bottom-small">Live adventures like you never have before</h3>
+                <p class="paragraph">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda dolores facere fugiat neque
+                    officiis.
+                </p>
+
+                <!-- Learn: For writing HTML special characters, we start them with & and then the code of that special character and then
+                      semicolon. So: &<code>; They're very good and you can use them instead of icon fonts.-->
+                <a href="#" class="btn-text">Learn more &rarr;</a>
+            </div>
+
+            <div class="col-1-of-2">
+                <!-- In this image composition in here, when we hover on an image,it comes up and also the other images becomes smaller
+                  simontinously and when we hover out, the other ones become bigger and the image that we was hover on it, becomes smaller.
+                  So when we hover out, all of the images go to their initial size.
+
+                  Here we have the block which is called composition and then the elements of this block are photo. But we also
+                  need a modifier for 3 images that we have in this block. Because they are in three different positions. So we need
+                  a modifier for each of those images. So let's define a modifier and for this, we add a second class.
+                  Why we added a second class instead of
+
+                  In emmet we can say: .composition> and > in emmet means we are now defining the children of .composition class.
+                   So for example when we say: .composition>img.composition__photo , we're saying that in composition class, we need
+                   an <img> with class of composition__photo.
+                   Learn: For defining a second class in emmet, we concat another dot to the previous class. So when we say:
+                    .composition>img.composition__photo.composition__photo--p1 , it means first create a div with composition
+                    class and then in it's children, create an <img> element with classes of composition__photo and composition__photo--p1
+                    p1 stands for picture1(photo1) and now we want to create this child 3 times. So put parentheses around that child and
+                    then *3 So it would be: .composition>(img.composition__photo.composition__photo--p1)*3 and then hit tab.
+
+                    So in our image composition we have 3 images and they are shared the same element class which is
+                    composition__photo and because they're a bit different with each other we also gave them three different second class
+                    which all of these 3 classes have a little bit difference and that difference is their modifier.
+                    Why we didn't just give them one class that is different with each other?
+                    Because they share a lot of similarity but they also have a LITTLE difference. So we gave them a first class
+                    that is common among them and also a second class which has modifier.
+
+                    Now because this image composition would be a independent component, let's create a file for it AND look at below:
+                    IMPORTANT: WHEN YOU CREATE A NEW .scss FILE, DON'T FORGET TO @import it in main.scss file. (If you want to @import
+                     a .scss file into another .scss file that file that you want to @import it must be a scss partial file. So it's
+                     name must start with underscore.)
+
+                    Remember: We want to place these images in different places inside their container. So this is why we gave them
+                    3 different classes, because they must be in 3 DIFFERENT places. So we must select them one by one and that's why
+                    we have the second classes which are modifier classes. But also these 3 images have some common styles so we have
+                    a same class for each of these 3 (.composition__photo).
+                   -->
+                <div class="composition">
+
+                    <!-- The -large image files are our high quality images and we will take care of responsive images where we can
+                     change these images according to screen size and resolution.
+                     Now let's style these photos with composition__photo class.-->
+                    <img src="img/nat-1-large.jpg" alt="photo 1" class="composition__photo composition__photo--p1">
+                    <img src="img/nat-2-large.jpg" alt="photo 2" class="composition__photo composition__photo--p2">
+                    <img src="img/nat-3-large.jpg" alt="photo 3" class="composition__photo composition__photo--p3">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- We got our icons from linea.io and download the icon pack .Then go to _basic folder in downloaded stuff, then go to
+     _ICONFONT folder. Also we could use _PNG 64 folder and use .png images instead of icons. But that's not a good practice.
+     Important: Because images do not nicely scale up or scale down when we scale our web page. But if we instead use an icon
+      fonts which are vectors (and we know vectors are good for scaling), so no matter how much we would zoom in or zoom out on
+      the page, the icons will always remain nice and sharp and crisp.
+     We could also use .svg files from _SVG folder and we will do that in next project.But .svg is a bit more advanced than
+     using an icon font. So let's use the _ICONFONT folder and inside this folder we need styles.css and fonts folder. Because
+     the fonts folder is where the icons actually live. So let's copy fonts folder and styles.css file to css folder in root of project and
+     then rename styles.css to icon-font.css so it's name won't similar to our compiled css file.
+     Now we must include the new css file in our index.html file. Because we know before using a css file, first we must include
+     it in the html file that we want to use that css file.
+     So say: link and then hit tab for emmet.
+     Important: Always include the third party css files BEFORE your compiled (custom) css file.
+
+     We have different formats for fonts like .eot or .wott because different browsers can read different font formats. So the authors of
+     linea icons, included all different formats in styles.css or icon-font.css, so with using all of those formats,
+     the icon fonts gonna work for all of the browsers.
+     Recap: in css file of linea icon fonts, all of the fonts are included and then based on those fonts, it will give us one calss
+     for each icon that we can use. So all we have to do is to include that class and it will give us the icon.
+
+     Learn: For using icons that we just included, we need to add one of the classes to an element and it doesn't matter what element
+      it is, and it becomes like a convention to use the <i> element. Remember that <i> doesn't stand for icon, it stands for italic.
+      Because in previous versions of HTML, <i> was used to make text italic. But we no longer use it for making text italic, so
+      we can use it for icons.
+
+      For seeing the full list of icons you can open up the icons-reference.html file in _ICONFONT folder and remember the icons
+      that have like: basic-world class name, must start with icon- . So it would be icon-basic-world.
+       -->
+    <!-- section.section-features and then hit tab will give us <section class="section-features"></section>
+    In section-features section, we need a row with 4 columns.
+    Question: Why we created another <div class="features-box"> in col-1-of-4 ?Wouldn't just <div class="col-1-of-4"> enough for
+    each box? No, remember that in the left column of section-about , we wrote the content DIRECTLY into the <div class="col-1-of-2">
+    and didn't use another <div> inside left column(<div class="col-1-of-2">) and then put our content inside that inner <div>. But
+    here we don't want to do this. So we want to put another <div> inside the column div(<div class="col-1-of-4">) which that div is
+    <div class="features-box"> .
+    WHY?
+    1) Because we want to have to have some space between the boxes (bigger gutter) 2) And more importantly because we want a special
+    effect to happen when we hover on one of the boxes(columns). So we want the entire <div class="features-box">
+    to scale and goes up a little bit when we hover it and it's better approach to create a separate element(<div class="features-box">)
+    for that effect, rather than manipulating our col-1-of-4 class to create that effect on our columns. So we create that effect on
+    the inner class of <div> not our good old col-1-of-4.
+    Important: So we never want to touch the col-1-of-4 or any other class like that.In other words the code for grid should remain
+     unchanged (no animation or no additional padding or manipulating padding or ...). So we can create another <div> to implement the
+     custom css.
+
+     feature-box is a component. So create it's file and then @import in in main.scss
+
+     Learn: We add the <section> that we have in our home page to, pages/_home.scss
+    -->
+    <section class="section-features">
+        <div class="row">
+            <div class="col-1-of-4">
+                <div class="feature-box">
+                    <i class="icon-basic-world feature-box__icon"></i>
+                    <h3 class="heading-tertiary u-margin-bottom-small">Explore the world</h3>
+                    <p class="feature-box__text">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias architecto at cum dolorem
+                        ducimus earum fugit in ipsam itaque laborum maxime molestiae nihil, nisi, pariatur quam quia quo
+                        soluta ut!
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-1-of-4">
+                <div class="feature-box">
+                    <i class="icon-basic-compass feature-box__icon"></i>
+                    <h3 class="heading-tertiary u-margin-bottom-small">Meet nature</h3>
+                    <p class="feature-box__text">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias architecto at cum dolorem
+                        ducimus earum fugit in ipsam itaque laborum maxime molestiae nihil, nisi, pariatur quam quia quo
+                        soluta ut!
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-1-of-4">
+                <div class="feature-box">
+                    <i class="icon-basic-map feature-box__icon"></i>
+                    <h3 class="heading-tertiary u-margin-bottom-small">Find your way</h3>
+                    <p class="feature-box__text">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias architecto at cum dolorem
+                        ducimus earum fugit in ipsam itaque laborum maxime molestiae nihil, nisi, pariatur quam quia quo
+                        soluta ut!
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-1-of-4">
+                <div class="feature-box">
+                    <i class="icon-basic-heart feature-box__icon"></i>
+                    <h3 class="heading-tertiary u-margin-bottom-small">Live a healthier life</h3>
+                    <p class="feature-box__text">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias architecto at cum dolorem
+                        ducimus earum fugit in ipsam itaque laborum maxime molestiae nihil, nisi, pariatur quam quia quo
+                        soluta ut!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-tours">
+        <div class="u-center-text">
+            <h2 class="heading-secondary u-margin-bottom-big">Most popular tours</h2>
+        </div>
+
+        <div class="row">
+            <div class="col-1-of-3">
+                <div class="card">
+                    <!-- We created another <div> inside <div class="col-1-of-3"> , because we don't want to touch col-1-of-3 class
+                     for our custom css. Instead we can create another div inside that column div.
+
+                     We have 3 cards that each have 2 sides, so there's 2 modifiers for distinguishing sides of cards and also we hav
+                     a gradient for each card that is different from each other. So we need another modifier class for gradients.
+                     So with these 2 modifier classes for each card, we first specify the front or back of a component(with
+                     .card__side--front and .card__side--back) and then we have very specific class to specify the gradient of
+                     the back of the component with another modifier for just BACK of the card not front of it(.card__side--back-1).-->
+
+                    <div class="card__side card__side--front">
+                        <!-- We have 3 elements in FRONT of cards.image, text, list.
+                         Learn: In BEM methodology, we don't nest element names. So in the class attr of next <div> we shouldn't name
+                          it card__side__picture , this is wrong. Although the previous block__element was card__side , but we shouldn't name
+                          it card__side__picture. So we shouldn't nest element names.
+                          Or if we look from the <div class="card"> , the elements shouldn't be like: card , card__card__side ,
+                          card__card__side__card__picture and ... . But we keep the block. So in our example you can see that card
+                          which is the block is duplicating in the class names and that's okay. So two elements (in BEM,
+                          elements which have block__element classes) shouldn't be dependent on each other.
+                          So in this case, card__picture is a complete new element, means it's dependent from card__side. But modifiers are
+                          dependent to elements. So: block__element--modifier is kind of dependant on it's element(block__element) .-->
+                        <div class="card__picture card__picture--1">
+                            <!-- Learn: Why we left this <div> empty, instead of using an <img> element here?
+                                  Because we want to use background blend modes for background-image property in css. So we define this
+                                  image in css(background-image) not html(<img>) to apply on it some blend styles.
+                                  Because those background blend modes can't be apply on <img> html elements.
+                                  So with these reasons, I leaved empty this <div> and didn't use <img> in markup.
+                                  Background blend modes are some cool effects that we can apply on background-image css property and
+                                  not on <img> html element.
+                                  BUT ACTUALLY WE MUST PUT SOMETHING! HERE. So let's just put space here with html special symbol for
+                                  space.
+
+                                  Because we have 3 DIFFERENT pictures for our cards, we need a modifier for each class to style
+                                  those different picture with those modifier classes.-->
+                            &nbsp;
+                        </div>
+
+                        <!-- We shouldn't use div for this heading, so <div class="card__heading"> is not good. Because it's not
+                         really semantic. Semantic means that we're using the right HTML tag for the right content. So if we have
+                         content for heading, we should use the right html tag which is one of the <h1> or <h2> or ... . In this case,
+                         it's <h4>-->
+                        <h4 class="card__heading">
+                            <!--
+
+                             Now we want this heading to be ON TOP OF image. So we must use absolute positioning and with
+                             position: absolute; we can use top and left and ... properties which are distances from the nearest
+                             container which has position:relative; which in this case that nearest container with position:relative
+                             to this element is .card element.
+
+                             Now in order to make the text inside this <h4> to be in 2 lines and with a gradient behind each of them,
+                             we need to use box-decoration-break and in order to make this property to work, we have to create
+                             a new element inside of this <h4> which is a <span> and the text inside <h4> goes inside this new
+                             <span>. For this <span> we also need a modifier class. Because we want three different gradients on these
+                             <span>s, but they also have some common styles. So for common styles we have card__heading-card class and
+                             for different styles between these <span>s , we have the second class which is a modifier class.
+
+                             Remember: In card__heading-span or card__heading-span--1 , -span is not a modifier! It's part of the
+                             element. So in those classes the element is heading-span.-->
+                            <span class="card__heading-span card__heading-span--1">The Sea Explorer</span>
+
+                        </h4>
+
+                        <div class="card__details">
+                            <!-- We could go crazy here with BEM and card__list class to <ul> and then to all of the items in
+                            the <ul> we could add card__item class. So we can also select these <ul> and <li>s with help of
+                            card__details class.
+
+                            In emmet we can say: ul>li*5 and hit tab.-->
+                            <ul>
+                                <li>3 day tour</li>
+                                <li>Up to 30 people</li>
+                                <li>2 tour guides</li>
+                                <li>Sleep in cozy hotels</li>
+                                <li>Difficulty: easy</li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <div class="card__side card__side--back card__side--back-1">
+                        <!-- The call-to-action(cta) <div> is centered horizontally and vertically inside it's container.
+
+                         Remember: Emmet assumes we are creating a <div> until we specify the element. So .cta will create a <div>
+                         but section.cta will create a <section>.
+
+                         In BEM, the block name must be exist or duplicate for all of the elements that are inside that block. So
+                         here we MUST use card__ and can't say just cta. -->
+                        <div class="card__cta">
+                            <div class="card__price-box">
+                                <p class="card__price-only">Only</p>
+                                <p class="card__price-value">$297</p>
+                            </div>
+
+                            <a href="#" class="btn btn--white">Book now!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-1-of-3">
+                <div class="card">
+                    <div class="card__side card__side--front">
+                        <div class="card__picture card__picture--2">
+                            &nbsp;
+                        </div>
+
+                        <h4 class="card__heading">
+                            <span class="card__heading-span card__heading-span--2">The Forest Hiker</span>
+
+                        </h4>
+
+                        <div class="card__details">
+                            <ul>
+                                <li>7 day tour</li>
+                                <li>Up to 40 people</li>
+                                <li>6 tour guides</li>
+                                <li>Sleep in provided tents</li>
+                                <li>Difficulty: medium</li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <div class="card__side card__side--back card__side--back-2">
+                        <div class="card__cta">
+                            <div class="card__price-box">
+                                <p class="card__price-only">Only</p>
+                                <p class="card__price-value">$497</p>
+                            </div>
+
+                            <a href="#" class="btn btn--white">Book now!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-1-of-3">
+                <div class="card">
+                    <div class="card__side card__side--front">
+
+                        <div class="card__picture card__picture--3">
+                            &nbsp;
+                        </div>
+
+                        <h4 class="card__heading">
+
+                            <span class="card__heading-span card__heading-span--3">The Snow Adventurer</span>
+
+                        </h4>
+
+                        <div class="card__details">
+                            <ul>
+                                <li>5 day tour</li>
+                                <li>Up to 15 people</li>
+                                <li>3 tour guides</li>
+                                <li>Sleep in provided tents</li>
+                                <li>Difficulty: hard</li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <div class="card__side card__side--back card__side--back-3">
+                        <div class="card__cta">
+                            <div class="card__price-box">
+                                <p class="card__price-only">Only</p>
+                                <p class="card__price-value">$897</p>
+                            </div>
+
+                            <a href="#" class="btn btn--white">Book now!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="u-center-text u-margin-top-huge">
+            <a href="#" class="btn btn--green">Discover all tours</a>
+        </div>
+        
+    </section>
+
+    <!-- We START styling a section by give some style to <section> itself. -->
+    <section class="section-stories">
+        <div class="u-center-text">
+            <h2 class="heading-secondary u-margin-bottom-big">
+                We make people genuinely happy
+            </h2>
+        </div>
+
+        <div class="row">
+            <!-- This time we aren't going to use any columns in this .row container. Because we don't need a column. We are just
+             using this nicely container to center our story component in there, also this .row class gives us some margin-bottom which
+             we needed it, so it's very good! So you learnt that it isn't always a need of columns that makes us to use .row class,
+             but we can also use .row class on a container for other stuff, like here.-->
+
+            <div class="story">
+
+                <!-- We want to have an image with a caption together so semantically a <figure> html element would be good.
+                 The caption can be visible when we hover on the image and the caption would be appear on the image. So in <figure>
+                 element we can put an image and some caption with <figcaption> element.-->
+                <figure class="story__shape">
+                    <!-- Important:  if you don't give the <img> a width, it would be in it's initial width and take all of the page!
+                          So remember that flexible images for responsive web design always got width or height in some circumstances
+                          specified for them. What circumstances?
+                          In other words under what circumstances we must use width for image or height for image?
+                          If in dimensions of image, width is bigger than height, we can't give it width of 100% because in that case
+                          some parts of images would be cut. So we must give it height of 10% instead of width of 100%.
+
+                          In this case, we gave story__img , a height of 100%. Because it's width(2000px) is bigger than
+                          it's height(1333).
+
+                     If the height of image is bigger than it's width we must give it width of 100%.-->
+                    <!-- Important: We shouldn't nest story__img inside story__shape in our styles, because they are both elements
+                          and story__img is not a modifier for story__shape or ... . So we don't nest them ALTHOUGH they are nested
+                          in html! But we MUST nest an element of a block inside it's block in our .scss files. For example we must
+                          nest story__text inside story.-->
+                    <img src="img/nat-8.jpg" alt="Person on a tour" class="story__img">
+                </figure>
+
+                <div class="story__text">
+                    <h3 class="heading-tertiary u-margin-bottom-small">
+                        I had the best week ever with my family
+                    </h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid eveniet officia voluptas?
+                        Ab accusantium, amet eaque eveniet excepturi expedita ipsam
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid eveniet officia voluptas?
+                        Ab accusantium, amet eaque eveniet excepturi expedita ipsam
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+
+</body>
+</html>

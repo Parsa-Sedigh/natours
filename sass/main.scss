@@ -1,0 +1,488 @@
+@import "abstracts/_functions";
+@import "abstracts/_mixins";
+@import "abstracts/_variables";
+
+@import "base/base";
+@import "base/animations";
+@import "base/_typography.scss";
+@import "base/_utilities.scss";
+
+@import "components/_button.scss";
+@import "components/_logo.scss";
+@import "components/composition";
+@import "components/feature-box";
+@import "components/card";
+@import "components/story";
+
+@import "layout/header";
+@import "layout/_grid.scss";
+
+@import "pages/_home.scss";
+
+/*
+ What you will learn in this course:
+ 1)...
+
+ ) How to make text flow around shapes with shape-outside and floats
+ ) how to apply filter to images
+ ) how to create a background video covering an entire section
+ ) How to use <video> html element
+ ) How and when to use object-fit property
+ */
+
+/* How cascade actually resolves the conflicts when more than 1 rule applies? In order to determine which one takes precedence
+ it looks at the importance, at the selector specificity and the source order of conflicting declarations.
+ First the cascade starts by giving the conflicting declarations different importances based on where they declared.So based on
+  their source. The order of importance is :
+  1) User !important declarations. (User: the visitor of website can manipulate the CSS and ... on website, right?)
+  2) Author !important declarations (Author: Is the developer)
+  3) Author declarations
+  4) User declarations
+  5) Default browser declarations
+
+  But in the most scenarios, we have declarations with same importance, so we check the `specificity of the declaration selectors` :
+  1) Inline styles (have the highest specificity)
+  2) IDs
+  3) classes, pseudo classes, attribute selectors
+  4) elements, pseudo element selectors
+
+  Now how calculate specificity based on the priorities that I mentioned? (Inline, ids, classes, elements), for number of
+   occurances we +1 , For example:
+   nav#nav div.pull-right .button {
+
+   }
+
+In above, we have the specificity of (0, 1, 2, 2)
+Remember: The value of the winning declaration is called the cascaded value.
+
+If the importance and specificity were equal between two or more selectors, then the last CSS declaration written in the code
+is the one that will apply.
+
+A selector that contains 1 id is more specific than 1 with 1000 classes. and this is true about classes and elements.
+Universal selector has no specificity value which means that all other selectors have a precedence over it.
+
+Rely more on specificity rather than order of selectors. But rely on order when using 3rd party stylesheets-always put your
+author stylesheet last.
+ */
+/* How values are processed in CSS parsing phase?
+
+Important: We have relative units, but there is difference in using relative units for fonts or for length measurements:
+
+% for fonts: When you declare a font-size in %, it would related to parent's font-size.
+% for length: But when you declare a length in %, it works a bit different.Because when we express a length measurement in percentages,
+like height or width or padding or margin or something else, the reference of that % is always the parent's WIDTH.
+
+Next we have font-based relative units like em and rem and again there's difference to use ems for fonts.
+Both ems and rems are font-based, but the difference between them is that em uses the parent or the current element as reference
+while rem uses the root font-size as reference.
+If we want to use ems for font-sizes, then the reference is simply the parent's computed font-size, similar to what happens with
+percentages. But for length the reference for em is the font-size of the current element.
+
+Now for rem, font-size and length work the same way. Because rem always uses the root font-size as the reference.
+em for fonts:
+em for lengths:
+rem:
+
+vh and vw are viewport-based units. 1vh is just 1 percent of the viewport's height and 1vw is 1 percent of viewport's width
+*/
+/* Each CSS property has an initial value which is used if nothing else is declared and if there is no inheritance.
+  Browsers specify a root font-size for each page (usually 16px) and this is a user agent definition so it's not an initial value
+  that is coming from the CSS specification.
+  Percentages are measured relative to their paren'ts font=size, if used to specify font-size.
+  Percentages are measured relative to their parent's width, if used to specify length.
+  ems are measured relative to their parent's font-size if used to specify font-size.
+  ems are measured relative to CURRENT font-size if used to specify length.
+  rems are ALWAYS measured relative to document's root font-size.
+  vh and vw are simply percentage measurements of the viewport's height and width.*/
+/* Each and every CSS property must have a value. Even if neither we nor the browser do specify it. In that case there's no
+ cascaded value.For processing a value for a certain element, the first question that css engine asks is : Is there a cascaded value?
+ and if there is, that's the value that is used for the property. So specified value = cascaded value . But if there's no cascaded value,
+ then the next question is if the property can be inherited and that depends on each property. Because there are some properties
+ that are inherited and others are not (for example, line-height gets inherited.).
+  So if the property is inherited, then the value
+  of that property becomes the computed value of it's parent element. So in this case the specified value = computed value of parent.(This
+  is inheritance!!!)
+ Example:
+ .parent {
+    font-size:20px;
+    line-height:150%;
+ }
+ .child {
+    font-size:25px;
+ }
+
+ In this example, the value that get's inherited by child is not simply the 150% but the computed value of parent and in this case the
+ computed value of parent is 150% of 20px. Which is 30px. So the line-height of the child element would be 30px not 150% of that 25px.
+ Now if it's a property that get's not inherited, like padding, then the specified value will become the initial value.Which is also
+ specific to each property. But you don't need to memorize these initial values.Because they're intuitive.
+ So in this case: specified value = initial value (specific to each property)
+
+ RECAP:
+ *Inheritance passes the values for some specific properties from parents to children.Inheritance allows developers to write less
+ code and code will be mor maintainable.
+ *Properties related to text are inherited, like font-family, color and ... (in specification you will find if the property is
+ automatically inherited or not?)- Other properties like margin and padding are not inherited, because it would be impracticable.
+ *Important: The computed value is what get's inherited, not the declared value.
+ *Inheritance of a property works if no one (neither developer nor browser) declares a value for that property.
+ *We can use inherit keyword to force the inheritance of a certain property.
+ *The initial keyword resets a property to it's initial value.
+ */
+/* Converting px to rem:
+ We must change all absolute px units to relative rem units. Why? Because we want an easy way to change all measurements on our
+ page with one simple setting. For example, when we hit a break point to display our page on a mobile device. When that happens,
+ we want a way to decrease all the measurements in our site at the same time and instead of writing too many code in media queries,
+ we can just change global font-size.(rem units are in relation to root font-size). The root font-size is set in the html selector.\
+ So we must remove the font-size in body selector. But why 10px for root font-size?
+ Because it's easier. Important: We know that 1rem is exactly equal to root font-size and in this case the root font-size is 10px.
+ So now 1rem is 10px. So now for converting px units to rem, all we have to do is divide the px by 10 and it would be rem.
+ Still, it's a bad practice that the root font-size is still in px units. But the problem is that by doing so, we actually
+ override the browser's font-size setting that the user can manually change in the settings.So some people increase the default font-size
+ of their browser. Now if we set the font to something like 10xp, then we remove the ability for those people to see our website properly!
+ Because they can't no longer change the default font-size.Well, they can!!! but our root font-size won't be affected by changes that
+ those people do.
+ So we must make the overall root font-size to be in percentages and this value would be translated to the percentage of the font-size
+ given by the browser. Now the default font-size of browser, if the user doesn't change anything, is 16px.
+ Learn: So if we put 100% for root font-size, that means the root font-size would be 16px IF the user doesn't change anything.
+  and if user does change the default font-size, for example to 18px, then the root font-size would be 18px and ...
+ Remember: WE WANTED OUR ROOT font-size TO BE 10px so 1rem would be 10px and ... . But the default font-size of browser is 16px.
+ So we have to divide what we want. So 10/16 = 62.5%.
+ So now imagine, if the root font-size is 16, so 16*0.625 = 10 and if root font-size is 20px, root font-size would be 12.5px.
+ rems are not supported below IE9.
+
+  */
+/* Whenever we CAN use inheritance, we shouldn't use it in universal selector so we must use it in body selector and after this
+in * selector we set the value to inherit. For example : box-sizing property itself is not inherited.But by setting box-sizing property on
+each and every element on entire page to inherit (by setting box-sizing:inherit on * selector), it will automatically inherit whatever
+we put in body selector.
+Also remember it's better to use * selector instead of * to *,*::after, *::before (also selecting all of the after pseudo elements
+and before psuedo elements too!). If we don't select those pseudo elements too, just the real elements (elements that are not
+after or before pseudo element) would be get those properties, but if we also select those pseudo elements, they would get those properties
+too.*/
+/* Website rendering phase:
+ The css visual formatting model is an algorithm that calculates boxes and determines the layout of these boxes for each element
+ in the render tree, in order to determine the final layout of the page.
+ The algorithm looks at:
+  dimensions of boxes, which are calculated by the box model
+  the box type which can be inline, block or inline-block
+  the positioning scheme, which includes concepts like float and absolute and relative position
+  stacking context
+  other elements that are present in the render tree
+  external information like current viewport size, dimension of images or ...
+  SO by putting all of these factors together, the browser figures out how the final website will look for the user.
+
+  Fill area: Remember how text content and images go inside the content of box model? The same actually does NOT apply for
+  background images or background color of the box.So these properties will be applied not to the content of box model, but to
+  the entire fill area, which includes content+padding+border but not the margin.
+
+  Height and width in default box model:
+  We can specify the height and width of an element, now if you choose not to specify the height or width of a certain element,
+  the visual formatting model will just use the content of the box to determine it's size.
+  How default box model calculate height and width of block level boxes?
+  total width = right border + right padding + specified width + left padding + left border
+  total height = ...
+
+  Ex) If we define the height of an element to 100, and padding : 20, final height would be 140. But this isn't good!!
+  So whenever we define width or height of a box, the padding and the border get added to what we defined.
+  Solution is box-sizing: border-box; so with this, the height and the width will be defined for entire box including the padding
+  and the border and not just for the content area. So the formul will becomes:
+  total width = specified width
+  total height = specified height
+
+  So now if we define some padding or borders, they won't get added to the diemensions of the box.
+  <li> and <table> also produce block level elements.
+  Block level:
+  Usually occupy 100% of it's parent's width and create line break after and before itself meaning that they are formatted verically one
+  after another and the box model for them work as mentioned before (those 2 formulas...!)
+  These elements have: display:block or display: flex or display: list-item display:table.
+  ---------------
+  Inline elements:
+  They only occupies that their content needs so they don't cause line breaks at all.But instead they just sit inside their block-level
+  parent element.But the box model works different in inline elements.
+  Important: First: The height and width property do not apply on these elements.Which means we can't use these properties here.
+   Second: We can only specify horizontal paddings and margin on inline elements.
+  Recap:
+  Content is distributed in lines
+  Occupies only content's space
+  No line breaks
+  No height and width
+  Padding and margin only horizontal(left and right)
+
+  So they have limitations, in order to overcome that we use inline-block elements.
+  --------------
+  Inline-block elements:
+  They technically are inline boxes but which simply work as a block-level box on the inside.So since they are technically inline
+  elements they use only their content and cause line-breaks.But since they work as block level elements on the inside, the box
+  model apply to them just like in the regular way.
+ */
+/* Positioning schemes:
+ default or position:relative:
+ If you use position relative on an element, it is still in the normal flow and normal flow means that the elements are laid out
+ on the page in order of code.
+ ---------------------
+ Floats:
+ The float cause an element to be completely taken out of normal flow and shifted to left or right as far as possible.Until it touches
+ the edge of it's containing box or until the edge of another floated element.When this happens, text and inline elements will
+ wrap around the floated element. Also when an element is floated, it's container WON'T adjust it's height to the floated element.
+ The usual sulotion is to use clearfix
+ ---------------------
+ Absolute position :
+ Just like floats, when you set position to absolute or fixed, the element is taken out of normal flow.But the difference between
+ float and absolute is that in absolute, the element has no impact on surraounding content or elements at all.Even it can overlap them.
+ Important: We use top, ... to offset the absolute positioned element to it's relatively positioned container.
+
+ z-index creates a new stacking context.
+ Each element use the z-index property on an either relatively or absolutely positioned element and that's one way of creating a new
+ stacking context.
+ Not only z-index creates stacking context, an opacity value different than 1, a transform property or a filter or ... also creates
+ new stacking context.That's why even with the z-index set on a positioned element, the stacking order doesn't work as expected.
+ */
+/* BEM: block element modifier : block__element--modifier
+ In BEM, block is a standalone component that is meaningful on it's own.
+ An element is part of a block and has no meaning on it's own.
+ A modifier is a flag that we can put on a block or an element in order to make it different from the regular blocks or elements, to
+ make a different version.
+
+ 7-1 pattern: Means we have seven different folders where we put partial Sass files and then one main Sass file which in there, we
+ import all of our partial into one final compiled css stylesheet.
+ 7 folders are:
+ base: Where we put the basic definitions
+ components: In this folder, we have one file for each component
+ layout: Where we define the overall layout of the project
+ pages: Where we have styles for specific pages of the project.
+ themes: If you want to implement different visual themes
+ abstracts: Where we put code that doesn't output any CSS. Such as variables or mixins
+ vendors: Where all third party CSS goes there.*/
+/* -Functions in SASS are similar to mixins with the difference that they produce a value that can be used later.
+ -extends: Make different selectors inherit declarations that are common to all of them.
+ -control directives: For writing complex code using conditionals and loops
+
+ SASS syntax is indentation sensitive and doesn't use any curly braces and semicolons and it is more confusing.*/
+/* & in SASS, writes the selector up until where it's currently used. */
+/* If all of the childs of an element have floated, the height of that element becomes 0. So we must add .clearfix class
+to that element.
+The clearfix class adds a pseudo element after the collapsed element. So we decalre this class as : .clearfix::after
+So this pseudo element will clear the float.
+.clearfix::after {
+   content: "";
+   clear:both;
+   display:table;
+} 
+*/
+/* In sass, mixins are like huge variables for storing some reusable code. For calling them, we use : @include <name of mixin> */
+/* For nesting a pseudo element inside an element selector in SCSS and inside that elementor selector we can say:
+ &::<pseudo element> or for &:<pseudo class>
+ darken function in sass: darken(<color>, <how much darker in percentages?>) and also we have lighten() function.
+ For writing your own function, you can say:
+ @function divide ($a, $b) {
+    @return $a / $b;
+ }   
+ and for calling the function, we just use it's name and (). For example: margin: divide(60, 2) * 1px;
+   */
+/* What is extends in SASS? By using them, we can write a placeholder and put a bunch of styles there and then other selectors
+extend that placeholder. For example the properties that are common between the <button>s , we can just put them in there.
+We create a placeholder in sass like: %<name of placeholder>
+EX) %btn-placeholder {
+   <put the styles that would be duplicated if you don't use placeholders and extends>
+}
+and for using the placeholder or use those styles you can say: 
+@extend %<name of placeholder> 
+
+So we must use @extend when the selectors or the elements that you're extending, are actually pretty related to another.
+
+But why we don't use @mixins instead of placeholders and just @include them? Because with @extend, the SELECTOR is copied to
+where we defined the placeholder and not the code. But with @mixin, all of the code would be copied to where you @include
+that @mixin.
+For example:
+ %btn-placeholder {
+    <some style ...>
+ }
+
+ .btn-main {
+    &:link {
+       extend %btn-placeholder;
+       ...
+    }
+ }
+
+ So in the example, by using placeholder, the styles inside %btn-placeholder won't copy inside .btn-main, but .btn-main:link
+ will copy instead of %btn-placeholder in compiled CSS code. But if we were used @mixin, all of the styles of 
+ %btn-placeholder would copied into .btn-main:link .
+
+*/
+/* There are several ways to install SASS on local computer and there are several ways to do this. But the easiest one is to use
+a npm package called node-sass .
+The node-sass package compiles sass code. But the node sass is a develop dependency. It means basically node-sass is a tool
+that we use to develop our project.
+The first thing that we do in a new project, before installing packages is to create a package.json file which will contain 
+the definitions of our project and where npm will write the packages that we use in project. So we say: npm init
+Now let's install our sass compiler. So npm install node-sass --save-dev
+--save-dev will make package.json file gets updated and lists this package as one of our developer dependencies.
+What is developer dependencies? It means that node-sass is a tool(a helper) that we use to develop our project.
+
+In older times, when you install a package as a dependency, it won't show in the package.json file until you specify an option which is
+--save . Nowadays it doesn't necessary anymore.
+
+We don't need to share the node_modules file with others. So if you want to share your project, you'll only share other things not the
+node_modules folder. So you must share package.json file instead of node_modules directory. Because from package.json file, we can
+recreate the node_modules folder. So if you don't have node_modules but the package.json currently, you can write: npm install .
+For deleting a package in older days: npm uninstall <package> --save . We used --save because with this, it will remove it also from
+package.json file.
+For using node-sass package, you must use it with writing npm scripts and the script for compiling the scss code is:
+"compile:sass": "node-sass <input file(location of the scss file-relative to package.json file)> <compiled(output) file which is a css file>"
+If you have any css file in that outputted location with that name, when you run the command, it would overwrite it.
+But wait! Why we can't write this exact command in terminal for compiling sass? Instead we use terminal to just say npm run <name of
+the npm script>? In other words, why write our npm script in package.json and then we need to CALL that script with it's name from the
+terminal? and not write the exact command in terminal and then hit enter to actually run that command? Because that's not going to work!
+
+For keep watching the main scss file, we can add -w flag to the end of our currently npm script, so it would be:
+"compile:sass": "node-sass sass/main.scss css/style.css -w" So with this file watcher, when you change your code, it will automatically
+compile the sass code to css.
+Now we need to have another stuff, so each time we change the code, the browser would be reloaded automatically.
+For this task, we must install live-server package as a dev dependency and globally. So instead of using --save or --save-dev , we use
+-g . Now because we didn't specify --save-dev (--save is not required anymore these days), this newly installed package won't be in
+package.json file and you'll probably will see that this package is not in node_modules directory.Because we installed that package as a
+global package and since it's a global package we can call this package DIRECTLY from the terminal.
+
+By running live-server we would have a real http server(protocol) (we have also file protocol in general.)
+
+So now for running the local http server and the node-sass package, we must let those 2 tabs or terminal open.
+*/
+/* In regular CSS, we can't put a hexadecimal color(like #fff) in a rgba function and then put opacity and then it would translate
+the color. No! That won't work in regular CSS. But in SASS it will work! So in regular css you must say: rgba(x,y,z, opacity) not
+rgba(#xxx, opacity) but in sass or scss you can do this.
+So remember: Using hexadecimal colors in rgba() only works for scss or sass. So in regular css, we have to define the colors separately
+for R G and B with a number in range of 0 to 255.*/
+/* For nesting the selectors, remember we had BEM methodology and till now, all of our selectors are really just ONE CLASS FOR EVERY
+element. So they all, have a same specificity which is extremely low (they have just one class). Also since each and every element has a
+class, nesting can be a bit difficult here.So it's looks like there's not much to nest here with these classes. But maybe still we can
+do some nesting.
+
+In sass, & operator copies the parent selector where we are do nesting in that parent selector. For example:
+.header {
+...
+
+&__logo-box {
+
+}
+}
+In tbe example above, the value of & is .header (not header!).*/
+/* 7-1 pattern: With this pattern we create 7 folders and one main sass file to import them all the files that are in those folders.
+All of those 7 folders are going to be in the sass folder.
+In base folder, we're going to put the basic project definitions. So like a project's boiler plate. In the base sass file, we have
+real low level basics.Such as resets and styles for <html> and <body> element selectors. Note: This file should be a partial, so we can
+later import this file into the main.scss file.
+Learn: The partial files always start with an underscore. So if you name a scss file starting with an underscore, that file would be a partial
+ scss file. But when you're specifying the path to the file when importing the partial file in main.scss , you don't need to write
+ the underscore and the extension for the name of the file. So for example: @import 'base/base'
+
+In abstracts folder we're only going to put code which is not going to output any css.Like variables, mixins and functions.
+In components folder we're going to create one file for each of our components.
+In layout folder we're going to have a global header, footer and ... . Basically the layout is what holds our components together.
+If you have very specific styles for a specific page like for homepage, we can create a new file for that specific page in pages folder.
+In vendors folder we put 3rd party css. Like the css file for bootstrap or icon system or animation framework.
+
+Remember: In the end in the main.scss, only serves the @import s of all other partial files. So there will ne no code in this file,
+except @import declarations.
+
+Everything that has font-family line-height and ... (related to typography) should go to _typography file.
+ */
+/* 3 basic principles of responsive design:
+1) Use fluid grids and layouts: We must use percentages rather than px s for all layout related length (specially do this for
+width properties). Why we do this? Because we want to allow the content to easily adapt to the current view port.
+
+2) Flexible/responsive images: Images behave differently than text content (because they don't scale automatically as we change
+the viewport) and so we need to ensure that they also adapt nicely to the current view port.
+Usually we make images flexible by defining their dimensions in percentages rather than pxs (fixed units).
+Images usually make up the biggest part of pur website's size, so we need to optimize images for different width.
+
+3) Learn: Media queries: Allow us to change styles on certain viewport widths, which are called breakpoints. Basically media queries allow us
+    developers to create different versions of a website for different types of devices.
+
+3 main ways of laying out a web page: 1) float-based layouts. 2) Flex-boxes which are for laying out elements in 1 DIMENSIONAL row.
+3) CSS grid is perfect for creating the overall layout of the page in a fully-fledged 2 dimensional grid.
+*/
+/* Building a custom grid with floats (fluid grid):
+What is a grid? It's a design system.
+The consistent space between each column is called gutter.
+The columns should be always be in a container and that container is called a row. No matter you have 3 columns or 4 columns or ...
+all of these columns should be inside a container called row.So let's say that all of the columns that are in one line, are actually
+in one ROW. All of the excercises are in test-grid section.
+After writing the html code for this exercise, we must create a new scss file to build this grid which is a layout, we must create a
+new scss partial file in layout folder and call it _grid.scss and then import this new file in main.scss .
+
+ */
+/* In native css, in calc() we can mix units. But in preprocessors we can't do mathmatical operations with multiple units and it's
+actually pretty logical why it is that way. Because we COMPILE the sass files while we're developing the page, so even before the
+page is served to the user. But this kind of calculation depends on layout. So it has to happen when the website is rendered using the
+visual formatting model. So that's when these calculations can occur. Because it's only after that when css and the browser know what
+a percentage is and what a rem is and ... . So for layout calculations we must do those calcs using native css.*/
+/* In border-radius: <value-1> <value-2> the first value applies to top-left corner and second value is applied to bottom-right corner of
+element.
+In padding: <value-1> <value-2> value-1 is for top and bottom and value-2 is for right and left.*/
+/* In chrome dev tools in top-right side of elements section, you can see :hov . This is useful when you want to force a state of
+ an element to see the styles that apply to that element when we hover on it.*/
+/*
+    Important:
+     Now after giving a width to this .cta, the button gets out of centered place! So we can use text-align: center; on the
+     container of btn which is .cta . Because text-align: center affects on inline and also inline-block elements.
+     Even though the property says “text” align, it affects all elements inside the block-level element that are either inline or
+     inline-block elements. The property only affects the content inside the element to which it is applied, and not the element itself.
+     To center the element itself, the margin property can be used.
+     To center inline or inline-block using text-align: center; (HORIZONTALLY) you must place the <img> inside of a BLOCK-level element such
+     as a div . Since the text-align property only applies to block-level elements, you place text-align: center; on the
+     wrapping block-level element to achieve a horizontally centered <img> or any inline or inline-block element. */
+/* When you have an image that is all the way to the edges of a box and we make that box to have border-radius, although we specify a
+ border-radius, the edges of that box is still sharp. So as I mentioned we can use overflow: hidden; on parent of that image.
+ Now if you use clip-path property on that image, so clip-path in google chrome breaks overflow that we set for that image.
+ Remember: We set overflow: hidden; on parent of image, so the corners that are overflowing the parent element would be hidden. BUT
+ for some reason when we use the clip-path property on that image which causes overflowing, then the overflow: hidden; no longer
+ works.
+ The solution is to set the corrupted borders manually. So in &__picture we can say:
+ border-top-left-radius: 0.3rem;
+ border-top-right-radius: 0.3rem;*/
+/* Learn: Block elements automatically (and if they aren't already wiped out of normal flow), gets 100% width of their parents,
+      but for this .story element, we don't want it to get's 100% width of it's parent automatically so we gave it a width.
+      If you don't specify a width for a block element AND if that block element doesn't already wiped out of normal flow,
+      the width of that block element is 100%.
+      Now when you already centered a block element inside another block element, if you give this block element any other
+      width than 100% it won't be no longer centered.
+      So we can use margin: 0 auto; on element that we want to center it horizontally and that element will be CENTERED ITSELF!
+      This approach(margin: 0 auto;) won't center the children that are inside this block element.
+      For making the content that is inside block element to center:
+      1)
+      Set the child elements to either display:inline or display:inline-block, then set the parent container to text-align:center,
+      the children will center in the parent- depending on whatever its width
+      2)
+      If the child content is block level (display:block) set text:align:center; on the parent, then give the child margin:0 auto
+      and a width less than that of the parent*/
+
+
+
+ /*
+light-green:#7ed56f
+medium-green:#55c57a
+dark green:#28b485
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

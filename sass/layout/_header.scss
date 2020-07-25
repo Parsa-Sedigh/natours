@@ -1,0 +1,119 @@
+@import "../abstracts/_variables.scss";
+
+.header {
+  /*95% HEIGHT OF THE VIEW PORT. In vh we say that basically in every point in height of this element should be 95% of viewport height.*/
+  height: 95vh;
+
+  /* Remember: For specify gradients, we always use background-image property. In this case we have 2 background images and one
+   of them is on top of other one. So here, the linear-gradient background is on top of that actual image.But remember: Because
+   we have 2 background images on top of each other, the one that is on top f another must have some opacity less than 1, so
+   this way the background that is under this one will actually shown.
+
+   Remember: The first background image will on top of the second one.So in this case, the linear-gradient will on top of that
+   URL (the actual image.)
+
+   Important: When you specify the url of the background-image you shouldn't use quotes around the path, like this case:*/
+  background-image: linear-gradient(
+                  to right bottom,
+                  rgba($color-primary-light, 0.8),
+                  rgba($color-primary-dark, 0.8)),
+  url(../../img/hero.jpg);
+
+  /* What is cover in background-size? Whatever the width of the viewport or element is, it will always try to fit the element iside
+   the box.*/
+  background-size: cover;
+
+  /* background-position: top; will ensure that whatever the viewport size is, the top of the image always stays at the top of the
+   container. For example: If the size of browser (viewport) decreases, the bottom of the image get's cropped! But top of the image
+   always stays the same and won't get cropped. For example if we had: background-position: bottom; if we change the image size (for
+   example when we decreases the size of browser) the bottom will stay same and won't get cropped.
+   background-position: center; the top and the bottom of image will crop but the middle or center of image will stay the same*/
+  background-position: top;
+
+  /* In clip path we specify a polygon that specify the part of image or element that would be visible.
+   In parentheses of polygon we specify the coordinates which define the polygon. Inside the parentheses we specify 4 coordinates
+   in order to obtain this polygon and we are going to start at top left corner and then we move clock wise, so after that we go to
+   top right corner and ... . For first coordinate, we don't want to move it in any direction (axis).
+
+   Important: The X and Y distances of all of our coordinates are calculated from the origin.The origin is the top left corner of
+   the element.
+
+    Axises in CSS:  --------------------> X
+                    |
+                    |
+                    |
+                    |
+                    Y
+    So as you can see the Y axis in CSS is opposite of Y direction in math. In math we have:
+
+                    Y
+                    |
+                    |
+                    |
+                    --------------------> X
+
+    So for first coordinate (top left corner) we don't want to change it's x and y directions.
+    For the second coordinate (top right corner) we know that it definitely has coordinate in X direction other than 0. But it's
+    coordinate in Y is again 0. Because in the shape that we want to have for header, the first and second coordinates have same
+    height (they stand in one line), so we had first coordinate in 0 coordinate in Y axis so the second one has the same coordinate
+    in Y axis too. But what about the X coordinate of the second place?
+    Well it is 100% of the width of the header element far from the first coordinate in X axis.
+    The third coordinate (bottom right corner): It is still 100% of width of this element(header) far from the origin of coordinates.
+    But it's Y coordinate is something other than 0. We can set this whatever we want. For example 200px.
+    The forth coordinate has 0 distance from origin.But for Y coordinate we go from origin all the way down of the element.
+    So the Y is 100% (remember: Not -100% because we move in + direction of Y axis.)
+
+    Excercise: Let's make a triangle: The answer is : clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    Remember: All of the calculated distances are from origin and the origin is the top left corner of the element that we want to
+    clip some parts of it (element).
+
+    Important: The real property last, the vendor prefixes first!
+
+    Such as background-blend-mode , clip-path is not going to work on IE or edge. So if you want to develop for theses browsers too,
+    at this point, you can't use these properties or you can use them with a fallback. */
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+
+  /* Because this element has a child that has a position: absolute; , we must set the parent element of that child which is .header
+   to have a position of relative. In other words this element is the origin or reference from which top and left for the .logo-box
+   start to count.*/
+  position: relative;
+  background-attachment: fixed;
+
+  &__text-box {
+    /* How center .text-box, inside the .header element vertically and horizontally? We should use absolute positioning. But for top and
+      left properties, they would be a bit different.
+      So we start by saying : top:50%; and left: 50%; But the result is not quite what we want the element
+      to be. But the code is doing it's job because the left: 50%; is half of the width of the .header (parent) and the top is true too!
+      But in order to make this element to truelly be center, we can shift this element just a little bit, so that the center of the
+      .text-box at the center of header. (We want the vertical middle line of the .text-box to be where the beginning of the
+      vertical line of box is now.) and the same thing applies to the height.So we want the horizontal center line of the box be
+       exactly where the beginning horizontal line of box is now. In other words we want to translate the entire .text-box element.
+
+       In () of translate we must specify how much we want to translate on X and on Y axis. But why -50% for both axises?
+       Because these -50% s are now no longer in relation to the parent element and now are related to the element itself(.text-box).
+       And if we say -50% in X axis, it will shift the element to left side in amount of half of it's width.
+       For Y axis, element will shifted in amount of half of the element's height to the top (Why to top and not to bottom?
+       Because in CSS the Y axis is opposite of Y direction in math so in this case we want to shift our element to top so we must
+       go to negative direction of Y in CSS so -50% not 50%.)
+       Im this case our parent has clipped from bottom so for visual purposes we can make top to 40% instead of 50%. But remember
+       for doing this use 40% on top property not on translate(). Because we want our box (.text-box) to always shifted from it's
+       beginning and middle lines (You remember it?). So we don't manipulate this property in this situation and we will manipulate
+       the top property.
+
+       Recap: top and bottom properties are in relation to parent element, so 50% of the parent element is where the .text-box is
+       located to the left side and top ... . But in transform property and in it's value, we are related to the element itself and this
+       makes that possible that element is EXACTLY at the center.*/
+    position: absolute;
+    top:40%;
+    left:50%;
+    transform: translate(-50%,-50%);
+
+    /* We want to center the inline-block elements or inline elements (like text or <a>) that are in this element.So we can use text-align: center
+     to horizontally center those kind of elements.*/
+    text-align:center;
+  }
+
+}
+
+

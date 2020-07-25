@@ -1,0 +1,117 @@
+@import "../abstracts/variables";
+
+.story {
+  /* Learn: Block elements automatically (and if they aren't already wiped out of normal flow), gets 100% width of their parents,
+      but for this .story element, we don't want it to get's 100% width of it's parent automatically so we gave it a width.
+      If you don't specify a width for a block element AND if that block element doesn't already wiped out of normal flow,
+      the width of that block element is 100%.
+      Now when you already centered a block element inside another block element, if you give this block element any other
+      width than 100% it won't be no longer centered.
+      So we can use margin: 0 auto; on element that we want to center it horizontally and that element will be CENTERED ITSELF!
+      This approach(margin: 0 auto;) won't center the children that are inside this block element.
+      For making the content that is inside block element to center:
+      1)
+      Set the child elements to either display:inline or display:inline-block, then set the parent container to text-align:center,
+      the children will center in the parent- depending on whatever its width
+      2)
+      If the child content is block level (display:block) set text:align:center; on the parent, then give the child margin:0 auto
+      and a width less than that of the parent*/
+  width: 75%;
+  margin: 0 auto;
+  box-shadow: 0 3rem 6rem rgba($color-black, .2);
+  background-color: $color-white;
+  border-radius: .8rem;
+  padding: 6rem;
+  padding-left: 9rem;
+  /* We gave a font-size to this element to set the font-size of this element AND also the children that are inside this element
+   and don't have a font-size specified for them and those children that haven't font-size explicitely set for them and therefore
+   inherit this font-size are: <figure class="story__shape"> and <div class="story__text"> and
+   <h3 class="heading-tertiary u-margin-bottom-small"> and <p>
+   */
+  font-size: $default-font-size;
+
+  /* For making a box NOT to be a rectangular visually! (but inside, it's still a box or rectangular, because each html element is
+  a box), we can skew that box.
+  After skewing the entire section, we see that the content that is inside the box is also skewed, like text or ... .
+  For making the content back to it's normal state, we must skew the content in opposite direction of skew of entire box.
+  In other words, for fix the inner stuff, we must skew ALL of the direct childes of box which is skewed in opposite direction. So
+  we can use direct child selector on the box that is skewed.*/
+  transform: skewX(-12deg);
+
+  /* Important: This selector actually would select direct childes of .story which are .story__shape and .story__text
+      Right now if you do write this, it's not going to work for .story__shape and that's because we are already using transform
+      prop in .story__shape with value of translateX() and that transform which is inside the direct child, takes precedence over
+      the direct child selector. Therefore only translateX() for transform of .story__shape would work not skewX(). But also
+      we can't have two transform PROPERTIES(not values) applying at the same time for a selector. So we can add skewX(12deg) to
+      the transform prop, which is at &__shape selector and not in & > * selector.
+      So with this, we don't need direct selector anymore, because we gave it's property to &__shape and we can also gave it's prop
+      to &__text as well. So we don't need it anymore.(Although it's property is applying to &__text but we can gave the prop, directly
+      to &__text therefore we don't need this direct child selector anymore. But I kept it.)*/
+  & > * {
+    transform: skewX(12deg);
+  }
+
+  &__shape {
+
+    /* First we must give equal width and height to the <figure class="story__shape"> to make it like a square.
+     Then we want this element to sit on the left side. So float: left; in order to make the rest of the content float around it.
+     This <figure class="story__shape"> doesn't even need to looks like a circle right now. All we have to do is to use
+     shape-outside property.
+
+     In the value of shape-outside property we have to define a vectorized shape and we did that already when we define clip-path
+     properties. But in there, we defined a polygon(). But this time we must use circle().
+     In parentheses of circle() in shape-outside property, we can define the size of circle and the position of center of the circle.
+     The first arg in circle() is the radius of circle. So if we say 50%, then the radius would be half of the height and the width of the
+     element. So in this case, the radius would be 15/2 = 7.5rem so the diameter of the circle would be 15rem and this is exactly the
+     size of the shape (width and height) that we specified in the beginning.
+     In parentheses of circle(), at 50% 50% means that it's in the center of the circle. So exactly center horizontally and vertically.
+
+     Now in order to make this work, the element must actually be floated and we already done that! with float: left;
+     and also there's another thing to make this to work and that is the element MUST have declared EXPLICITLY dimensions (width and height).
+     So this property is quite a demanding property! Because it has to have height and width explicitly and float and only then
+     it works.
+
+     In safari and chrome, this property only works with -webkit- prefix and this means in firefox and edge and IE it doesn't work
+     currently.
+
+    Now you see the text that is around this circle is wrapping around a circle shape. But this shape is not circle yet and it's a
+    square but text that is around this square is behaving like it's a circle besides it.
+    So now let's ACTUALLY take out this circle from the square with clip-path property and in the value of clip-path we put the
+    exact circle that we have in shape-outside property.
+
+    Recap: The shape-outside property defines where the content floats around the element that have this property. So in this case,
+    this property make the around content to behave like there is a circle besides them. But the actual circle must be drawed by
+    clip-path.So if we want that element to ACTUALLY looks like a circle, we must use clip-path.
+
+    We want to make some space between a floated element and elements that are around it:
+    Learn: The best way to move around an element which is floated is to actually NOT mess with margins or anything like that and
+     we should just use a transform prop on the floated element.
+     */
+    width: 15rem;
+    height: 15rem;
+    float: left;
+    -webkit-shape-outside: circle(50% at 50% 50%);
+    shape-outside: circle(50% at 50% 50%);
+    -webkit-clip-path: circle(50% at 50% 50%);
+    clip-path: circle(50% at 50% 50%);
+    transform: translateX(-3rem) skewX(12deg);
+    /* After declaring this transform, the circle goes into the padding area and takes HALF of the left padding area. So lef So let's add some more
+     padding in .story by specifying padding-left property and for the value of padding-left, we add the value that we move the
+     .story__shape to the padding we had for left side which is 6rem. With this, part of the image is still in padding area but
+     the padding is VISUALLY 6rem everywhere(but in box model it's kind of not!)*/
+  }
+
+  &__img {
+    height: 100%;
+  }
+
+  &__text {
+
+  }
+}
+
+
+
+
+
+

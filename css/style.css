@@ -1,0 +1,1733 @@
+@charset "UTF-8";
+/* a @mixin is a reusable code that we can @include it in the declaration of a css class or css id. When we @include a @mixin
+the codes that are in that @mixin will be kind of extracted wherever we @include that @mixin.*/
+/* When an element has childes that ALL of those childes have floated, then that container of those childes would have 0 height.
+ For fixing this, we must use a clearfix class.
+ Now what does clearfix do? A clearfix will append a pseudo element after the element that are using this clearfix on that element,
+ which will clear the floats of all of the childes of that element that we're using a clearfix on it.
+ Important: When we @include this @mixin inside a selector, the & will copy the selector. So if we @include this @mixin in .row ,
+  the code of clearfix would be: .row::after {...}
+
+ In clearfix, we MUST specify the content property, otherwise the pseudo element won't appear on tha page BUT WE DON'T WANT TO SEE
+   this pseudo element on the page, so we specify nothing inside the quotes for value of content property.
+   clear:both; will clear both float:left; and float:right; on the childes of an element which we're using clearfix on it.*/
+/* It's better to add used colors in project in this file which can be like a color palette!
+ $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
+ "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
+ the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
+ we define a default value for font-size in our code because we used this 1.6rem too much! So it's better to define a variable for it.*/
+/* It's very good to have some variables for gutter of grids. */
+/* It's better to add used colors in project in this file which can be like a color palette!
+ $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
+ "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
+ the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
+ we define a default value for font-size in our code because we used this 1.6rem too much! So it's better to define a variable for it.*/
+/* It's very good to have some variables for gutter of grids. */
+*, *::after, *::before {
+  /* By default, browsers apply some margin and some padding to some elements, like <h1> */
+  margin: 0;
+  padding: 0;
+  /* box-sizing changes the box model, so that the borders and paddings are no longer added to the total width or total height,
+   that we specify for a box. Without doing this, paddings and borders are added to the height and the width of the elements,so
+   with this we get rid of that behavior.
+   */
+  box-sizing: inherit; }
+
+/* You can argue that this html selector has a style that is related to typography(font-size), so it should go to _typography file. But
+we saw that when we convert our px units to rem, this font-size on html selector acts more like an OVERALL setting for how we size our
+entire page. So it's not so much related to _typography but it's more like a base definition (global definition) which defines what 1 rem
+should be.  */
+html {
+  font-size: 62.5%; }
+
+/* You could take body to _typography except the box-sizing property. So we have 2 body selectors, one in _typography and one
+ in this file which has only one style and that is box-sizing which is not related to typography.*/
+body {
+  box-sizing: border-box; }
+
+/* Generally there are 2 types of animations in CSS. The first one is to just use the transition property and then change the
+ properties that we want to animate on an event like :hover and ... */
+@keyframes logoHoverRotate {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(90deg); } }
+
+@keyframes logoHoverFade {
+  0% {
+    content: "";
+    display: inline-block;
+    position: absolute; }
+  100% {
+    transform: scaleX(2) scaleY(2.3);
+    opacity: 0; } }
+
+@keyframes logoFromTop {
+  0% {
+    transform: translateY(-10rem); }
+  80% {
+    transform: translateY(2rem); }
+  100% {
+    transform: translateY(0rem); } }
+
+@keyframes moveInFromLeft {
+  /* In here we can specify what we want to happen in each moment of time of animation.
+   0% is before the animation actually begins.
+   Important: For browser performance, it's best practice to only and ever animate 2 different properties. one is opacity and other
+   one is the transform property.That's what the browsers are optimized for (they are optimized for these 2 properties.)*/
+  0% {
+    /* How we want the element to look like before it starts to move in ? We want it to first be invisible. */
+    /* Element comes in from left.So where we want it to be in the beginning? We want it to be more on the left than it's actual
+     place in page in the beginning. So we can use transform property and for it's value we can make it to be more on the left
+     by translating it in X axis with a function named translateX(). So how much we want it to be in left than the actual place?
+     In other words we can specify the distance from the actual place in () of translateX. But you must also specify the final place of
+     the element you are animation at 100%. So we want it to be at it's actual place, so we say translateX(0) at the final step of
+     animation.
+
+     After specifying the steps of an animation, we must APPLY this animation to an element in DOM. For this task, for make animation
+     to actually work or apply, there are 2 properties that we have to really specify on the element we want this animation to apply
+     on it. There are animation-name and animation-duration .
+
+     We can set animation-delay property on the element we want to apply this animation on it.So with this property, before this animation
+     starts to play, it will first have some delay.
+
+     We can set animation-iteration-count property on the element we want to apply.So with this the animation will simply happen
+     multiple times.
+
+     And also we have animation-timing-function property.This is a function which defines how the animation will proceed.
+     So how fast or how slow the properties that we specified in the @keyframes of animation will happen in animation.
+     For example with ease-in function, the animation will start slower and then accelerate over time and with ease-out,
+     it would be opposite.
+
+     Instead of animation-name duration timing function and ... we can use a shorthand property named animation.
+
+     At the end of animation we will probably see a shake on text or ... , to fix this, we can declare backface-visibility property and
+     set it to hidden.
+      */
+    opacity: 0;
+    transform: translateX(-2rem) rotate(30deg); }
+  60% {
+    opacity: 0.6;
+    transform: translateX(30rem); }
+  80% {
+    opacity: 0.8;
+    transform: translateX(10rem); }
+  100% {
+    opacity: 1;
+    transform: translateX(0rem); } }
+
+@keyframes moveInFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(20rem); }
+  80% {
+    opacity: 0.8;
+    transform: translateX(-10rem) rotate(-20deg); }
+  100% {
+    opacity: 1;
+    transform: translateX(0rem); } }
+
+@keyframes buttonMoveInFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(20rem); }
+  80% {
+    opacity: 0.8;
+    transform: translateY(-10rem); }
+  100% {
+    opacity: 1;
+    transform: translateY(0rem); } }
+
+/* It's better to add used colors in project in this file which can be like a color palette!
+ $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
+ "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
+ the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
+ we define a default value for font-size in our code because we used this 1.6rem too much! So it's better to define a variable for it.*/
+/* It's very good to have some variables for gutter of grids. */
+/* You could argue that .heading-primary is a component. But not really! Because it's really related to typography. */
+.heading-primary {
+  color: #fff;
+  text-transform: uppercase;
+  /* Because of moveInFromLeft animation, the text will be a bit shakes after the animation finishes, so we can use this property on
+   the text itself. Why we add this property to entire element ? Because we saw that entire element shakes after the animation finishes.
+   So we set this animation on the entire element.
+
+   Learn: backface-visibility property determines when we transform an element if the back part of an element is visible or hidden for
+   the user?
+   So imagine we have an element and we rotate it 180 degrees. So it would be logical that we then see the back part of that
+   element.Right? But if we use backface-visibility: hidden; then that back part (the part that is behind the element) get's hidden.
+   But in this case we are not rotating anything but still we must use this fix here.*/
+  backface-visibility: hidden;
+  margin-bottom: 6rem; }
+  .heading-primary--main {
+    /* What should we do in order to put those 2 <span> elements ('outdoors' and 'where is life ...') on top of each other instead of
+     all in one line? We can displaying them both as block level elements because block elements occupy the entire width that
+     they have available and also they create line breaks after and before them.
+     <span> elements by default are inline elements.*/
+    display: block;
+    font-size: 6rem;
+    font-weight: 400;
+    letter-spacing: 3.5rem; }
+  .heading-primary__main--animated {
+    animation-name: moveInFromLeft;
+    animation-duration: 3s;
+    animation-delay: 0.5s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: backwards; }
+  .heading-primary--sub {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 1.74rem;
+    animation-fill-mode: backwards; }
+  .heading-primary__sub--animated {
+    animation-name: moveInFromRight;
+    animation-duration: 3s;
+    animation-delay: 0.5s;
+    animation-timing-function: ease-out; }
+
+body {
+  /* Remember:We won't set overall font properties for entire website inside the universal selector (*), we must do it in body selector.
+    Why we do it this way? Because the properties that are related to fonts, are usually inherited. So this way we can use the
+    power of inheritance here.For example we set font-family on body and this property will get inherited by all the child elements of the
+    body and doing it this way is actually more efficient and it's a better practice than put all of this in the universal selector. So
+    everything is related to font, we specify it in the body not universal selector.
+    So here we set font-family to 'Lato' and if it is not available, we use sans-serif
+    Remember: body element is parent element for all other elements. So whatever we define in body selector CAN BE inherited
+    by all other child elements but these elements can not inherite anything from universal selector so because of this we define
+    color and font and ... in body selector.*/
+  /* These are project-wide font definitions: */
+  font-family: "Lato", sans-serif;
+  /* Let's set overall font-weight to 400 */
+  font-weight: 400;
+  /* Remember: You must use better techniques than px here. */
+  /*font-size:16px;*/
+  line-height: 1.7;
+  color: #777;
+  /* We want all of our website to has some whitespace around it, so we give some padding to the body element.Why? because body
+   element contains entire web page, so if we set a padding here then this padding will apply to entire web page.
+   Note: This won't inherited by all other child elements of body. All it's happening that is we are applying 3rem padding around
+   the entire body or the whole web page.*/
+  padding: 3rem; }
+
+/* For have a gradient color INSIDE a text, the trick is to first set the background-image of the entire text(in this case text is <h2>) to
+ a gradient. Now we want the gradient to stop where the text stop. Because the gradient is currently goes beyond the text to the end.
+ Why the background-image of this element which is a gradient goes to the end of the line? Because the <h2> element is a block-level
+ element therefore the background of it goes to the end of the line. So we must do the below task:
+ Important: Now how we make this element to doesn't occupy it's 100% AVAILABLE width? So right now it's a block element and that's why
+   it's background goes till the end of the line.
+ So let's change the display to inline-block. Now the background stops where the text is stopped.
+ The next step is to make the effect, behind the actual text. So we must use the new property named -webkit-background-clip.
+ Because it's new, we must use -webkit prefix.
+ Now when you use -webkit-background-clip: text; , the background gets clipped exactly where the text is. In other words, it will
+ clip the background (in this case the background is linear-gradient) to exactly the places where the text sits and so therefore
+ this background-image or this gradient in this case, will only be visible where the text sits.
+ Now what we want to see then is not actually the text itself, but the background-image . So imagine that right now we have the
+ background-image only where the text is, then ON TOP OF background-image, we have the text. So we must make the text transparent.So we
+ can see the background-image. So color: transparent
+ So if you don't use color: transparent; in this situations, we see that the text is on top of the clipped background. But we want to
+ make the text some kind of invisible(transparent). */
+.heading-secondary {
+  display: inline-block;
+  font-size: 3.5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  background-image: linear-gradient(to right, #7ed56f, #28b485);
+  -webkit-background-clip: text;
+  color: transparent;
+  transition: all 0.6s;
+  /* You could also use px unit here and not rem. Why? Because 2px is such a small thing that it doesn't really matter if it's gonna
+    scale or not and no matter if we increase the root font-size or not, this will always translate to just 2px because of rounding
+    issues(rounding means approximately). BUT OKAY! Let's make it 0.2rem*/
+  letter-spacing: 0.2rem;
+  text-align: center; }
+  .heading-secondary:hover {
+    /* For the value of transform property, we can put multiple things at the same time. When you want to use multiple things in
+    transition, it doesn't need comma or anything else, just a space between each of them.*/
+    transform: skewY(3deg) skewX(17deg) scale(1.1);
+    text-shadow: 0.7rem 0.8rem 4rem black; }
+
+.heading-tertiary {
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-transform: uppercase; }
+
+.paragraph {
+  font-size: 1.6rem;
+  /* Now we want our .paragraphs to have a margin-bottom because we usually use a bunch of different paragraphs one after another,
+   so it makes sense to have a bit of space between them. But we don't want space between the last .paragraph . So let's use :not()
+   pseudo class.So we want to select all of the .paragraph s except the last one of them.*/
+  /* This says the last paragraph of it's parent, shouldn't have margin-bottom: 3rem; So any paragraph within it's container except
+   the last one of it, should get margin-bottom: 3rem;*/ }
+  .paragraph:not(:last-child) {
+    margin-bottom: 3rem; }
+
+.u-center-text {
+  text-align: center; }
+
+/* Instead of using numbers like .u-margin-bottom-8 we are using names. The reason is explained in index.html . */
+.u-margin-bottom-big {
+  margin-bottom: 8rem; }
+
+.u-margin-bottom-medium {
+  margin-bottom: 4rem; }
+
+.u-margin-bottom-small {
+  margin-bottom: 1.5rem; }
+
+.u-margin-top-big {
+  margin-top: 8rem; }
+
+.u-margin-top-huge {
+  margin-top: 10rem; }
+
+/* It's better to add used colors in project in this file which can be like a color palette!
+ $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
+ "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
+ the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
+ we define a default value for font-size in our code because we used this 1.6rem too much! So it's better to define a variable for it.*/
+/* It's very good to have some variables for gutter of grids. */
+/* importance > specificity > source order */
+/* When you have a <a> element in HTML and you want to style it, you can style it with just simply writing it class and then
+ declare properties, but it's better to style it with .<class-name>:link, .<class-name>:visited in other words, when you want
+ to style a <a> you must use :link and :visited on it's class. In here, :link and :visited are pseudo classes. Pseudo classes
+  are special state of a selector. So we use pseudo classes to style elements on a special condition.
+  :link is a state that will happen when it is an anchor element, so it functions as a link.
+  :visited is a state when user has already clicked on the button previously and then sees the button again.
+   So in most cases we want the visited state to look like exactly the :link state (normal state).So we just put them together.*/
+/* For centering this <a> which now is an inline-block element, it doesn't need to use absolute positioning on the <a> itself and
+ then make it's container to be position:relative; and then set top and left and then use transform: translate() ... , it would be
+ too much for this simple thing. Because we can acheive this centring really easy. We know the <a> NOW is inline-block element and
+  inline-block  elements can be treated as they are like text and because they are like text we can center them like text. So all we have to do
+  is to set text-align:center; to the parent of this <a>. */
+.btn {
+  /* :active pseudo class is when we click on element.
+   Important: This -0.5rem is in relation to the initial state (:link state) of this element and not to the :hover state.*/
+  /* pseudo elements allow us to style certain parts of an element.For example: ::after adds a virtual element right after the element itself
+   that we are selecting it. The trick in this case is to add an element that looks like EXACTLY like the button that we already have, but
+   we put it behind the button and when we hover OUT of the button, then this hidden pseudo element goes back behind the button.*/ }
+  .btn:link, .btn:visited {
+    text-decoration: none;
+    text-transform: uppercase;
+    /* Remember: If you want to give some padding or height or width or ... to inline elements, first you must make them inline-block or block
+   elements and then give them those properties. So for <a> this rule is correct. So first we have to give it a display of inline-block
+   and then give it those properties that I mentioned. So for recap: When you do this trick, the box model will work on this <a>, as it
+   was just a normal block or inline-block element.*/
+    display: inline-block;
+    padding: 1.5rem 4rem;
+    /* If you put 20rem or 50 rem or ... it will be all the same.TODO???? */
+    border-radius: 10rem;
+    /* We want to animate this element and it would be easy so we use transition and in transition property we specify which properties
+     we want to animate and if we are not really sure or if we don't want to write them out, we can simply say: all. So when we say
+     all in transition, we enable all of the properties to be animated. transition property is a shorthand, like animation property.
+
+     Why the transition property must be in the initial state (:link and :visited)? That's just how it works.
+     So on the initial states, we just say that there can be a transition basically on all of the properties and then on the hover
+     we say how it should be looks like (how the animation will happen actually!). */
+    transition: all 0.2s;
+    /* We have a child in this element that has a position:absolute; and it needs a reference to get behind he actual button (this element) */
+    position: relative;
+    font-size: 1.6rem;
+    box-shadow: 0rem 1rem 2rem rgba(0, 0, 0, 0.5); }
+  .btn:hover {
+    /* We want the element to move up, so it would be negative value in () of translateY(). Because the Y axis in CSS is opposite of
+     Y direction in math.
+     Remember: translateX() and translateY() are used for moving elements.*/
+    transform: translateY(-0.8rem);
+    /* box-shadow: <offset in x direction> <offset in y direction> <blur- (in :hover we declare higher blur than in :active
+    so it would seem that in hover we are further away from element and in :active the element backs closer to the page.)> <rgba> */
+    box-shadow: 0rem 1rem 2rem black; }
+  .btn:active {
+    /* When the element is in active state, we want the shadow to looks smaller.*/
+    transform: translateY(-0.5rem);
+    box-shadow: 0rem 0.5rem 1rem rgba(0, 0, 0, 0.5); }
+  .btn::after {
+    /*  But first in order for pseudo element to actually appear on the web page, we need to specify it's content property (necessary!),
+     it doesn't matter what the content is but we have to specify it, otherwise it's not going to appear and the same rule for
+     display property. In this case we give display, inline-block because the actual button we have is also inline-block (remember that
+     the ::after and the actual element must be the same.) */
+    content: "";
+    display: inline-block;
+    border-radius: 10rem;
+    /* Learn: This width and height are related to the actual element itself. Because the ::after pseudo element is basically treated
+        like the child of the actual element itself. So here height and width in %, are related to height and width of the element itself.*/
+    width: 100%;
+    height: 100%;
+    /* After this, we must make the ::after pseudo element to have position: absolute; because if we don't do this, the ::after
+     pseudo element will look like it's part of the actual button but we want this pseudo element to be behind the actual element.
+     Remember: Any absolute position needs a reference and the reference is the first element with the relative position that our
+     element with position:absolute can find.In this case it would be .header . But we don't want to be .header, we want it to be
+     hidden after the button. So reference should be the .btn (.btn:link), therefore we have to set the position:relative
+     on .btn:link*/
+    position: absolute;
+    top: 0rem;
+    left: 0rem;
+    /* We set position:absolute; so now we can use z-index to really hide this ::after element behind the actual button. */
+    z-index: -1;
+    transition: all 0.5s ease-out; }
+  .btn:hover::after {
+    /* We want to .btn to get bigger when we hover over it. So we must bigger the ::after pseudo element  */
+    transform: scaleX(1.5) scaleY(1.7);
+    /* We want the .btn to fade out at the end of the animation. This is the trick for fading something out, it's going to
+     have opacity:0; at the end of the animation.*/
+    opacity: 0; }
+  .btn--white {
+    background-color: #fff;
+    color: #777; }
+    .btn--white::after {
+      background-color: #fff; }
+  .btn--green {
+    background-color: #55c57a;
+    color: #fff; }
+    .btn--green::after {
+      background-color: #55c57a; }
+  .btn--animated {
+    /* The .btn was visible before the animation happens, so it stays visible and then it starts to move in from bottom (the animation).
+     In order to prevent this, we could simply put these initial states on the .btn but it would be impractical. So we can use
+     animation-fill-mode property and set it to backwards and this will automatically apply the styles which are in 0% step of
+     the animation we are applying (buttonMoveInFromBottom) before the animation starts. (In other words the styles that are in
+     0% step of the buttonMoveInFromBottom animation are applied BEFORE THE ANIMATION STARTS.)*/
+    animation: buttonMoveInFromBottom 3s ease-out 0.75s;
+    animation-fill-mode: backwards; }
+
+.btn-text:link, .btn-text:visited {
+  font-size: 1.6rem;
+  color: #55c57a;
+  /* Because <a> element is an inline element, it won't accept top or bottom margin and top or bottom padding.So we make it
+     inline-block .*/
+  display: inline-block;
+  /* We want to have our custom underlying for this element. So we make the default underlying for <a> element tp none and then
+     declare a border-bottom property to set our custom underlying.
+     WHY WE DID ALL OF THIS? Because we want to set some padding between the underline and the actual text of button and we know that
+     we can't do this by having the default underline of <a> element. So we set text-decoration: none; and then define some custom
+     underline with border-bottom and then we can use some padding between the text of <a> and it's border by using padding and not
+     margin! Because padding is for inner space of element.*/
+  text-decoration: none;
+  /* Small values for px units are not a big deal because they are small and they are'nt going to change the sizes if the user
+     decides to change the root font-size. So if user increase the root font-size of website, elements on the page that have
+     units based on rem would scale up but that 1px and 3px will still 1px and 3px. But if the improvement of root font-size was
+     extreme by the user, for example user increase the root font-size from 16px to 32px, the elements that have units based on rem will
+     become very big but the elements that have units based on px, will still be like before and it's not good. But no one would increase
+     root font-size like that! (The default value of 1rem in our project is 62.5% of the root(browser) font-size and 1px is OBVIOUSLY
+     1px RIGHT? It's static.)
+     So if you have a really small px unit, you can leave it as px.*/
+  border-bottom: 0.1rem solid #55c57a;
+  padding: 0.3rem;
+  /* When we hover out of the element it takes 0.3 seconds for hover to gets back revers. */
+  transition: all 0.3s; }
+
+.btn-text:hover {
+  background-color: #55c57a;
+  color: #fff;
+  /* box-shadow: <shadow in x direction> <shadow in y direction> <blur> <color of shadow> ; */
+  box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.2);
+  transform: translateY(-0.4rem);
+  border-radius: 0.5rem; }
+
+.btn-text:active {
+  /* When we click on this element, it moves down a little bit and the shadow around the button changes a little.*/
+  box-shadow: 0 0.7rem 2rem rgba(0, 0, 0, 0.2);
+  /* When you say translateY(0); , whenever the element is, it will get back to it's initial position. */
+  transform: translateY(0); }
+
+.header__logo-box {
+  /* After setting position: absolute; we can use top right and ... properties to put the element exactly where we want it to be.
+   But where does this measurement start? From where we are saying top: 40px; or top:4rem; ? So from where or counting from where
+   are these 4rem or 40px or anything else? There has to be some kind of reference!
+   That reference is the parent element which has it's position set to be relative. So in addition to set the position of an element
+   to be absolute, we must set the position of parent of that element to be relative too! So we put the position of .header to be
+   relative.*/
+  position: absolute;
+  top: 4rem;
+  left: 4rem;
+  animation-name: logoFromTop;
+  animation-duration: 2s; }
+
+.header__logo {
+  /* When you set height, the width will scale to height accordingly.So we don't have to specify it. In other words width will
+   figured out by the browser.
+   We could instead set the width and the height will figured out by the browser. But we can prefer to always specify the height. */
+  height: 3.5rem; }
+
+.header__logo:hover {
+  animation-name: logoHoverRotate, logoHoverFade;
+  animation-duration: 2s; }
+
+/* It's better to add used colors in project in this file which can be like a color palette!
+ $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
+ "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
+ the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
+ we define a default value for font-size in our code because we used this 1.6rem too much! So it's better to define a variable for it.*/
+/* It's very good to have some variables for gutter of grids. */
+.composition {
+  position: relative; }
+  .composition__photo {
+    /* Important: We always have to define the width of the images in percentages, if possible. Because of responsive web design.
+        Because this way, the image will nicely scale with the width of their parent. So now because we use percentages for width
+        of images, when we increase or decrease the view port, the images will also increase or decrease based on their container and
+        the same thing applies to the left distance for third image. But currently we're missing media queries to make it look better
+        on other screen sizes but for now it's more than enough.*/
+    width: 55%;
+    /* In x-direction of box-shadow we would usually have 0 in that direction.
+     Now we want our images to be on top of another. The best way of doing it, is to use absolute positioning.
+     Learn: Now remember that as soon as we set position:absolute; on an element, this element will placed according to a
+      reference and that reference is the first parent that our absolutely positioned element encounters, which has it's position
+      set to relative.
+
+     So let's set position: relative; for .composition class. So now if we give a coordinate (0, 0) to an element that has
+     .composition__photo class and is inside .composition container, the element that has .composition__photo class, will go
+      to top left corner of it's container which has the .composition class.*/
+    box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.4);
+    border-radius: 0.4rem;
+    position: absolute;
+    z-index: 10;
+    transition: all .3s;
+    /* &:not(:hover) {transform: scale(0.9);} For making other images get smaller when we hover on one of them, this code doesn't
+     work. BECAUSE: Right now this code means scale(0.9) all of the images that are not hovered. So css would scale down all of the
+     images FROM THE BEGINNING and not when we hover on one of the images. So first we must specify when we hover on .composition,
+     then select the .composition__photo elements that aren't yet hovered and apply some styles on them.
+     TODO: There's still a question. Imagine we hover on .composition element but still we don't hover on one of the images,
+      therefore all of the elements that have .composition__photo must get's smaller because of scale(0.9) . It isn't true?
+      */ }
+    .composition__photo--p1 {
+      left: 0;
+      /* We make the first image to be a bit higher in comparison to the text in other column. So with this, they aren't in the
+      same line. Because if they were on the same line, it would seem a bit strange.*/
+      top: -2rem; }
+    .composition__photo--p2 {
+      right: 0;
+      top: 2rem; }
+    .composition__photo--p3 {
+      left: 20%;
+      top: 10rem; }
+    .composition__photo:hover {
+      /* Let's make the hovered image bigger first and when something is bigger, it means it have a bigger box-shadow and a bit darker.
+       So let's also change the box-shadow property on :hover.
+       After these we want to when we hover on one of the images, we want to have the one that we hovered on it, be on top of other two>
+       How we must implement that? Well, we use the z-index. So let's set z-index on normal state of all of those 3 images first.
+       When I said normal state, I mean not hover state and then in hover state we set a z-index with higher value than normal state.
+       So now the when we hover on one of the images that have class of .composition__photo that image that we hovered on it, will be
+       on top. Because it has higher z-index rather than other photos.
+       Learn: Now for animation, we can specify the transition of all properties in 0.3 seconds. Remember we must specify this on the normal
+        state not hover state.
+
+       Also when we hover on an image, it would given a green border.But it would also have some space between the border and the
+       image that was hovered. But it's not just a border and that's not easy to implement. So we can't just say:
+       padding: 15px;
+       border: 5px solid $color-primary;
+      in hover state. Because with this approach our images won't have nice looking in hover state.
+      So we must use outline property in hover state. But instead if we had border instead of outline, it would look the same.BUT
+      WITH THE outline WE CAN DO SOMETHING THAT WITH border WE CAN'T DO AND THAT IS outline-offset.
+      Learn: The outline-offset gives us some space between the outline and the element on which we applied the outline property.
+
+      Currently, what's missing is to set things up so when we hover on one the images, the other two must decrease their size.
+      For doing this, we must say as soon as we hover on the element that have the .composition class then we select the photo that
+      is nested inside of the .composition element and then select one that is not hovered. So it would be:
+      .composition:hover .composition__photo:not(:hover) So we're saying when hover the .composition , then select the .composition__photo
+      elements which are not hovered. */
+      transform: scale(1.07) translateY(-1rem);
+      box-shadow: 0 2.5rem 4rem rgba(0, 0, 0, 0.7);
+      z-index: 20;
+      outline: 1.5rem solid #55c57a;
+      outline-offset: 2rem; }
+  .composition:hover .composition__photo:not(:hover) {
+    transform: scale(0.9); }
+
+/* It's better to add used colors in project in this file which can be like a color palette!
+ $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
+ "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
+ the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
+ we define a default value for font-size in our code because we used this 1.6rem too much! So it's better to define a variable for it.*/
+/* It's very good to have some variables for gutter of grids. */
+.feature-box {
+  /* We want the background to be white and a bit transparent at the same time. For making them at the same time we can use rgba() to
+  specify the color of background and also opacity. In second arg of rgba() the .8 means 20% opacity or transparency. YES! 20%. Because
+  the second param means we can see through 80 percent and so the remaining 20% is the color. */
+  background-color: rgba(255, 255, 255, 0.8);
+  font-size: 1.5rem;
+  padding: 2.5rem;
+  /* We want the text that is inside the .feature-box to be centered. */
+  text-align: center;
+  border-radius: 0.4rem;
+  box-shadow: 0 2rem 4.5rem rgba(0, 0, 0, 0.4);
+  /* Learn: We use transition property to specify the time for :hover effect and hover out effect.
+      In transition instead of all which is all properties, you can just write the property that you want to animate it and apply
+      transition on that property. Here we just write one property because we want to use transition on that one property.
+      So in the transition you could also write: all 0.4s*/
+  transition: transform 0.4s; }
+  .feature-box__icon {
+    /* The size of an icon can be changed using font-size property. */
+    font-size: 6.2rem;
+    /* Learn: Inline elements like <i> don't get margin or padding in vertical way. So i changed the display here to inline-block. */
+    display: inline-block;
+    margin-bottom: .5rem;
+    /* Now we want to have a gradient inside the icon:
+    We can use -webkit-background-clip and we can use text value for that property, because an icon is text in fact and also we
+    can use color property on icon because it's text.*/
+    background-image: linear-gradient(to right, #7ed56f, #28b485);
+    -webkit-background-clip: text;
+    color: transparent; }
+  .feature-box__text {
+    /* We don't need to specify the font-size for this class, at least there. But you may ask why in website, the <p> element
+     that has this class, has 1.5rem font-size? Even without specifying that property in this class? Well because of inheritance.
+     So because <p> is a child of .feature-box , simply inherits font-size property from it's parent. So we just have to define
+     font-size on parent and it will automatically inherit by it's children unless you redeclare a new font-size on childes which
+     would overwrite the inherited value.*/ }
+  .feature-box:hover {
+    /* When we hover on a .feature-box , it goes up a little bit and it also scales.
+    I commented out the next line because it's for situation that we didn't use child direct selector in .section-features in
+    _home.scss file.*/
+    transform: translateY(-2rem) scale(1.05); }
+
+/* It's better to add used colors in project in this file which can be like a color palette!
+ $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
+ "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
+ the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
+ we define a default value for font-size in our code because we used this 1.6rem too much! So it's better to define a variable for it.*/
+/* It's very good to have some variables for gutter of grids. */
+.card {
+  /* What happens when we hover the .card element? The .card element rotates 180deg. But across which axis? Across y-axis.
+   So we have to use rotateY() and then use transition property in normal state. Currently the text on the rotating box would
+   inverted if we hover on the box. So we can define perspective.
+   Learn: The way that we define perspective is to define perspective on the parent of the element that we defined transform: rotate() on it.
+    (in this case that transform has rotateY() value.) . So in this case we can define perspective on .card and then create a child
+    element for .card , because we don't want to define perspective on .col-1-of-3 class(we don't want to manipulate that kind of
+    class, so we have to go one level deeper and create a child for .card and then move :hover {transform: rotateY(180deg);} and
+    also transition: all .8s; . Because NOW the element that we want to write a hover state for it is .card__side not .card . Also
+    we must change &:hover to &:hover &__side so we say when we hover on the .card then we want and we don't put the hover DIRECTLY
+    on the .&__side because later we will have more sides. Also it actually makes more sense that we really want our animation to start
+    taking place when we hover first on the .card and THEN .card__side .
+
+    So let's create a new <div> with class of .card__side we name it __side because it's one side of card and later we will add another
+    side.
+
+    Now with using perspective and other changes, it seems that when we hover on .card and .card__side , it seems that it was moving
+    towards you. So that's much better than before.
+    We must specify a big value for perspective property on the parent of element which we want a rotate on it. Why?
+    Imagine we specify 15rem here for perspective, the lower the value, the more dramatic perspective is (would cause more crazy
+    animation!).
+
+    For completing the implementation of hover effect, we have 2 sides right? But right now when we hover on .card we can see
+    the card from behind in reverse! and that's not what we want. We want to see something without hovering on it and also see
+    ANOTHER thing when we hover on the .card(second side). But right now we are seeing the first side of card in both
+    situations(hover out and hover).
+    Basically we want to see one part of card in the beginning and then when we hover on it, we want to see the other side of the card.
+
+    So for this task, we must create another child of .card which is another side of the card. So one part is front of the card and
+    the other one is back of the card. Now we need a way to distinguish them. So let's add a modifier to each of them as a second class.
+    That modifier is card__side--front and card__side--back
+    What's the difference between front side and back side of the card? The difference is that the back side IN THE beginning IS ALREADY
+    ROTATED. So it's already 180 degrees on the back and as soon as we hover on the card, then the rotate degrees for the back side changes
+    to 0 degree.
+    Now we have to change the :hover on .card . Because only the front side is what rotates 180deg.
+    So change hover from &:hover &__side {transform: rotateY(180deg);} to
+    &:hover &__side--front {transform: rotateY(180deg);}
+    and also create a hover state for back side of card: &:hover &__side--back {transform: rotateY(0deg);}
+    So we must make back side of card back to 0deg in it's rotation state. So we use 0deg in there.
+
+    Right now, those two sides of card are already visible and if we hover on one of them, they together rotates 180 degrees.
+    Why both? Because when we hover on them, the front side rotates 180 degrees to go to it's 180 degrees in it's Y-axis state
+    and also the back side rotates 180 degrees to go to it's 0 degree in rotation in Y-axis state.
+
+    Now in order to finally! create our desired effect, those 2 sides need to be ON TOP of another. How we can do that?
+    We simply can use absolute positioning and we do this positioning on both sides of card and we can give them absolute positioning
+    in the .card__side because they both have this class and then give their parent relative position.
+    After that it causes a problem. Because absolute positioning on an element, make that element to fit it's width to it's content and
+    now both sides have really small width because their width are now based on their content. So let's give both of them a width of 100%.
+    So because we want both of them to have this width, we declare it in &__side .
+
+    Now we must use backface-visibility property.
+    Learn: If we set this property to hidden, it basically hides the BACK SIDE OF the element.
+
+    But now we have a problem! The perspective is gone and the .card element has not height anymore.Yes, the card sides do have
+    height of 50rem as we defined, but their container which is .card does not longer have a height and why is that?
+    Learn: Because it's height is collapsed and that's very similar to when all of the children of a container have floated and therefore
+     that container would have 0 height and it would collapsed. So now all of the children of the .card which is container, have
+     position:absolute; therefore their parent collapsed and gets 0 height.(It doesn't matter parent have position: relative; it would
+     collapsed anyway!) . Now when this situation happens with floats, we use .clearfix class on parent. But with position: absolute; situation
+     there's actually no such thing. There's nothing we can do at least with pure css. So what we can do is to specify the
+     same height and give it to the collapsed container which in this case is .card .
+
+     With the trick that we used above, the perspective now is back.
+     Remember that we had timing function in transition property and if we don't specify it, it would use the simple one which is
+     linear by default. But here we want ease, so I specified it in transition property in &__side .With ease the animation would
+     a bit smoother.
+
+     Right now, the card moves in wrong direction in it's hover animation. In other words, we want the card to move in opposite
+     direction, so then it seems the card is continue moving after the front of card changes to back of the card or vice versa.
+     Again, in other words, when we hover over .card, when the card is going from front to back or vice versa, the rotation suddenly
+     gets reversed! and it's looks like it's not cotinusely. I'm talking about a small moment in rotation where you don't see any card and
+     that's the moment that is wrong.
+     What we can do is in &:hover &__side--front selector we must write -180deg and not 180deg.
+
+
+    */
+  /* Here, we need to specify a huge number of pixels(rems actually). Also for make this works on firefox, we have to use the -moz-
+   prefix. Because perspective property is a new property and therefore it's not already implemented in all of the browsers.*/
+  perspective: 150rem;
+  -moz-perspective: 150rem;
+  position: relative;
+  height: 52rem;
+  /* We could nest &-span inside &__heading , but it's not a good practice. Because both of .card__heading and .card__heading-span
+   are separate elements (heading and heading-span).
+   card__heading-span is not really the child of <h4>(in html world, Yes! It is the child of card__heading but in css BEM methodology
+   it's not. So we can't nest .card__heading-span inside .card__heading.). So .card__heading-span is the whole new element and it's not a
+   modifier or an element of .card__heading. So card__heading-span in BEM is a new element. So we shouldn't nest it inside .card__heading.
+
+   Important: In BEM methodology in combination of sass, we only have to nest selectors IF the nested selector is an element of a block
+    or the nested element is a modifier of block__element. In other cases like this case(when we have two block__element1 and
+    block__element2 so we can't nest block__element2 inside block__element1 because they're separate things.)
+    In other words you can't nest anything that is nestable!!!*/ }
+  .card__side {
+    transition: all .8s ease;
+    /* We must use equal height on .card__side and it's container which is .card . Because .card is height of entire card and
+    one of them is the common styles for both SIDES(not card itself) of the card.*/
+    height: 52rem;
+    position: absolute;
+    width: 100%;
+    backface-visibility: hidden;
+    /* Important: When we have an img (doesn't matter a markup <img> element or css defined image like background-image , if we have
+        this image until edges of a box and we used border-radius on that box, border-radius won't work on those edges
+        that image is until those edges! So we can use overflow: hidden ON CONTAINER of that image to solve this issue.
+        This issue is also on bonus html course from jonas-flexbox bonus and it's solved there too.)
+
+        Recap: The reason of this issue is image is overlapping the parent element. So to fix it, on parent element where the
+        border-radius is also defined, we can set overflow: hidden; So the reason was the image is overflowing it's parent in
+        the corners that the border-radius isn't applied. So we can simply hide those parts of image and then with this we can
+        see those parts which have border-radius.*/
+    overflow: hidden;
+    /* When an image is on the edges of a box, the border-radius on those edges doesn't work. So in our case, border-radius on front side and
+     on top right and top left corners doesn't apply. In this situation we must use overflow: hidden; on the parent of image  which
+     usually is a container like <div>.*/
+    border-radius: 0.8rem;
+    /* Because we used the rgba() in box-shadow properties a lot in our project, we can actually define a variable for all of the
+     shadows. Find similar shadows and define variables for them.
+     Basically earlier, we must do background blend modes in photoshop and then export it from there and then use it in css. But with this
+     new css property and it's values, you can do it right in css.*/
+    box-shadow: 0 2rem 4.5rem rgba(0, 0, 0, 0.2); }
+    .card__side--front {
+      background-color: #fff; }
+    .card__side--back {
+      background-color: green;
+      /* Before we hover the .card, the back side of card must already flipped - So it's already at 180 degrees: */
+      transform: rotateY(180deg); }
+      .card__side--back-1 {
+        /* Important: Only background-image works for linear-gradient() and background-color property doesn't work for
+            linear-gradient() .*/
+        background-image: linear-gradient(to right bottom, #ffb900, #ff7730); }
+      .card__side--back-2 {
+        background-image: linear-gradient(to right bottom, #7ed56f, #28b485); }
+      .card__side--back-3 {
+        background-image: linear-gradient(to right bottom, #2998ff, #5643fa); }
+  .card:hover .card__side--front {
+    transform: rotateY(-180deg); }
+  .card:hover .card__side--back {
+    transform: rotateY(0deg); }
+  .card__picture {
+    background-size: cover;
+    /* At the first time, when we define the background-image, the image would be very small, because the height of the element that
+     we are defining the background-image on it is very small. So we have to define height ourselves.*/
+    height: 23rem;
+    /* What is a background blend mode? This property describes how the elements, background-images, should blend. So in this case
+     we can blend the images with linear-gradient() which this linear-gradient() is also definable as a background-image in css.
+     So here, the background-image is not just the actual image and it also contains a gradient. So in background-image we would have:
+     background-1, background-2 .
+     Now there's a problem. Because right now, the background-1 which is defined first in background-image is on top of background-2 and
+     we can't see background-2 . Well, that's because we haven't blend them yet! So now we can define background-blend-mode for all of the
+     background images. So we define it in &__picture not on &--1 or ... . Because we want this property to be same on those 3 pictures.
+     background-blend-mode is a brand new css property, so it doesn't work at all on the IE and neither on edge.*/
+    background-blend-mode: screen;
+    /* For the value of clip-path property we can also use circle or ellips or ... in order to for example clip a perfect circle.
+     In parentheses of polygon() we define a couple of coordinates which start from top left corner.
+     Remember: clip-path is a very modern css property and in order to make it actually work across all the browsers, we should prefix
+     this property with webkit prefix and write it again.
+     IMPORTANT: First we must write the prefixed property and then the actual property. So first the prefixed property and then the
+      official version. Because here we're using a vendor prefix
+     So let's do this in header file, where we have another clip-path. */
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%); }
+    .card__picture--1 {
+      /* The url() for background-image works with both quotes and without quotes.
+       Important: As you can see we have an error in path of image in background-image and you might say: HEY! we must go 2 level
+        upwards and then go to img folder. BUt here you are just going 1 level up and it would give you error! WAIT A MINUTE!!!
+        Actually you are wrong in this case. We don't have any error actually.
+        Because when we want to specify a path in .scss file, we must specify the path relative to the COMPILED css file not this
+        .scss file. So in our case we have to specify the paths in .scss files, based on that css file in css folder. So actually
+        the path that we specified here is correct. So assume that we're in that compiled css file and we want to specify the path to
+        nat-5.jpg , we have to go ONE level up and then go to img folder. So the path here is correct.
+        So in our .scss files we must assume that this code will be written later in compiled css file.*/
+      background-image: linear-gradient(to right bottom, #ffb900, #ff7730), url(../img/nat-5.jpg); }
+    .card__picture--2 {
+      background-image: linear-gradient(to right bottom, #7ed56f, #28b485), url(../img/nat-6.jpg); }
+    .card__picture--3 {
+      background-image: linear-gradient(to right bottom, #2998ff, #5643fa), url(../img/nat-7.jpg); }
+  .card__heading {
+    font-size: 2.8rem;
+    font-weight: 300;
+    text-transform: uppercase;
+    color: #fff;
+    position: absolute;
+    top: 12rem;
+    right: 2rem;
+    text-align: right;
+    /* Important: The <h4> element is a block level element so it has 100% width of it's parent, but right now because we used
+        position:absolute; on this block element, it is wiped out of normal flow, so it's width is fitted on it's content.
+        But we want to even make it's width lesser. So let's give it a width of 75%. Right now it has 100% width of it's parent,
+        but it doesn't matter because it has wiped out of normal flow so it's width which is by default 100% doesn't apply.
+        But we can give it an explicitly width by specifying width property. So if you now give it an EXPLICIT width,
+        it would have 100% width of it's parent back. But if you don't do this EXPLICITLY, the default width: 100%; which is
+        on the block elements by default, isn't apply on elements that have wiped out of normal flow (like having position: absolute;
+        or float or ...).
+        So if we didn't specify any width here, the width of this element would be fit to it's content although it's a block element
+        and must have 100% width of it's parent. Why it hasn't? Because it has been taken out of normal flow. But if we EXPLICITLY
+        set the width of a wiped out of normal flow element, it can take back it's width, for example set it to 100%.
+
+        Now for making the heading(it's content obviously not the heading itself!-The heading itself is <h4 class="card__heading">
+        and it's content is <span class="card__heading-span card__heading-span--1">The Sea Explorer) to be in two lines,
+        we can give some padding to it's content to make the content takes more space and therefore don't fit on width of it's
+        container and therefore goes to second line.
+        Now when you give the .card__heading-span , padding: 1rem 1.5rem , you see that besides "A" in SEA word, we don't have any
+        space like we have on the other side of that same line besides the "t" in The word and in the second line also, BESIDE "e" in
+        beginning of EXPLORER word, we also don't have any padding for left of "e".
+        That's because this <span class="card__heading-span card__heading-span--1"> is treated as ONE LINE of text.
+        So the left padding for this element is left of "The" in first line. So the fix to that is to use box-decoration-break property
+        to make all of the text inside the content box and make padding be normal! in box model.
+        Learn: What we want is actually treat these two entities or these 2 TEXT LINES as if they were two DIFFERENT elements. This magic
+         happens when we use the box-decoration-break property.
+         -webkit-box-decoration-break: clone; simply applies all the declarations that we have in the selector to all of the boxes that
+         we created by the element. So in this case we have 1 element <span class="card__heading-span card__heading-span--1"> but
+         two boxes that are in this element. So now these 2 boxes are both styled with same padding, which before the right padding for
+         first line wasn't same for left padding on that line and also for second line we had similar problem.
+
+        So you saw that if you didn't use -webkit-box-decoration-break property, we won't have the space correctly that padding on
+        &__heading-span causes it(the space without -webkit-box-decoration-break would be just in the beginning of The Sea explorer
+        and at the end of it).
+
+        But when you write: box-decoration-break: clone; it won't work like that at google chrome, without the -webkit- vendor prefix.
+     */
+    width: 75%; }
+  .card__heading-span {
+    padding: 1rem 1.5rem;
+    -webkit-box-decoration-break: clone; }
+    .card__heading-span--1 {
+      /* We want to set the opacity for each of the colors used in linear-gradient. So i used rgba() function for each color that I
+       used here.*/
+      background-image: linear-gradient(to right bottom, rgba(255, 185, 0, 0.85), rgba(255, 119, 48, 0.85)); }
+    .card__heading-span--2 {
+      background-image: linear-gradient(to right bottom, rgba(126, 213, 111, 0.85), rgba(40, 180, 133, 0.85)); }
+    .card__heading-span--3 {
+      background-image: linear-gradient(to right bottom, rgba(41, 152, 255, 0.85), rgba(86, 67, 250, 0.85)); }
+  .card__details {
+    padding: 3rem; }
+    .card__details ul {
+      /* Or we could have card__list class so here it would be &__list and instead of li, it would be &__details .*/
+      list-style: none;
+      /* ACTUALLY, we give this a width of 80% because we want all of the <li>s that are inside this ul, to have an underline.
+      But we don't want that underline to go completely from left to right, so this unordered list should have lesser width of it's parent
+      to make those underlines not going from left side all way to right side. So this is why we give ul a width of 80%.*/
+      width: 80%;
+      /* We want this <ul> which has 80% width of it's parent to be centered inside it's parent:
+       Learn: For centering block elements inside another block element, it's not good to use absolute positioning in these cases.
+        the good way is to use margin: 0 auto;*/
+      margin: 0 auto; }
+    .card__details li {
+      /* We want the text that is inside each <li> to be centered. */
+      text-align: center;
+      font-size: 1.5rem;
+      padding: 1rem;
+      /* We want all of the <>s except the last one to have border-bottom */ }
+      .card__details li:not(:last-child) {
+        border-bottom: 0.1rem solid #eee; }
+  .card__cta {
+    /* Important: We need to use position: absolute; because we want to center this class, horizontally and vertically inside its' container.
+
+       I didn't give a font-size to this so all of it's children would inherit that font-size, because their font-size is different
+        from each other.*/
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* With using translate() here, we transform the element back to to EXACT center.
+     Important: That -50% is the width of the element itself not it's parent! and in second argument, -50% is the height of element
+      itself again!*/
+    transform: translate(-50%, -50%);
+    /* I gave this class some width because if we don't do this, .cta element will adapt it's width to it's widest child and
+    if this .cta do this, the btn that is the widest child of .cta will force it's width to .cta and therefore the text that is
+    inside the btn would break up into two lines because the btn isn't fit inside the width of it's container which is forced by
+    the btn itself!!!
+
+    Important:
+     Now after giving a width to this .cta, the button gets out of centered place! So we can use text-align: center; on the
+     container of btn which is .cta . Because text-align: center affects on inline and also inline-block elements.
+     Even though the property says “text” align, it affects all elements inside the block-level element that are either inline or
+     inline-block elements. The property only affects the content inside the element to which it is applied, and not the element itself.
+     To center the element itself, the margin property can be used.
+     To center inline or inline-block using text-align: center; (HORIZONTALLY) you must place the <img> inside of a BLOCK-level element such
+     as a div . Since the text-align property only applies to block-level elements, you place text-align: center; on the
+     wrapping block-level element to achieve a horizontally centered <img> or any inline or inline-block element.
+
+
+    LEARN: When display: inline-block; is applied a <div> or something like that element(like <section> or...), it then
+     adjusts it's width according to the width of it's child element
+     */
+    width: 90%;
+    text-align: center; }
+  .card__price-box {
+    text-align: center;
+    /* We set color property here and not on elements that are inside this element, because those children would inherit this
+     property therefore we don't need to declare this property on each of them and we can just declare it on their container.*/
+    color: #fff;
+    margin-bottom: 8rem; }
+  .card__price-only {
+    font-size: 1.4rem;
+    text-transform: uppercase; }
+  .card__price-value {
+    /* Usually when we have a huge text, it looks better to make it really thin instead of leave it to be a big and bold text
+     and that's what we're doing here. */
+    font-size: 6rem;
+    font-weight: 100; }
+
+/* If you go to <div class="card__side card__side--back card__side--back-1"> and go to it's styles and uncheck
+ transform: rotateY(180deg); when you hover over card it won't rotate and you can easily debug the back side of card.*/
+/* It's better to add used colors in project in this file which can be like a color palette!
+ $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
+ "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
+ the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
+ we define a default value for font-size in our code because we used this 1.6rem too much! So it's better to define a variable for it.*/
+/* It's very good to have some variables for gutter of grids. */
+.story {
+  /* Learn: Block elements automatically (and if they aren't already wiped out of normal flow), gets 100% width of their parents,
+      but for this .story element, we don't want it to get's 100% width of it's parent automatically so we gave it a width.
+      If you don't specify a width for a block element AND if that block element doesn't already wiped out of normal flow,
+      the width of that block element is 100%.
+      Now when you already centered a block element inside another block element, if you give this block element any other
+      width than 100% it won't be no longer centered.
+      So we can use margin: 0 auto; on element that we want to center it horizontally and that element will be CENTERED ITSELF!
+      This approach(margin: 0 auto;) won't center the children that are inside this block element.
+      For making the content that is inside block element to center:
+      1)
+      Set the child elements to either display:inline or display:inline-block, then set the parent container to text-align:center,
+      the children will center in the parent- depending on whatever its width
+      2)
+      If the child content is block level (display:block) set text:align:center; on the parent, then give the child margin:0 auto
+      and a width less than that of the parent*/
+  width: 75%;
+  margin: 0 auto;
+  box-shadow: 0 3rem 6rem rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+  border-radius: .8rem;
+  padding: 6rem;
+  padding-left: 9rem;
+  /* We gave a font-size to this element to set the font-size of this element AND also the children that are inside this element
+   and don't have a font-size specified for them and those children that haven't font-size explicitely set for them and therefore
+   inherit this font-size are: <figure class="story__shape"> and <div class="story__text"> and
+   <h3 class="heading-tertiary u-margin-bottom-small"> and <p>
+   */
+  font-size: 1.6rem;
+  /* For making a box NOT to be a rectangular visually! (but inside, it's still a box or rectangular, because each html element is
+  a box), we can skew that box.
+  After skewing the entire section, we see that the content that is inside the box is also skewed, like text or ... .
+  For making the content back to it's normal state, we must skew the content in opposite direction of skew of entire box.
+  In other words, for fix the inner stuff, we must skew ALL of the direct childes of box which is skewed in opposite direction. So
+  we can use direct child selector on the box that is skewed.*/
+  transform: skewX(-12deg);
+  /* Important: This selector actually would select direct childes of .story which are .story__shape and .story__text
+      Right now if you do write this, it's not going to work for .story__shape and that's because we are already using transform
+      prop in .story__shape with value of translateX() and that transform which is inside the direct child, takes precedence over
+      the direct child selector. Therefore only translateX() for transform of .story__shape would work not skewX(). But also
+      we can't have two transform PROPERTIES(not values) applying at the same time for a selector. So we can add skewX(12deg) to
+      the transform prop, which is at &__shape selector and not in & > * selector.
+      So with this, we don't need direct selector anymore, because we gave it's property to &__shape and we can also gave it's prop
+      to &__text as well. So we don't need it anymore.(Although it's property is applying to &__text but we can gave the prop, directly
+      to &__text therefore we don't need this direct child selector anymore. But I kept it.)*/ }
+  .story > * {
+    transform: skewX(12deg); }
+  .story__shape {
+    /* First we must give equal width and height to the <figure class="story__shape"> to make it like a square.
+     Then we want this element to sit on the left side. So float: left; in order to make the rest of the content float around it.
+     This <figure class="story__shape"> doesn't even need to looks like a circle right now. All we have to do is to use
+     shape-outside property.
+
+     In the value of shape-outside property we have to define a vectorized shape and we did that already when we define clip-path
+     properties. But in there, we defined a polygon(). But this time we must use circle().
+     In parentheses of circle() in shape-outside property, we can define the size of circle and the position of center of the circle.
+     The first arg in circle() is the radius of circle. So if we say 50%, then the radius would be half of the height and the width of the
+     element. So in this case, the radius would be 15/2 = 7.5rem so the diameter of the circle would be 15rem and this is exactly the
+     size of the shape (width and height) that we specified in the beginning.
+     In parentheses of circle(), at 50% 50% means that it's in the center of the circle. So exactly center horizontally and vertically.
+
+     Now in order to make this work, the element must actually be floated and we already done that! with float: left;
+     and also there's another thing to make this to work and that is the element MUST have declared EXPLICITLY dimensions (width and height).
+     So this property is quite a demanding property! Because it has to have height and width explicitly and float and only then
+     it works.
+
+     In safari and chrome, this property only works with -webkit- prefix and this means in firefox and edge and IE it doesn't work
+     currently.
+
+    Now you see the text that is around this circle is wrapping around a circle shape. But this shape is not circle yet and it's a
+    square but text that is around this square is behaving like it's a circle besides it.
+    So now let's ACTUALLY take out this circle from the square with clip-path property and in the value of clip-path we put the
+    exact circle that we have in shape-outside property.
+
+    Recap: The shape-outside property defines where the content floats around the element that have this property. So in this case,
+    this property make the around content to behave like there is a circle besides them. But the actual circle must be drawed by
+    clip-path.So if we want that element to ACTUALLY looks like a circle, we must use clip-path.
+
+    We want to make some space between a floated element and elements that are around it:
+    Learn: The best way to move around an element which is floated is to actually NOT mess with margins or anything like that and
+     we should just use a transform prop on the floated element.
+     */
+    width: 15rem;
+    height: 15rem;
+    float: left;
+    -webkit-shape-outside: circle(50% at 50% 50%);
+    shape-outside: circle(50% at 50% 50%);
+    -webkit-clip-path: circle(50% at 50% 50%);
+    clip-path: circle(50% at 50% 50%);
+    transform: translateX(-3rem) skewX(12deg);
+    /* After declaring this transform, the circle goes into the padding area and takes HALF of the left padding area. So lef So let's add some more
+     padding in .story by specifying padding-left property and for the value of padding-left, we add the value that we move the
+     .story__shape to the padding we had for left side which is 6rem. With this, part of the image is still in padding area but
+     the padding is VISUALLY 6rem everywhere(but in box model it's kind of not!)*/ }
+  .story__img {
+    height: 100%; }
+
+/* It's better to add used colors in project in this file which can be like a color palette!
+ $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
+ "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
+ the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
+ we define a default value for font-size in our code because we used this 1.6rem too much! So it's better to define a variable for it.*/
+/* It's very good to have some variables for gutter of grids. */
+.header {
+  /*95% HEIGHT OF THE VIEW PORT. In vh we say that basically in every point in height of this element should be 95% of viewport height.*/
+  height: 95vh;
+  /* Remember: For specify gradients, we always use background-image property. In this case we have 2 background images and one
+   of them is on top of other one. So here, the linear-gradient background is on top of that actual image.But remember: Because
+   we have 2 background images on top of each other, the one that is on top f another must have some opacity less than 1, so
+   this way the background that is under this one will actually shown.
+
+   Remember: The first background image will on top of the second one.So in this case, the linear-gradient will on top of that
+   URL (the actual image.)
+
+   Important: When you specify the url of the background-image you shouldn't use quotes around the path, like this case:*/
+  background-image: linear-gradient(to right bottom, rgba(126, 213, 111, 0.8), rgba(40, 180, 133, 0.8)), url(../../img/hero.jpg);
+  /* What is cover in background-size? Whatever the width of the viewport or element is, it will always try to fit the element iside
+   the box.*/
+  background-size: cover;
+  /* background-position: top; will ensure that whatever the viewport size is, the top of the image always stays at the top of the
+   container. For example: If the size of browser (viewport) decreases, the bottom of the image get's cropped! But top of the image
+   always stays the same and won't get cropped. For example if we had: background-position: bottom; if we change the image size (for
+   example when we decreases the size of browser) the bottom will stay same and won't get cropped.
+   background-position: center; the top and the bottom of image will crop but the middle or center of image will stay the same*/
+  background-position: top;
+  /* In clip path we specify a polygon that specify the part of image or element that would be visible.
+   In parentheses of polygon we specify the coordinates which define the polygon. Inside the parentheses we specify 4 coordinates
+   in order to obtain this polygon and we are going to start at top left corner and then we move clock wise, so after that we go to
+   top right corner and ... . For first coordinate, we don't want to move it in any direction (axis).
+
+   Important: The X and Y distances of all of our coordinates are calculated from the origin.The origin is the top left corner of
+   the element.
+
+    Axises in CSS:  --------------------> X
+                    |
+                    |
+                    |
+                    |
+                    Y
+    So as you can see the Y axis in CSS is opposite of Y direction in math. In math we have:
+
+                    Y
+                    |
+                    |
+                    |
+                    --------------------> X
+
+    So for first coordinate (top left corner) we don't want to change it's x and y directions.
+    For the second coordinate (top right corner) we know that it definitely has coordinate in X direction other than 0. But it's
+    coordinate in Y is again 0. Because in the shape that we want to have for header, the first and second coordinates have same
+    height (they stand in one line), so we had first coordinate in 0 coordinate in Y axis so the second one has the same coordinate
+    in Y axis too. But what about the X coordinate of the second place?
+    Well it is 100% of the width of the header element far from the first coordinate in X axis.
+    The third coordinate (bottom right corner): It is still 100% of width of this element(header) far from the origin of coordinates.
+    But it's Y coordinate is something other than 0. We can set this whatever we want. For example 200px.
+    The forth coordinate has 0 distance from origin.But for Y coordinate we go from origin all the way down of the element.
+    So the Y is 100% (remember: Not -100% because we move in + direction of Y axis.)
+
+    Excercise: Let's make a triangle: The answer is : clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    Remember: All of the calculated distances are from origin and the origin is the top left corner of the element that we want to
+    clip some parts of it (element).
+
+    Important: The real property last, the vendor prefixes first!
+
+    Such as background-blend-mode , clip-path is not going to work on IE or edge. So if you want to develop for theses browsers too,
+    at this point, you can't use these properties or you can use them with a fallback. */
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+  /* Because this element has a child that has a position: absolute; , we must set the parent element of that child which is .header
+   to have a position of relative. In other words this element is the origin or reference from which top and left for the .logo-box
+   start to count.*/
+  position: relative;
+  background-attachment: fixed; }
+  .header__text-box {
+    /* How center .text-box, inside the .header element vertically and horizontally? We should use absolute positioning. But for top and
+      left properties, they would be a bit different.
+      So we start by saying : top:50%; and left: 50%; But the result is not quite what we want the element
+      to be. But the code is doing it's job because the left: 50%; is half of the width of the .header (parent) and the top is true too!
+      But in order to make this element to truelly be center, we can shift this element just a little bit, so that the center of the
+      .text-box at the center of header. (We want the vertical middle line of the .text-box to be where the beginning of the
+      vertical line of box is now.) and the same thing applies to the height.So we want the horizontal center line of the box be
+       exactly where the beginning horizontal line of box is now. In other words we want to translate the entire .text-box element.
+
+       In () of translate we must specify how much we want to translate on X and on Y axis. But why -50% for both axises?
+       Because these -50% s are now no longer in relation to the parent element and now are related to the element itself(.text-box).
+       And if we say -50% in X axis, it will shift the element to left side in amount of half of it's width.
+       For Y axis, element will shifted in amount of half of the element's height to the top (Why to top and not to bottom?
+       Because in CSS the Y axis is opposite of Y direction in math so in this case we want to shift our element to top so we must
+       go to negative direction of Y in CSS so -50% not 50%.)
+       Im this case our parent has clipped from bottom so for visual purposes we can make top to 40% instead of 50%. But remember
+       for doing this use 40% on top property not on translate(). Because we want our box (.text-box) to always shifted from it's
+       beginning and middle lines (You remember it?). So we don't manipulate this property in this situation and we will manipulate
+       the top property.
+
+       Recap: top and bottom properties are in relation to parent element, so 50% of the parent element is where the .text-box is
+       located to the left side and top ... . But in transform property and in it's value, we are related to the element itself and this
+       makes that possible that element is EXACTLY at the center.*/
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* We want to center the inline-block elements or inline elements (like text or <a>) that are in this element.So we can use text-align: center
+     to horizontally center those kind of elements.*/
+    text-align: center; }
+
+/* It's better to add used colors in project in this file which can be like a color palette!
+ $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
+ "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
+ the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
+ we define a default value for font-size in our code because we used this 1.6rem too much! So it's better to define a variable for it.*/
+/* It's very good to have some variables for gutter of grids. */
+/* a @mixin is a reusable code that we can @include it in the declaration of a css class or css id. When we @include a @mixin
+the codes that are in that @mixin will be kind of extracted wherever we @include that @mixin.*/
+/* When an element has childes that ALL of those childes have floated, then that container of those childes would have 0 height.
+ For fixing this, we must use a clearfix class.
+ Now what does clearfix do? A clearfix will append a pseudo element after the element that are using this clearfix on that element,
+ which will clear the floats of all of the childes of that element that we're using a clearfix on it.
+ Important: When we @include this @mixin inside a selector, the & will copy the selector. So if we @include this @mixin in .row ,
+  the code of clearfix would be: .row::after {...}
+
+ In clearfix, we MUST specify the content property, otherwise the pseudo element won't appear on tha page BUT WE DON'T WANT TO SEE
+   this pseudo element on the page, so we specify nothing inside the quotes for value of content property.
+   clear:both; will clear both float:left; and float:right; on the childes of an element which we're using clearfix on it.*/
+.row {
+  /*First we need to define a width for the row and a standard is 1140 px. Now what's wrong with this? Yes, we must use rem instead
+   of px and we know that in our project, 10px=1rem (remember: The root font-size is 62.5% of browser font-size which browser font-size
+   is 16px so the root font-size would be 10px. So 1rem is 10px in our project. Always remember that 1rem is equal to root font-size
+   and 2 rem is equal to root font-size *2 and... . So 114rem is 1140px)
+   Learn: What's the difference between width and max-width? max-width means: If we have enough available space, then the element which
+    has the max-width, it will the EXACT width that we specified.(In this case 114rem). But if there's not enough width, so basically
+    if the viewport is smaller than the max-width value-in this case if the viewport is smaller than 114rem, then the browser will simply
+    fill 100% of the available space that it has. But if you were used width instead of max-width, when the screen is smaller than
+    width, the element which has the width bigger than current screen will be basically cut! instead of getting the 100% of screen and
+    this is bad!
+
+    For centering this row in the viewport, we must use margin: 0 auto. This is the trick for centering a block element which is
+    inside another block element. But wht this works? When we say margin must be auto, this means that the browser when is rendering
+    the page, will automatically figure out the margin that we want on the left and the right side(because we set margin: 0 auto) and
+    since right and left margins are set to auto, it means the left and right would be same. So the element would be centered.
+
+     */
+  max-width: 114rem;
+  margin: 0 auto;
+  /* We want the last one row to not have a margin-bottom. Also instead of &:not we can say: &:last-child {margin-bottom: 0} but we can
+  do even better by using :not() pseudo selector and in parentheses of :not() we can specify another pseudo class or anything else,
+  which in this case it's :last-child.
+  Learn: <selector 1>:not(<selector 2>) we are selecting everything that has selector 1 , except elements that have selector2.
+  */
+  /* The result of this @include is the code that is in the clearFix @mixin which is:
+   &::after{
+    content: "";
+    display:table;
+    clear:both;
+  } */
+  /* Since all of the col-<x>-of-<y> are inside .row, we can nest them inside .row selector. But we COULD place them outside of
+   .row selector. So when you place a selector inside another selector, those styles for the nested selector will apply to the
+   elements that in html doc, are INSIDE that selector that we nested into it. For example if we have .h1 selector inside .p selector
+   all of the styles that we give to .h1 will apply to <h1> elements that are inside <p> element not all of the <h1> elements.*/
+  /* We used an attr selector or [class^="col"] instead of a @mixin. Because it is a better practice. But we could also create a @mixin and put
+   float: left;
+   background-color: blue;
+   &:not(:last-child) {
+    margin-right: $gutter-horizontal;
+  }
+  inside of that @mixin.
+  Also we COULD create a new class and put these code into that class and then add that class to classes of the columns in html.
+  So sth like: class="col col-1-of-2 .
+
+  In [] of attribute selector, we can specify an attribute. So it would be: [<attribute>] . Like: [src="xxx"] .
+
+  ^ means we want the beginning of what we are setting here. So [class^="col-"] would be select all of the elements that have the
+   class attr that is start with "col-" . Another one is: [class*="col-"] which will select all of the elements that have a class
+   which CONTAINS "col-" . Another one is [class$="col-"] which will select any class that ENDS with "col-"*/
+  /* Here inside parentheses of calc() function, we're writing native css not scss although we're inside a scss file, it doesn't matter
+   we can write css inside a scss file. So we know that for layout calculations, we must write native css inside parentheses of
+   calc() . So here we must do that as well. So instead of using the sass variables purely here, like 100% - $gutter-horizontal we must
+   do it in native css way. So the previous calculation in native css doesn't work. So we must write it in native css way. For this
+   task, we must wrap scss variables inside curly braces and then use # . So the prior code would be 100% - 6rem.
+   So this is native css that is working with scss variable.
+
+   The width of col-2-of-3 is (2* (width of col-1-of-3)) / 3 + $gutter between these 2 col-1-of-3
+
+   The width of .col-3-of-4 is equal to have 3 .col-1-of-4 plus the gutters between them and we have 2 gutter between them. Right?
+
+   For other projects you can change the value of $gutter-horizontal (the space between each of the columns in one row.)*/ }
+  .row:not(:last-child) {
+    margin-bottom: 8rem; }
+  .row::after {
+    content: "";
+    display: table;
+    clear: both; }
+  .row [class^="col-"] {
+    float: left;
+    /* The gutter between each of the columns in one row is some kind of margin-right for the all of the columns except the last
+     column. Right? Because last column does not have a space at the right side of it. So it hasan't a gutter so it hasen't a margin-right.
+     So in all of the types of col-x-of-y we want all of the columns to have margin-right except the last column.*/ }
+    .row [class^="col-"]:not(:last-child) {
+      margin-right: 6rem; }
+  .row .col-1-of-2 {
+    width: calc((100% - 6rem) / 2); }
+  .row .col-1-of-3 {
+    width: calc((100% - 2 * 6rem) / 3); }
+  .row .col-1-of-4 {
+    width: calc((100% - 3 * 6rem) / 4); }
+  .row .col-2-of-3 {
+    width: calc((2 * (100% - 2 * 6rem)) / 3 + 6rem); }
+  .row .col-2-of-4 {
+    width: calc((2 * (100% - 3 * 6rem)) / 4 + 6rem); }
+  .row .col-3-of-4 {
+    width: calc((3 * (100% - 3 * 6rem)) / 4 + 2 * 6rem); }
+
+/* It's better to add used colors in project in this file which can be like a color palette!
+ $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
+ "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
+ the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
+ we define a default value for font-size in our code because we used this 1.6rem too much! So it's better to define a variable for it.*/
+/* It's very good to have some variables for gutter of grids. */
+/* Because .section-about is very specific to home page, we put the css declarations of this element in _home.scss file. So this means
+ if the website grows and have more pages, nowhere else we would have again this .section-about element, at least not similar to this one.
+ If we would have that on other pages, we shouldn't place this in this file.
+
+ When you want to put a color in css declaration, it's better to first put it in _variables.scss file and then write the variable name
+ for that color, where you want to declare that css.*/
+/* Important: Why we didn't nest blocks like:
+     .section- {
+        &about {...}
+        &features {...}
+     }
+     ???
+     Because the blocks are independent stuff so we shouldn't nest them inside each other or another thing.*/
+.section-about {
+  background-color: #f7f7f7;
+  padding: 25rem 0;
+  /* height of .header is 95vh and in that .header declaration, we have a polygon() which in it's right side goes until 75vh.
+  So the difference is 20vh (95vh - 75vh). So we can move up this .section-about by giving it a negative margin-top . */
+  margin-top: -20vh; }
+
+.section-features {
+  /*padding: <left and right padding> <top and bottom> */
+  padding: 20rem 0;
+  background-image: linear-gradient(to right bottom, rgba(126, 213, 111, 0.8), rgba(40, 180, 133, 0.8)), url(../../img/nat-4.jpg);
+  background-size: cover;
+  /* It's not very good looking to use background-attachment: fixed; on this section. Because we skewed the entore section */
+  /* We want this section to be like skewed. We can use clip-path property. But we can also simply skew the entire section.
+  So use transform: skewY(). Now all of the things that are in this section also would skewed. So we need to fix that. Also
+  we need to fix the wide gap between this section and previous section. For fixing this, we can simply move up the entire
+  .section-feature , so it would covers the white gap.
+  Now for fixing the skewed stuff inside this section, we can simply just skewed them in opposite direction and equal value of
+  skewed section. So if we use skewY(-xdeg) for entire section, we need to use skewY(xdeg) for things that are inside that section.
+  So let's skew the boxes that are inside this section.
+  Now we could go ahead and go into the .feature-box and use skewY() in normal state and also hover state(I did this but commented it out.),
+  but we want to fix this issue differently. Because imagine that one day, we want to put something else here in .section-features ,
+  for example imagine we add a couple of other boxes with different names or ... and therefore what would we do? We would have to
+  add transform: skewY(7deg); again in those boxes and their :hover state as well, so we don't want to do that(currently we duplicated
+  transform: skewY(7deg); in both normal state and hover state of .feature-box as well and this is not good- so imagine we add
+  more boxes with different classes and more duplicates and this is not good.)
+
+  Instead we can use direct child selector here. Here we selects ALL(*) of the direct childes(>) of .section-features .
+
+  What's the difference between .section-features > * and .section-features ? In first selector, we select all of the DIRECT childes of
+  .section-features , but in second selector we selected all of the childes (like childes of a child of .section-features).
+  So the first selector selects just <div class="row"> but second selector selects all of the elements that are inside .section-features .
+
+  Learn: first selector > second selector : The direct child selector will only select direct descendents of the first selector if they
+   also matches second selector.a > b selects b's what are only children to the a, it will NOT select b what is child of b what is child of a.
+
+   Currently the background-image of this entire section is also skewed but we can't notice it very much. So it's not a big deal.*/
+  transform: skewY(-7deg);
+  margin-top: -10rem; }
+  .section-features > * {
+    /* Inside this selector, we apply styles to direct child of .section-features (in this case that direct child is just
+    <div class="row"> and not the elements that are inside this <div>)
+
+    Recap: We skewed in opposite direction to compensate for the skewing of entire direction.*/
+    transform: skewY(7deg); }
+
+.section-tours {
+  background-color: #f7f7f7;
+  padding: 25rem 0;
+  margin-top: -10rem; }
+
+.section-stories {
+  /* padding: <value1> <value2>
+   value1 is top and bottom and value2 is left and right.*/
+  padding: 15rem 0; }
+
+/*
+ What you will learn in this course:
+ 1)...
+
+ ) How to make text flow around shapes with shape-outside and floats
+ ) how to apply filter to images
+ ) how to create a background video covering an entire section
+ ) How to use <video> html element
+ ) How and when to use object-fit property
+ */
+/* How cascade actually resolves the conflicts when more than 1 rule applies? In order to determine which one takes precedence
+ it looks at the importance, at the selector specificity and the source order of conflicting declarations.
+ First the cascade starts by giving the conflicting declarations different importances based on where they declared.So based on
+  their source. The order of importance is :
+  1) User !important declarations. (User: the visitor of website can manipulate the CSS and ... on website, right?)
+  2) Author !important declarations (Author: Is the developer)
+  3) Author declarations
+  4) User declarations
+  5) Default browser declarations
+
+  But in the most scenarios, we have declarations with same importance, so we check the `specificity of the declaration selectors` :
+  1) Inline styles (have the highest specificity)
+  2) IDs
+  3) classes, pseudo classes, attribute selectors
+  4) elements, pseudo element selectors
+
+  Now how calculate specificity based on the priorities that I mentioned? (Inline, ids, classes, elements), for number of
+   occurances we +1 , For example:
+   nav#nav div.pull-right .button {
+
+   }
+
+In above, we have the specificity of (0, 1, 2, 2)
+Remember: The value of the winning declaration is called the cascaded value.
+
+If the importance and specificity were equal between two or more selectors, then the last CSS declaration written in the code
+is the one that will apply.
+
+A selector that contains 1 id is more specific than 1 with 1000 classes. and this is true about classes and elements.
+Universal selector has no specificity value which means that all other selectors have a precedence over it.
+
+Rely more on specificity rather than order of selectors. But rely on order when using 3rd party stylesheets-always put your
+author stylesheet last.
+ */
+/* How values are processed in CSS parsing phase?
+
+Important: We have relative units, but there is difference in using relative units for fonts or for length measurements:
+
+% for fonts: When you declare a font-size in %, it would related to parent's font-size.
+% for length: But when you declare a length in %, it works a bit different.Because when we express a length measurement in percentages,
+like height or width or padding or margin or something else, the reference of that % is always the parent's WIDTH.
+
+Next we have font-based relative units like em and rem and again there's difference to use ems for fonts.
+Both ems and rems are font-based, but the difference between them is that em uses the parent or the current element as reference
+while rem uses the root font-size as reference.
+If we want to use ems for font-sizes, then the reference is simply the parent's computed font-size, similar to what happens with
+percentages. But for length the reference for em is the font-size of the current element.
+
+Now for rem, font-size and length work the same way. Because rem always uses the root font-size as the reference.
+em for fonts:
+em for lengths:
+rem:
+
+vh and vw are viewport-based units. 1vh is just 1 percent of the viewport's height and 1vw is 1 percent of viewport's width
+*/
+/* Each CSS property has an initial value which is used if nothing else is declared and if there is no inheritance.
+  Browsers specify a root font-size for each page (usually 16px) and this is a user agent definition so it's not an initial value
+  that is coming from the CSS specification.
+  Percentages are measured relative to their paren'ts font=size, if used to specify font-size.
+  Percentages are measured relative to their parent's width, if used to specify length.
+  ems are measured relative to their parent's font-size if used to specify font-size.
+  ems are measured relative to CURRENT font-size if used to specify length.
+  rems are ALWAYS measured relative to document's root font-size.
+  vh and vw are simply percentage measurements of the viewport's height and width.*/
+/* Each and every CSS property must have a value. Even if neither we nor the browser do specify it. In that case there's no
+ cascaded value.For processing a value for a certain element, the first question that css engine asks is : Is there a cascaded value?
+ and if there is, that's the value that is used for the property. So specified value = cascaded value . But if there's no cascaded value,
+ then the next question is if the property can be inherited and that depends on each property. Because there are some properties
+ that are inherited and others are not (for example, line-height gets inherited.).
+  So if the property is inherited, then the value
+  of that property becomes the computed value of it's parent element. So in this case the specified value = computed value of parent.(This
+  is inheritance!!!)
+ Example:
+ .parent {
+    font-size:20px;
+    line-height:150%;
+ }
+ .child {
+    font-size:25px;
+ }
+
+ In this example, the value that get's inherited by child is not simply the 150% but the computed value of parent and in this case the
+ computed value of parent is 150% of 20px. Which is 30px. So the line-height of the child element would be 30px not 150% of that 25px.
+ Now if it's a property that get's not inherited, like padding, then the specified value will become the initial value.Which is also
+ specific to each property. But you don't need to memorize these initial values.Because they're intuitive.
+ So in this case: specified value = initial value (specific to each property)
+
+ RECAP:
+ *Inheritance passes the values for some specific properties from parents to children.Inheritance allows developers to write less
+ code and code will be mor maintainable.
+ *Properties related to text are inherited, like font-family, color and ... (in specification you will find if the property is
+ automatically inherited or not?)- Other properties like margin and padding are not inherited, because it would be impracticable.
+ *Important: The computed value is what get's inherited, not the declared value.
+ *Inheritance of a property works if no one (neither developer nor browser) declares a value for that property.
+ *We can use inherit keyword to force the inheritance of a certain property.
+ *The initial keyword resets a property to it's initial value.
+ */
+/* Converting px to rem:
+ We must change all absolute px units to relative rem units. Why? Because we want an easy way to change all measurements on our
+ page with one simple setting. For example, when we hit a break point to display our page on a mobile device. When that happens,
+ we want a way to decrease all the measurements in our site at the same time and instead of writing too many code in media queries,
+ we can just change global font-size.(rem units are in relation to root font-size). The root font-size is set in the html selector.\
+ So we must remove the font-size in body selector. But why 10px for root font-size?
+ Because it's easier. Important: We know that 1rem is exactly equal to root font-size and in this case the root font-size is 10px.
+ So now 1rem is 10px. So now for converting px units to rem, all we have to do is divide the px by 10 and it would be rem.
+ Still, it's a bad practice that the root font-size is still in px units. But the problem is that by doing so, we actually
+ override the browser's font-size setting that the user can manually change in the settings.So some people increase the default font-size
+ of their browser. Now if we set the font to something like 10xp, then we remove the ability for those people to see our website properly!
+ Because they can't no longer change the default font-size.Well, they can!!! but our root font-size won't be affected by changes that
+ those people do.
+ So we must make the overall root font-size to be in percentages and this value would be translated to the percentage of the font-size
+ given by the browser. Now the default font-size of browser, if the user doesn't change anything, is 16px.
+ Learn: So if we put 100% for root font-size, that means the root font-size would be 16px IF the user doesn't change anything.
+  and if user does change the default font-size, for example to 18px, then the root font-size would be 18px and ...
+ Remember: WE WANTED OUR ROOT font-size TO BE 10px so 1rem would be 10px and ... . But the default font-size of browser is 16px.
+ So we have to divide what we want. So 10/16 = 62.5%.
+ So now imagine, if the root font-size is 16, so 16*0.625 = 10 and if root font-size is 20px, root font-size would be 12.5px.
+ rems are not supported below IE9.
+
+  */
+/* Whenever we CAN use inheritance, we shouldn't use it in universal selector so we must use it in body selector and after this
+in * selector we set the value to inherit. For example : box-sizing property itself is not inherited.But by setting box-sizing property on
+each and every element on entire page to inherit (by setting box-sizing:inherit on * selector), it will automatically inherit whatever
+we put in body selector.
+Also remember it's better to use * selector instead of * to *,*::after, *::before (also selecting all of the after pseudo elements
+and before psuedo elements too!). If we don't select those pseudo elements too, just the real elements (elements that are not
+after or before pseudo element) would be get those properties, but if we also select those pseudo elements, they would get those properties
+too.*/
+/* Website rendering phase:
+ The css visual formatting model is an algorithm that calculates boxes and determines the layout of these boxes for each element
+ in the render tree, in order to determine the final layout of the page.
+ The algorithm looks at:
+  dimensions of boxes, which are calculated by the box model
+  the box type which can be inline, block or inline-block
+  the positioning scheme, which includes concepts like float and absolute and relative position
+  stacking context
+  other elements that are present in the render tree
+  external information like current viewport size, dimension of images or ...
+  SO by putting all of these factors together, the browser figures out how the final website will look for the user.
+
+  Fill area: Remember how text content and images go inside the content of box model? The same actually does NOT apply for
+  background images or background color of the box.So these properties will be applied not to the content of box model, but to
+  the entire fill area, which includes content+padding+border but not the margin.
+
+  Height and width in default box model:
+  We can specify the height and width of an element, now if you choose not to specify the height or width of a certain element,
+  the visual formatting model will just use the content of the box to determine it's size.
+  How default box model calculate height and width of block level boxes?
+  total width = right border + right padding + specified width + left padding + left border
+  total height = ...
+
+  Ex) If we define the height of an element to 100, and padding : 20, final height would be 140. But this isn't good!!
+  So whenever we define width or height of a box, the padding and the border get added to what we defined.
+  Solution is box-sizing: border-box; so with this, the height and the width will be defined for entire box including the padding
+  and the border and not just for the content area. So the formul will becomes:
+  total width = specified width
+  total height = specified height
+
+  So now if we define some padding or borders, they won't get added to the diemensions of the box.
+  <li> and <table> also produce block level elements.
+  Block level:
+  Usually occupy 100% of it's parent's width and create line break after and before itself meaning that they are formatted verically one
+  after another and the box model for them work as mentioned before (those 2 formulas...!)
+  These elements have: display:block or display: flex or display: list-item display:table.
+  ---------------
+  Inline elements:
+  They only occupies that their content needs so they don't cause line breaks at all.But instead they just sit inside their block-level
+  parent element.But the box model works different in inline elements.
+  Important: First: The height and width property do not apply on these elements.Which means we can't use these properties here.
+   Second: We can only specify horizontal paddings and margin on inline elements.
+  Recap:
+  Content is distributed in lines
+  Occupies only content's space
+  No line breaks
+  No height and width
+  Padding and margin only horizontal(left and right)
+
+  So they have limitations, in order to overcome that we use inline-block elements.
+  --------------
+  Inline-block elements:
+  They technically are inline boxes but which simply work as a block-level box on the inside.So since they are technically inline
+  elements they use only their content and cause line-breaks.But since they work as block level elements on the inside, the box
+  model apply to them just like in the regular way.
+ */
+/* Positioning schemes:
+ default or position:relative:
+ If you use position relative on an element, it is still in the normal flow and normal flow means that the elements are laid out
+ on the page in order of code.
+ ---------------------
+ Floats:
+ The float cause an element to be completely taken out of normal flow and shifted to left or right as far as possible.Until it touches
+ the edge of it's containing box or until the edge of another floated element.When this happens, text and inline elements will
+ wrap around the floated element. Also when an element is floated, it's container WON'T adjust it's height to the floated element.
+ The usual sulotion is to use clearfix
+ ---------------------
+ Absolute position :
+ Just like floats, when you set position to absolute or fixed, the element is taken out of normal flow.But the difference between
+ float and absolute is that in absolute, the element has no impact on surraounding content or elements at all.Even it can overlap them.
+ Important: We use top, ... to offset the absolute positioned element to it's relatively positioned container.
+
+ z-index creates a new stacking context.
+ Each element use the z-index property on an either relatively or absolutely positioned element and that's one way of creating a new
+ stacking context.
+ Not only z-index creates stacking context, an opacity value different than 1, a transform property or a filter or ... also creates
+ new stacking context.That's why even with the z-index set on a positioned element, the stacking order doesn't work as expected.
+ */
+/* BEM: block element modifier : block__element--modifier
+ In BEM, block is a standalone component that is meaningful on it's own.
+ An element is part of a block and has no meaning on it's own.
+ A modifier is a flag that we can put on a block or an element in order to make it different from the regular blocks or elements, to
+ make a different version.
+
+ 7-1 pattern: Means we have seven different folders where we put partial Sass files and then one main Sass file which in there, we
+ import all of our partial into one final compiled css stylesheet.
+ 7 folders are:
+ base: Where we put the basic definitions
+ components: In this folder, we have one file for each component
+ layout: Where we define the overall layout of the project
+ pages: Where we have styles for specific pages of the project.
+ themes: If you want to implement different visual themes
+ abstracts: Where we put code that doesn't output any CSS. Such as variables or mixins
+ vendors: Where all third party CSS goes there.*/
+/* -Functions in SASS are similar to mixins with the difference that they produce a value that can be used later.
+ -extends: Make different selectors inherit declarations that are common to all of them.
+ -control directives: For writing complex code using conditionals and loops
+
+ SASS syntax is indentation sensitive and doesn't use any curly braces and semicolons and it is more confusing.*/
+/* & in SASS, writes the selector up until where it's currently used. */
+/* If all of the childs of an element have floated, the height of that element becomes 0. So we must add .clearfix class
+to that element.
+The clearfix class adds a pseudo element after the collapsed element. So we decalre this class as : .clearfix::after
+So this pseudo element will clear the float.
+.clearfix::after {
+   content: "";
+   clear:both;
+   display:table;
+} 
+*/
+/* In sass, mixins are like huge variables for storing some reusable code. For calling them, we use : @include <name of mixin> */
+/* For nesting a pseudo element inside an element selector in SCSS and inside that elementor selector we can say:
+ &::<pseudo element> or for &:<pseudo class>
+ darken function in sass: darken(<color>, <how much darker in percentages?>) and also we have lighten() function.
+ For writing your own function, you can say:
+ @function divide ($a, $b) {
+    @return $a / $b;
+ }   
+ and for calling the function, we just use it's name and (). For example: margin: divide(60, 2) * 1px;
+   */
+/* What is extends in SASS? By using them, we can write a placeholder and put a bunch of styles there and then other selectors
+extend that placeholder. For example the properties that are common between the <button>s , we can just put them in there.
+We create a placeholder in sass like: %<name of placeholder>
+EX) %btn-placeholder {
+   <put the styles that would be duplicated if you don't use placeholders and extends>
+}
+and for using the placeholder or use those styles you can say: 
+@extend %<name of placeholder> 
+
+So we must use @extend when the selectors or the elements that you're extending, are actually pretty related to another.
+
+But why we don't use @mixins instead of placeholders and just @include them? Because with @extend, the SELECTOR is copied to
+where we defined the placeholder and not the code. But with @mixin, all of the code would be copied to where you @include
+that @mixin.
+For example:
+ %btn-placeholder {
+    <some style ...>
+ }
+
+ .btn-main {
+    &:link {
+       extend %btn-placeholder;
+       ...
+    }
+ }
+
+ So in the example, by using placeholder, the styles inside %btn-placeholder won't copy inside .btn-main, but .btn-main:link
+ will copy instead of %btn-placeholder in compiled CSS code. But if we were used @mixin, all of the styles of 
+ %btn-placeholder would copied into .btn-main:link .
+
+*/
+/* There are several ways to install SASS on local computer and there are several ways to do this. But the easiest one is to use
+a npm package called node-sass .
+The node-sass package compiles sass code. But the node sass is a develop dependency. It means basically node-sass is a tool
+that we use to develop our project.
+The first thing that we do in a new project, before installing packages is to create a package.json file which will contain 
+the definitions of our project and where npm will write the packages that we use in project. So we say: npm init
+Now let's install our sass compiler. So npm install node-sass --save-dev
+--save-dev will make package.json file gets updated and lists this package as one of our developer dependencies.
+What is developer dependencies? It means that node-sass is a tool(a helper) that we use to develop our project.
+
+In older times, when you install a package as a dependency, it won't show in the package.json file until you specify an option which is
+--save . Nowadays it doesn't necessary anymore.
+
+We don't need to share the node_modules file with others. So if you want to share your project, you'll only share other things not the
+node_modules folder. So you must share package.json file instead of node_modules directory. Because from package.json file, we can
+recreate the node_modules folder. So if you don't have node_modules but the package.json currently, you can write: npm install .
+For deleting a package in older days: npm uninstall <package> --save . We used --save because with this, it will remove it also from
+package.json file.
+For using node-sass package, you must use it with writing npm scripts and the script for compiling the scss code is:
+"compile:sass": "node-sass <input file(location of the scss file-relative to package.json file)> <compiled(output) file which is a css file>"
+If you have any css file in that outputted location with that name, when you run the command, it would overwrite it.
+But wait! Why we can't write this exact command in terminal for compiling sass? Instead we use terminal to just say npm run <name of
+the npm script>? In other words, why write our npm script in package.json and then we need to CALL that script with it's name from the
+terminal? and not write the exact command in terminal and then hit enter to actually run that command? Because that's not going to work!
+
+For keep watching the main scss file, we can add -w flag to the end of our currently npm script, so it would be:
+"compile:sass": "node-sass sass/main.scss css/style.css -w" So with this file watcher, when you change your code, it will automatically
+compile the sass code to css.
+Now we need to have another stuff, so each time we change the code, the browser would be reloaded automatically.
+For this task, we must install live-server package as a dev dependency and globally. So instead of using --save or --save-dev , we use
+-g . Now because we didn't specify --save-dev (--save is not required anymore these days), this newly installed package won't be in
+package.json file and you'll probably will see that this package is not in node_modules directory.Because we installed that package as a
+global package and since it's a global package we can call this package DIRECTLY from the terminal.
+
+By running live-server we would have a real http server(protocol) (we have also file protocol in general.)
+
+So now for running the local http server and the node-sass package, we must let those 2 tabs or terminal open.
+*/
+/* In regular CSS, we can't put a hexadecimal color(like #fff) in a rgba function and then put opacity and then it would translate
+the color. No! That won't work in regular CSS. But in SASS it will work! So in regular css you must say: rgba(x,y,z, opacity) not
+rgba(#xxx, opacity) but in sass or scss you can do this.
+So remember: Using hexadecimal colors in rgba() only works for scss or sass. So in regular css, we have to define the colors separately
+for R G and B with a number in range of 0 to 255.*/
+/* For nesting the selectors, remember we had BEM methodology and till now, all of our selectors are really just ONE CLASS FOR EVERY
+element. So they all, have a same specificity which is extremely low (they have just one class). Also since each and every element has a
+class, nesting can be a bit difficult here.So it's looks like there's not much to nest here with these classes. But maybe still we can
+do some nesting.
+
+In sass, & operator copies the parent selector where we are do nesting in that parent selector. For example:
+.header {
+...
+
+&__logo-box {
+
+}
+}
+In tbe example above, the value of & is .header (not header!).*/
+/* 7-1 pattern: With this pattern we create 7 folders and one main sass file to import them all the files that are in those folders.
+All of those 7 folders are going to be in the sass folder.
+In base folder, we're going to put the basic project definitions. So like a project's boiler plate. In the base sass file, we have
+real low level basics.Such as resets and styles for <html> and <body> element selectors. Note: This file should be a partial, so we can
+later import this file into the main.scss file.
+Learn: The partial files always start with an underscore. So if you name a scss file starting with an underscore, that file would be a partial
+ scss file. But when you're specifying the path to the file when importing the partial file in main.scss , you don't need to write
+ the underscore and the extension for the name of the file. So for example: @import 'base/base'
+
+In abstracts folder we're only going to put code which is not going to output any css.Like variables, mixins and functions.
+In components folder we're going to create one file for each of our components.
+In layout folder we're going to have a global header, footer and ... . Basically the layout is what holds our components together.
+If you have very specific styles for a specific page like for homepage, we can create a new file for that specific page in pages folder.
+In vendors folder we put 3rd party css. Like the css file for bootstrap or icon system or animation framework.
+
+Remember: In the end in the main.scss, only serves the @import s of all other partial files. So there will ne no code in this file,
+except @import declarations.
+
+Everything that has font-family line-height and ... (related to typography) should go to _typography file.
+ */
+/* 3 basic principles of responsive design:
+1) Use fluid grids and layouts: We must use percentages rather than px s for all layout related length (specially do this for
+width properties). Why we do this? Because we want to allow the content to easily adapt to the current view port.
+
+2) Flexible/responsive images: Images behave differently than text content (because they don't scale automatically as we change
+the viewport) and so we need to ensure that they also adapt nicely to the current view port.
+Usually we make images flexible by defining their dimensions in percentages rather than pxs (fixed units).
+Images usually make up the biggest part of pur website's size, so we need to optimize images for different width.
+
+3) Learn: Media queries: Allow us to change styles on certain viewport widths, which are called breakpoints. Basically media queries allow us
+    developers to create different versions of a website for different types of devices.
+
+3 main ways of laying out a web page: 1) float-based layouts. 2) Flex-boxes which are for laying out elements in 1 DIMENSIONAL row.
+3) CSS grid is perfect for creating the overall layout of the page in a fully-fledged 2 dimensional grid.
+*/
+/* Building a custom grid with floats (fluid grid):
+What is a grid? It's a design system.
+The consistent space between each column is called gutter.
+The columns should be always be in a container and that container is called a row. No matter you have 3 columns or 4 columns or ...
+all of these columns should be inside a container called row.So let's say that all of the columns that are in one line, are actually
+in one ROW. All of the excercises are in test-grid section.
+After writing the html code for this exercise, we must create a new scss file to build this grid which is a layout, we must create a
+new scss partial file in layout folder and call it _grid.scss and then import this new file in main.scss .
+
+ */
+/* In native css, in calc() we can mix units. But in preprocessors we can't do mathmatical operations with multiple units and it's
+actually pretty logical why it is that way. Because we COMPILE the sass files while we're developing the page, so even before the
+page is served to the user. But this kind of calculation depends on layout. So it has to happen when the website is rendered using the
+visual formatting model. So that's when these calculations can occur. Because it's only after that when css and the browser know what
+a percentage is and what a rem is and ... . So for layout calculations we must do those calcs using native css.*/
+/* In border-radius: <value-1> <value-2> the first value applies to top-left corner and second value is applied to bottom-right corner of
+element.
+In padding: <value-1> <value-2> value-1 is for top and bottom and value-2 is for right and left.*/
+/* In chrome dev tools in top-right side of elements section, you can see :hov . This is useful when you want to force a state of
+ an element to see the styles that apply to that element when we hover on it.*/
+/*
+    Important:
+     Now after giving a width to this .cta, the button gets out of centered place! So we can use text-align: center; on the
+     container of btn which is .cta . Because text-align: center affects on inline and also inline-block elements.
+     Even though the property says “text” align, it affects all elements inside the block-level element that are either inline or
+     inline-block elements. The property only affects the content inside the element to which it is applied, and not the element itself.
+     To center the element itself, the margin property can be used.
+     To center inline or inline-block using text-align: center; (HORIZONTALLY) you must place the <img> inside of a BLOCK-level element such
+     as a div . Since the text-align property only applies to block-level elements, you place text-align: center; on the
+     wrapping block-level element to achieve a horizontally centered <img> or any inline or inline-block element. */
+/* When you have an image that is all the way to the edges of a box and we make that box to have border-radius, although we specify a
+ border-radius, the edges of that box is still sharp. So as I mentioned we can use overflow: hidden; on parent of that image.
+ Now if you use clip-path property on that image, so clip-path in google chrome breaks overflow that we set for that image.
+ Remember: We set overflow: hidden; on parent of image, so the corners that are overflowing the parent element would be hidden. BUT
+ for some reason when we use the clip-path property on that image which causes overflowing, then the overflow: hidden; no longer
+ works.
+ The solution is to set the corrupted borders manually. So in &__picture we can say:
+ border-top-left-radius: 0.3rem;
+ border-top-right-radius: 0.3rem;*/
+/* Learn: Block elements automatically (and if they aren't already wiped out of normal flow), gets 100% width of their parents,
+      but for this .story element, we don't want it to get's 100% width of it's parent automatically so we gave it a width.
+      If you don't specify a width for a block element AND if that block element doesn't already wiped out of normal flow,
+      the width of that block element is 100%.
+      Now when you already centered a block element inside another block element, if you give this block element any other
+      width than 100% it won't be no longer centered.
+      So we can use margin: 0 auto; on element that we want to center it horizontally and that element will be CENTERED ITSELF!
+      This approach(margin: 0 auto;) won't center the children that are inside this block element.
+      For making the content that is inside block element to center:
+      1)
+      Set the child elements to either display:inline or display:inline-block, then set the parent container to text-align:center,
+      the children will center in the parent- depending on whatever its width
+      2)
+      If the child content is block level (display:block) set text:align:center; on the parent, then give the child margin:0 auto
+      and a width less than that of the parent*/
+/*
+light-green:#7ed56f
+medium-green:#55c57a
+dark green:#28b485
+ */

@@ -1,0 +1,150 @@
+@import "../abstracts/variables";
+//@import "../base/animations";
+
+/* You could argue that .heading-primary is a component. But not really! Because it's really related to typography. */
+.heading-primary {
+  color: $color-white;
+  text-transform: uppercase;
+
+  /* Because of moveInFromLeft animation, the text will be a bit shakes after the animation finishes, so we can use this property on
+   the text itself. Why we add this property to entire element ? Because we saw that entire element shakes after the animation finishes.
+   So we set this animation on the entire element.
+
+   Learn: backface-visibility property determines when we transform an element if the back part of an element is visible or hidden for
+   the user?
+   So imagine we have an element and we rotate it 180 degrees. So it would be logical that we then see the back part of that
+   element.Right? But if we use backface-visibility: hidden; then that back part (the part that is behind the element) get's hidden.
+   But in this case we are not rotating anything but still we must use this fix here.*/
+  backface-visibility: hidden;
+  margin-bottom: 6rem;
+
+  &--main {
+    /* What should we do in order to put those 2 <span> elements ('outdoors' and 'where is life ...') on top of each other instead of
+     all in one line? We can displaying them both as block level elements because block elements occupy the entire width that
+     they have available and also they create line breaks after and before them.
+     <span> elements by default are inline elements.*/
+    display: block;
+    font-size: 6rem;
+    font-weight: 400;
+    letter-spacing: 3.5rem;
+  }
+
+  &__main {
+    &--animated {
+      animation-name: moveInFromLeft;
+      animation-duration: 3s;
+      animation-delay: 0.5s;
+      animation-timing-function: ease-out;
+      animation-fill-mode: backwards;
+    }
+  }
+
+  &--sub {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 1.74rem;
+    animation-fill-mode: backwards;
+  }
+
+  &__sub {
+    &--animated {
+        animation-name: moveInFromRight;
+        animation-duration: 3s;
+        animation-delay: 0.5s;
+        animation-timing-function: ease-out;
+    }
+  }
+}
+
+body {
+
+  /* Remember:We won't set overall font properties for entire website inside the universal selector (*), we must do it in body selector.
+    Why we do it this way? Because the properties that are related to fonts, are usually inherited. So this way we can use the
+    power of inheritance here.For example we set font-family on body and this property will get inherited by all the child elements of the
+    body and doing it this way is actually more efficient and it's a better practice than put all of this in the universal selector. So
+    everything is related to font, we specify it in the body not universal selector.
+    So here we set font-family to 'Lato' and if it is not available, we use sans-serif
+    Remember: body element is parent element for all other elements. So whatever we define in body selector CAN BE inherited
+    by all other child elements but these elements can not inherite anything from universal selector so because of this we define
+    color and font and ... in body selector.*/
+  /* These are project-wide font definitions: */
+  font-family: "Lato", sans-serif;
+
+  /* Let's set overall font-weight to 400 */
+  font-weight: 400;
+
+  /* Remember: You must use better techniques than px here. */
+  /*font-size:16px;*/
+  line-height: 1.7;
+  color: $color-grey-dark;
+
+  /* We want all of our website to has some whitespace around it, so we give some padding to the body element.Why? because body
+   element contains entire web page, so if we set a padding here then this padding will apply to entire web page.
+   Note: This won't inherited by all other child elements of body. All it's happening that is we are applying 3rem padding around
+   the entire body or the whole web page.*/
+  padding: 3rem;
+}
+
+/* For have a gradient color INSIDE a text, the trick is to first set the background-image of the entire text(in this case text is <h2>) to
+ a gradient. Now we want the gradient to stop where the text stop. Because the gradient is currently goes beyond the text to the end.
+ Why the background-image of this element which is a gradient goes to the end of the line? Because the <h2> element is a block-level
+ element therefore the background of it goes to the end of the line. So we must do the below task:
+ Important: Now how we make this element to doesn't occupy it's 100% AVAILABLE width? So right now it's a block element and that's why
+   it's background goes till the end of the line.
+ So let's change the display to inline-block. Now the background stops where the text is stopped.
+ The next step is to make the effect, behind the actual text. So we must use the new property named -webkit-background-clip.
+ Because it's new, we must use -webkit prefix.
+ Now when you use -webkit-background-clip: text; , the background gets clipped exactly where the text is. In other words, it will
+ clip the background (in this case the background is linear-gradient) to exactly the places where the text sits and so therefore
+ this background-image or this gradient in this case, will only be visible where the text sits.
+ Now what we want to see then is not actually the text itself, but the background-image . So imagine that right now we have the
+ background-image only where the text is, then ON TOP OF background-image, we have the text. So we must make the text transparent.So we
+ can see the background-image. So color: transparent
+ So if you don't use color: transparent; in this situations, we see that the text is on top of the clipped background. But we want to
+ make the text some kind of invisible(transparent). */
+.heading-secondary {
+  display: inline-block;
+  font-size: 3.5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  background-image: linear-gradient(to right, $color-primary-light, $color-primary-dark);
+  -webkit-background-clip: text; //MAKE THE LINEAR-GRADIENT FILL ONLY THE TEXT.
+  color: transparent; //WE WANT TO SEE IS NOT THE TEXT , WE WANT TO SEE THE BACKGROUND-IMAGE.
+  transition: all 0.6s;
+
+  /* You could also use px unit here and not rem. Why? Because 2px is such a small thing that it doesn't really matter if it's gonna
+    scale or not and no matter if we increase the root font-size or not, this will always translate to just 2px because of rounding
+    issues(rounding means approximately). BUT OKAY! Let's make it 0.2rem*/
+  letter-spacing: 0.2rem;
+  text-align: center;
+
+  &:hover {
+    /* For the value of transform property, we can put multiple things at the same time. When you want to use multiple things in
+    transition, it doesn't need comma or anything else, just a space between each of them.*/
+    transform: skewY(3deg) skewX(17deg) scale(1.1);
+    text-shadow: 0.7rem 0.8rem 4rem rgba($color-black, 30%);
+  }
+
+}
+
+.heading-tertiary {
+  font-size: $default-font-size;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.paragraph {
+  font-size: $default-font-size;
+  /* Now we want our .paragraphs to have a margin-bottom because we usually use a bunch of different paragraphs one after another,
+   so it makes sense to have a bit of space between them. But we don't want space between the last .paragraph . So let's use :not()
+   pseudo class.So we want to select all of the .paragraph s except the last one of them.*/
+
+  /* This says the last paragraph of it's parent, shouldn't have margin-bottom: 3rem; So any paragraph within it's container except
+   the last one of it, should get margin-bottom: 3rem;*/
+  &:not(:last-child) {
+    margin-bottom: 3rem;
+  }
+
+}
+

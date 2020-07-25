@@ -1,0 +1,195 @@
+@import "../abstracts/variables.scss";
+
+/* importance > specificity > source order */
+
+/* When you have a <a> element in HTML and you want to style it, you can style it with just simply writing it class and then
+ declare properties, but it's better to style it with .<class-name>:link, .<class-name>:visited in other words, when you want
+ to style a <a> you must use :link and :visited on it's class. In here, :link and :visited are pseudo classes. Pseudo classes
+  are special state of a selector. So we use pseudo classes to style elements on a special condition.
+  :link is a state that will happen when it is an anchor element, so it functions as a link.
+  :visited is a state when user has already clicked on the button previously and then sees the button again.
+   So in most cases we want the visited state to look like exactly the :link state (normal state).So we just put them together.*/
+
+/* For centering this <a> which now is an inline-block element, it doesn't need to use absolute positioning on the <a> itself and
+ then make it's container to be position:relative; and then set top and left and then use transform: translate() ... , it would be
+ too much for this simple thing. Because we can acheive this centring really easy. We know the <a> NOW is inline-block element and
+  inline-block  elements can be treated as they are like text and because they are like text we can center them like text. So all we have to do
+  is to set text-align:center; to the parent of this <a>. */
+
+.btn {
+  &:link, &:visited {
+    text-decoration: none;
+    text-transform: uppercase;
+
+    /* Remember: If you want to give some padding or height or width or ... to inline elements, first you must make them inline-block or block
+   elements and then give them those properties. So for <a> this rule is correct. So first we have to give it a display of inline-block
+   and then give it those properties that I mentioned. So for recap: When you do this trick, the box model will work on this <a>, as it
+   was just a normal block or inline-block element.*/
+    display: inline-block;
+    padding: 1.5rem 4rem;
+
+    /* If you put 20rem or 50 rem or ... it will be all the same.TODO???? */
+    border-radius: 10rem;
+
+    /* We want to animate this element and it would be easy so we use transition and in transition property we specify which properties
+     we want to animate and if we are not really sure or if we don't want to write them out, we can simply say: all. So when we say
+     all in transition, we enable all of the properties to be animated. transition property is a shorthand, like animation property.
+
+     Why the transition property must be in the initial state (:link and :visited)? That's just how it works.
+     So on the initial states, we just say that there can be a transition basically on all of the properties and then on the hover
+     we say how it should be looks like (how the animation will happen actually!). */
+    transition: all 0.2s;
+
+    /* We have a child in this element that has a position:absolute; and it needs a reference to get behind he actual button (this element) */
+    position: relative;
+    font-size: $default-font-size;
+    box-shadow: 0rem 1rem 2rem rgba($color-black, 0.5);
+  }
+
+  &:hover {
+
+    /* We want the element to move up, so it would be negative value in () of translateY(). Because the Y axis in CSS is opposite of
+     Y direction in math.
+     Remember: translateX() and translateY() are used for moving elements.*/
+    transform: translateY(-0.8rem);
+
+    /* box-shadow: <offset in x direction> <offset in y direction> <blur- (in :hover we declare higher blur than in :active
+    so it would seem that in hover we are further away from element and in :active the element backs closer to the page.)> <rgba> */
+    box-shadow: 0rem 1rem 2rem rgba($color-black, 1);
+  }
+
+  /* :active pseudo class is when we click on element.
+   Important: This -0.5rem is in relation to the initial state (:link state) of this element and not to the :hover state.*/
+  &:active {
+    /* When the element is in active state, we want the shadow to looks smaller.*/
+    transform: translateY(-0.5rem);
+    box-shadow: 0rem 0.5rem 1rem rgba($color-black, 0.5);
+  }
+
+  /* pseudo elements allow us to style certain parts of an element.For example: ::after adds a virtual element right after the element itself
+   that we are selecting it. The trick in this case is to add an element that looks like EXACTLY like the button that we already have, but
+   we put it behind the button and when we hover OUT of the button, then this hidden pseudo element goes back behind the button.*/
+
+  &::after {
+    /*  But first in order for pseudo element to actually appear on the web page, we need to specify it's content property (necessary!),
+     it doesn't matter what the content is but we have to specify it, otherwise it's not going to appear and the same rule for
+     display property. In this case we give display, inline-block because the actual button we have is also inline-block (remember that
+     the ::after and the actual element must be the same.) */
+    content: "";
+    display: inline-block;
+    border-radius: 10rem;
+
+    /* Learn: This width and height are related to the actual element itself. Because the ::after pseudo element is basically treated
+        like the child of the actual element itself. So here height and width in %, are related to height and width of the element itself.*/
+    width: 100%;
+    height: 100%;
+
+    /* After this, we must make the ::after pseudo element to have position: absolute; because if we don't do this, the ::after
+     pseudo element will look like it's part of the actual button but we want this pseudo element to be behind the actual element.
+     Remember: Any absolute position needs a reference and the reference is the first element with the relative position that our
+     element with position:absolute can find.In this case it would be .header . But we don't want to be .header, we want it to be
+     hidden after the button. So reference should be the .btn (.btn:link), therefore we have to set the position:relative
+     on .btn:link*/
+    position: absolute;
+    top: 0rem;
+    left: 0rem;
+
+    /* We set position:absolute; so now we can use z-index to really hide this ::after element behind the actual button. */
+    z-index: -1;
+    transition: all 0.5s ease-out;
+  }
+
+  &:hover::after {
+
+    /* We want to .btn to get bigger when we hover over it. So we must bigger the ::after pseudo element  */
+    transform: scaleX(1.5) scaleY(1.7);
+
+    /* We want the .btn to fade out at the end of the animation. This is the trick for fading something out, it's going to
+     have opacity:0; at the end of the animation.*/
+    opacity: 0;
+  }
+
+  &--white {
+    background-color: $color-white;
+    color: $color-grey-dark;
+
+    &::after {
+      background-color: $color-white;
+    }
+
+  }
+
+  &--green {
+    background-color: $color-primary;
+    color: $color-white;
+
+    &::after {
+      background-color: $color-primary;
+    }
+  }
+
+  &--animated {
+    /* The .btn was visible before the animation happens, so it stays visible and then it starts to move in from bottom (the animation).
+     In order to prevent this, we could simply put these initial states on the .btn but it would be impractical. So we can use
+     animation-fill-mode property and set it to backwards and this will automatically apply the styles which are in 0% step of
+     the animation we are applying (buttonMoveInFromBottom) before the animation starts. (In other words the styles that are in
+     0% step of the buttonMoveInFromBottom animation are applied BEFORE THE ANIMATION STARTS.)*/
+    animation: buttonMoveInFromBottom 3s ease-out 0.75s;
+    animation-fill-mode: backwards;
+  }
+
+}
+
+.btn-text {
+  &:link, &:visited {
+    font-size: $default-font-size;
+    color: $color-primary;
+
+    /* Because <a> element is an inline element, it won't accept top or bottom margin and top or bottom padding.So we make it
+     inline-block .*/
+    display: inline-block;
+
+    /* We want to have our custom underlying for this element. So we make the default underlying for <a> element tp none and then
+     declare a border-bottom property to set our custom underlying.
+     WHY WE DID ALL OF THIS? Because we want to set some padding between the underline and the actual text of button and we know that
+     we can't do this by having the default underline of <a> element. So we set text-decoration: none; and then define some custom
+     underline with border-bottom and then we can use some padding between the text of <a> and it's border by using padding and not
+     margin! Because padding is for inner space of element.*/
+    text-decoration: none;
+
+    /* Small values for px units are not a big deal because they are small and they are'nt going to change the sizes if the user
+     decides to change the root font-size. So if user increase the root font-size of website, elements on the page that have
+     units based on rem would scale up but that 1px and 3px will still 1px and 3px. But if the improvement of root font-size was
+     extreme by the user, for example user increase the root font-size from 16px to 32px, the elements that have units based on rem will
+     become very big but the elements that have units based on px, will still be like before and it's not good. But no one would increase
+     root font-size like that! (The default value of 1rem in our project is 62.5% of the root(browser) font-size and 1px is OBVIOUSLY
+     1px RIGHT? It's static.)
+     So if you have a really small px unit, you can leave it as px.*/
+    border-bottom: 0.1rem solid $color-primary;
+    padding: 0.3rem;
+
+    /* When we hover out of the element it takes 0.3 seconds for hover to gets back revers. */
+    transition: all 0.3s;
+  }
+
+  &:hover {
+    background-color: $color-primary;
+    color: $color-white;
+
+    /* box-shadow: <shadow in x direction> <shadow in y direction> <blur> <color of shadow> ; */
+    box-shadow: 0 2rem 5rem rgba($color-black, .20);
+    transform: translateY(-0.4rem);
+    border-radius: 0.5rem;
+  }
+
+  &:active {
+    /* When we click on this element, it moves down a little bit and the shadow around the button changes a little.*/
+    box-shadow: 0 .7rem 2rem rgba($color-black, .20);
+
+    /* When you say translateY(0); , whenever the element is, it will get back to it's initial position. */
+    transform: translateY(0);
+  }
+}
+
+
+
