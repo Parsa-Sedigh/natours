@@ -99,14 +99,101 @@
      padding in .story by specifying padding-left property and for the value of padding-left, we add the value that we move the
      .story__shape to the padding we had for left side which is 6rem. With this, part of the image is still in padding area but
      the padding is VISUALLY 6rem everywhere(but in box model it's kind of not!)*/
+
+    position: relative;
   }
 
   &__img {
     height: 100%;
+
+    /* The <img> is where you can see the blue box when hover on the <img> in developers tools.
+    I want to take the image a little to the left */
+    transform: translateX(-4rem) scale(1.4);
+
+    /* Also here you can use backface-visibility: hidden; if the image was kind of cut. So whenever something wierd happens
+     when dealing with animations and translating , if sth weird happens you can use that prop.
+     So I used it because when using blur() on the hover of image, the image would be wierd when getting blurred.*/
+    transition: all .5s;
+    backface-visibility: hidden;
+  }
+  &__text {}
+
+  &__caption {
+    /* hover on the .story: First the image would zoom out and then text moving in and also the image getting blurred.
+    We added that text which would be on the image, by using <figcaption> element which this element is inside <figure> element and
+    we want that <figcaption> to be on top of the image and centered horizontally and vertically based on the image.
+
+    So we must use position: absolute; and because we used position: absolute; we need to set the position of container of this
+    element to be relative and it's container is <figure class="story__shape">
+    Learn: Now for centering horizontally and vertically for the element with position: absolute; we say: top: 50%; left: 50%; and then
+     transform: translate(-50%, -50%)
+
+    So before we hover on the <div class="story"> , the text or <figcaption> needs to be invisible and it must be in some distance
+    in Y axis and when we hover on that <div class="story"> , the text must moves up to the center of image. So the caption in it's
+    normal state, must be more under it's centered position and then we hover on that box, that caption must moves up. So we can
+    make it to go further down, by using transform: translate() , but we're are already using this prop. So let's manipulate it's
+    values. So instead of -50%, -50% we can make the value in Y direction more. So instead of -50% , we can set it to 10% or more.
+    Also for making it invisible at normal state, I used opacity: 0;*/
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 20%);
+    color: $color-white;
+    text-transform: uppercase;
+    font-size: 1.7rem;
+
+    /* Let's center the content which is inside this .story__caption element */
+    text-align: center;
+    opacity: 0;
+    transition: all .5s;
+    backface-visibility: hidden;
   }
 
-  &__text {
+  /* As soon as the .story is hovered, we want the .story__caption to have some styles: */
+  &:hover &__caption{
+    opacity: 1;
 
+    /* Here we want to make element to be in translate(-50%, -50%) and currently it has translate(-50%, 20%) . But should we
+    write translate(-50%, -70%) ? Because if you want to get to -50% from 20% , you must minus 20% from -70% in order to get to
+    -50%? NOOOO! You must specify the FINAL value you want to the element be. We want the element to be in -50%, -50% and it doesn't
+    matter currently it is in x%, y% . We must set the final value here which is -50%, -50% . Also you must specify ALL of the values
+    of both axises and YOU SHOULDN'T ONLY SPECIFY THE VALUE OF AXIS YOU WANT TO CHANGE. So in here, we just want to translate the
+    element in Y axis, but you can't only specify the transform: translateY(-50%);, instead as I say you must SPECIFY THE FULL
+    version of translate() and it's values.So transform: translate(-50%, -50%);
+
+    Currently in the end of translate animation of &__caption , you can see a little shake of text. So let's add the
+    backface-visibility: hidden; for the normal state of the element which in the end of it's hover state shakes a little bit.
+    So I added backface-visibility: hidden; to &__caption in order to fix the little glitch.
+    */
+    transform: translate(-50%, -50%);
+  }
+
+  &:hover &__img {
+    /* The image must zoom out when we hover on the box of .story element. So initially you must zoom-in(more scale) the image a little bit and
+    after hovering on .story we zoom out(scale down) that image.
+    So let's add scale() to &__img .
+
+    IMPORTANT: When you have transform prop on the initial(normal) state of an element and you want to change that transform prop in
+     other states of that element, you must write ALL of the functions that you used in value of transform prop.
+     So here, in the normal state of &__img we have the transform prop and in :hover state of this element, we want to change JUST
+     ONE function that is used in this prop in hover state of this element. Although you want to change just one of the functions
+     of the transform prop in hover state, YOU MUST WRITE ALL OF THE FUNCTIONS THAT YOU USED IN INITIAL STATE OF THIS ELEMENT IN OTHER
+     STATE OF THIS ELEMENT WHICH IN THIS CASE IS hover state. So here I must write translateX(-4rem) scale(1); instead of
+     just scale(1); . Although just scale(); function was changed. So we learnt that if you had transform prop in normal state
+     of a class, you must duplicate all of it's functions in other states too! Even if you want to just change one of the functions.
+
+    Learn: When you say scale(1.4); it means 140% larger of that element.*/
+    transform: translateX(-4rem) scale(1);
+
+    /* In brightness() we can specify a value lower than 100%, to make the image darker and a value above 100% , makes the image
+    brighter.
+
+    Learn: If you want to see the hover state of an element(if it has a hover state actually!) you can go to that element on
+     dev tools and then in the right pane, you can select :hov tab and then click on hover. Now the element would become the thing
+     that it would be if we hover on it, without actually hovering on it. (It's mainly for debug purposes.) . After doing this,
+     you can change the styles that would apply that element in hover mode of that element instantly and even without hovering
+     on that element.*/
+    filter: blur(3px) brightness(80%);
   }
 }
 
