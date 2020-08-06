@@ -539,6 +539,38 @@ So <main> is like a huge container that will contain most of our website. -->
 
     <!-- We START styling a section by give some style to <section> itself. -->
     <section class="section-stories">
+
+        <!-- To create the background video which si behind the entire of this section, first let's create an element in this
+         section for this background video and we must make that element, the exact same size as this entire story section.
+         So how we create an element with exact same size as entire section? Easy, we create a direct <div> child for this <section>.
+         and then put that video in that <div>.
+         In <video> tag, instead of using src attr on the <video> tag like we would do it in <img>, there's actually a <source>
+         tag in HTML, which allows us to embed a video file into this <video> element.
+         Remember: You don't need to make the bg-video <div> , to be the container of all of the elements in this section.
+         Because we would position this element, using absolute positioning.
+         Also a background video is a component. So we created a .scss partial file for it in components folder and then import
+         that partial file into main.scss file.
+
+         We got those videos from coverr website and when you download a video from that website, that video already comes in
+         2 versions which are mp4 and webm and we need these two formats in order to make absolutely sure that this video works
+         across all of the browsers or at least on all of the modern browsers. Of course it won't work on IE 8 or 9 or sth like
+         that. Also we usually must put some text in <video> tag and after all of the <source> tags. Because if none of those
+         <source> tags which are in <video> work or played by the browser, then, that text will show in that browser, instead of
+         video. So in this case, if mp4 can't be played and also webm can't be played by the user's browser, then that text would
+         appear.
+         Now we must also add some commands to <video> element. So we add some attr for the video that we're implementing.
+         For example autoplay attr. autoplay usually is a bad thing but since in this case we're using the video which autoplay
+         is on it, as a background video and since it's muted, it's not a problem to having that autoplay attr.
+
+         The video right now, is not a background also it is bigger than the screen size, so we have an overflow in x direction.-->
+        <div class="bg-video">
+            <video class="bg-video__content" autoplay muted loop>
+                <source src="img/video.mp4" type="video/mp4">
+                <source src="img/video.webm" type="video/webm">
+                Your browser is not supported!
+            </video>
+        </div>
+
         <div class="u-center-text">
             <h2 class="heading-secondary u-margin-bottom-big">
                 We make people genuinely happy

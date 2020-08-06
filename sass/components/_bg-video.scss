@@ -1,0 +1,78 @@
+/* We would position this element, using absolute positioning. So we need to this position: absolute; to be related to it's
+ parent. So we give position: relative; on <section class="section-stories"> . Also because we want the video to cover all of
+ the elements which are in the section, we must give the div of video an exact height of it's parent which is the section.
+ So height: 100%; and also the same width of it's parent.
+ Remember: Because the parent of this .bg-video have some vertical padding, that padding would also be some part of the
+ height of that element. So when we say, height: 100%; here, the height of this .bg-video would be equal to the height of
+ it's parent and also the vertical padding of it's parent. So:
+ height of child which has height: 100%; = height of parent + vertical padding of parent
+
+ Also:
+ width of child which has width: 100%; = height of parent + horizontal padding of parent
+
+ Right now, the video is behind all of the elements of the story section but the button and h3 are behind this background video.
+ So we can specify a very low z-index for the container of entire background video . So z-index: -1;
+ But after doing this, the .bg-video element goes away from the elements of the section-stories but it's still in that section
+ and that's because we still have a background-color for the .section-stories . So let's get rid of it, so now the entire of
+ that section is transparent and therefore the .bg-video is going to be behind all of the elements of that section.
+
+ Currently, the <video> which is inside the .bg-video container, is overflowing in x direction and is taking it's entire width and
+ also the video is not filling the entire height of .bg-video, which is the parent of the video. So we can give the video, a height
+ of 100% and also width: 100%;
+ But right now, by using width: 100%; and height: 100%; on video itself, the video is not getting he whole height of .bg-video !!!
+ Because it is maintaning the aspect ratio of video. So if the video was wider, before using height: 100% and width: 100% on it,
+ it was also more longer(occupies more height) and vice versa.
+ So if we just specify the width: 100%; on video, it would occupies less height because we explicitely are saying that the
+ video must have 100% width of it's parent, no matter of what. So it cuts it's height to have a 100% width and if we give the video,
+ a height of 100%, it would get more width for because we expliciltly set height of the video, so it must
+ change it's width to get that height.
+ But currently we are giving the video, height: 100%; and also width: 100%; so the video would covering even less height of the
+ .bg-video in comparison of when we ONLY specify the width: 100%; for the video! Because by setting height and width to 100% SIMONTINYOUSLY
+ for the video, the <video> element tries to maintain it's aspect ratio. So now in addition of the prior problem we got the
+ aspect ratio problem now too!
+ So aspect ratio means if the video was wider before, then of course it was higher before too. So it could occupy more of .bg-video .
+
+ So what do we do to occupy the entire section with video (which in this case the entire section is same as .bg-video because the .bg-video
+ get's 100% width of section because .bg-video is a block element and also we gave .bg-video a height of 100%) but also while
+ maintaining the aspect ratio of video?
+ So we can use object-fit property on the video which needs to maintains it's aspect ratio and when we set object-fit to cover,
+ it would be similar to what we always do with background-size: cover; for background-images.
+ Learn:So what object-fit will do is that the element which gets this property, will fill the entire parent while still mainaning it's
+  aspect ratio.
+ So the part of the video that don't fit the parent element would simply be clipped off.
+ object-fit prop is similar to background-size: cover; which is for background-images to cover entire of their parent. object-fit
+ is similar to that but instead of working with background-images , it(object-fit) works with HTML elements like <video> in this case.
+ But of course it would just the same with images. So can have a parent element and in that parent an image, then with object-fit:cover;
+ on that image, we can make that image to cover the parent.
+
+ object-fit: fill; , will make that html element fill all of the height and width of the parent but won't maintain it's aspect ratio.
+ object-fit: contain; would try to fill that html element inside it's parent but without clipping parts of it. So it would definitly
+ maintain the aspect ratio but won't cover all of it's parent.
+ Also I used overflow prop on the .bg-video or the parent of the element which that element might overflow on it's parent. So we can
+ use overflow: hidden; on that parent.
+ */
+
+.bg-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  opacity: .15;
+  overflow: hidden;
+
+  &__content {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+
+
+
+
+
+
+

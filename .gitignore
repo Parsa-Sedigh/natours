@@ -1,2 +1,16 @@
 # Created by .ignore support plugin (hsz.mobi)
 node_modules
+.idea/.gitignore
+.idea/Project4.iml
+.idea/codeStyles/
+.idea/dbnavigator.xml
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/modules.xml
+.idea/php.xml
+.idea/vcs.xml
+.idea/watcherTasks.xml
+img/
+linea_icons/
+package-lock.json
+slides-students-C04.pdf

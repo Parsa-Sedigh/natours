@@ -14,7 +14,7 @@
     this is bad!
 
     For centering this row in the viewport, we must use margin: 0 auto. This is the trick for centering a block element which is
-    inside another block element. But wht this works? When we say margin must be auto, this means that the browser when is rendering
+    inside another block element. But why this works? When we say margin must be auto, this means that the browser when is rendering
     the page, will automatically figure out the margin that we want on the left and the right side(because we set margin: 0 auto) and
     since right and left margins are set to auto, it means the left and right would be same. So the element would be centered.
 

@@ -19,7 +19,13 @@
   width: 75%;
   margin: 0 auto;
   box-shadow: 0 3rem 6rem rgba($color-black, .2);
-  background-color: $color-white;
+
+  /* We want the entire story component gets some opacity less than 1. But we can't simply use for example a opacity: .5;
+   like what we did with the video container (or .bg-video). Because by doing this, EVERYTHING which is in this .story element,
+   would get that low opacity. But we only want the background of this .story to get this opacity not the things which are in
+   this .story . So we must use rgba() on the background-color of .story element, instead of giving .story , opacity property. */
+  //background-color: $color-white;
+  background-color: rgba($color-white, .6);
   border-radius: .8rem;
   padding: 6rem;
   padding-left: 9rem;
