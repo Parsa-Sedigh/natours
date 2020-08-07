@@ -29,7 +29,7 @@
                   to right bottom,
                   rgba($color-primary-light, 0.8),
                   rgba($color-primary-dark, 0.8)),
-  url(../../img/nat-4.jpg);
+                  url(../../img/nat-4.jpg);
   background-size: cover;
 
  /* It's not very good looking to use background-attachment: fixed; on this section. Because we skewed the entore section */
@@ -82,4 +82,105 @@
   padding: 15rem 0;
   position: relative;
 }
+
+.section-book {
+  padding: 15rem 0;
+  background-image: linear-gradient(to right bottom, $color-primary-light, $color-primary-dark);
+}
+
+.book {
+  /* linear-gradient(FIRST_COLOR, SECOND_COLOR, ...)  Why we used rgba() in this case? Because we want to specify the opacity
+  of the colors we're using here too.
+
+  Learn: Instead of specifying the to right bottom or to left or ... (direction of gradient), we can specify an angle. So if we say 90deg
+   the gradient would go from left to right.
+   So 0deg is from top to bottom and when the degrees get more, the direction of gradient is going anti clockwise. So 36deg is going to
+   be more at anti clockwise than 35deg.
+
+  In this case that 105deg, is like we're using clip-path .
+
+  In linear-gradient() function, we can use percentages to specify different parts of gradient. So with percentages in this function,
+  we can specify in those coordinates which are specified with percentages, which colors there must be.So we can say in the beginning
+  of the gradient in other words in 0%, we want the black color to be exists. So we can say:
+  linear-gradient($color-black 0%, ...) or linear-gradient(rgba($color-black) 0%, ...)
+
+  Currently by using:
+   background-image: linear-gradient(
+                  105deg,
+                  rgba($color-white, .9) 0%,
+                  orangered 50%),
+                  url(../../img/nat-10.jpg);
+
+  We have a GRADIENT which at 50% we have the orangered color but completely orangred and not an orangred with some white in it. NO!
+  Completely orangred.
+  IMPORTANT: So when you say: red 40% it means in 40% of that total gradient, we would have COMPLELETELY AND PURE of that red color.
+  So in the prior snippet code, we have the actual gradient between 0% and 50%. So in 0% we have completely white color and in
+  50% we have completely orange color. But we don't want to have a gradient between 0% and 50% . In other words we want our white
+  color to be completely white until 50% and then from 50% till the end, we want completely orangered. So we can say:
+  background-image: linear-gradient(
+                  105deg,
+                  rgba($color-white, .9) 0%,
+                  rgba($color-white, .9) 50%,
+                  orangered 50%),
+                  url(../../img/nat-10.jpg);
+
+  So we're saying at 0% we want completely white or rgba($color-white, .9) and in 50% we also want EXACTLY rgba($color-white, .9) .
+  EXACTLY means we don't want gradient there and then at 50% we want COMPLETELY orangred. Why COMPLETELY?
+  Because when we specify a color in the x percentage, that color would be completely pure in that place, but BEFORE that x percentage
+  like x-10 or x-2 or even x-1 place, that color wouldn't be pure.
+  Learn: Like what we did in: rgba($color-white, .9) 50%,
+                              orangered 50%),
+   we are saying in 50% we want pure rgba($color-white, .9) and in 50% we want pure orangered 50% , therefore, the result is
+   we have a sudden change between these 2 colors at 50% . Because we are changing the color in 50% which is a very short distance in
+   compare to 0% and 50% . So we have a big contrast and that's what we need here in this form.
+
+  Again if we have sth like:
+  background-image: linear-gradient(
+                  105deg,
+                  rgba($color-white, .9) 0%,
+                  rgba($color-white, .9) 40%,
+                  orangered 50%),
+                  url(../../img/nat-10.jpg);
+
+  We would have gradient between 40% and 50%. So if we put these values at the same number, like what we did in above at 50%,
+  we would have a solid line which is separating a huge contrast between colors of gradient in 50% for example.
+  So we have a gradient between two solid colors. So that's why we name it like that.
+
+  transparente is absence of colors.
+
+  So with this technique we didn't use any clip-path. But this technique is not always possible. So we can't use it in for example
+  in section-features or header in our website.
+  */
+  background-image: linear-gradient(
+                  105deg,
+                  rgba($color-white, .9) 0%,
+                  rgba($color-white, .9) 50%,
+                  transparent 50%),
+  url(../../img/nat-10.jpg);
+
+  /* Instead of using a keyword like cover here, we can use a value like 100% here and 100% HERE means the exact same thing as
+   cover keyword HERE. That's because cover, will stretch the image to occupy the entire container of that image with
+   background-size: cover; and that's what also by using 100%(100% of width) there, we get.
+   If you are using 100% for background-size and if you decrease it to for example 90% , you would see that the image would start
+   to repeating on one side(from the right side) and if we put 50% , the entire width for that background-image would be divided
+   into 2 columns and since the aspect ratio of the image stays the same, we have multiple images of that background image.
+   Also you can specify a higher value than 100% .
+
+   When a <div> hasn't got any content in it, it would have a height of 0 . So actually for seeing that <div> in the beginning,
+   we can give it some height explicitely. So this is just for testing purposes. Because later on, we want the content of that
+   <div> to define the height of that container <div> .*/
+  background-size: cover;
+  height: 50rem;
+  border-radius: $book-border-radius;
+  box-shadow: 0 1.5rem 4rem rgba($color-black, .5);
+
+  &__form {
+    width: 50%;
+    padding: 6rem;
+    height: 50px;
+  }
+}
+
+
+
 

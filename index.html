@@ -647,6 +647,69 @@ So <main> is like a huge container that will contain most of our website. -->
         </div>
     </section>
 
+    <section class="section-book">
+        <!-- We use a row class because we want to center the element and also well, we have a row actually.
+         The form itself is a reusable component, but rest of that design around form in home page like the box with that
+         background-image and also that non-straight edge, they aren't really a reusable piece.
+         So we add the unique styles which are unique to home page, to _home.scss file. But the form itself would be a component.
+
+         That gradient background would be a background-image property.
+
+         <div class="book"> is that box with background-image .So we can specify background-image for it. Then because we specified
+         background-image css property, we need to specify the background-size property too.-->
+        <div class="row">
+            <div class="book">
+                <!-- For that white element design on the background-image we can add another element here and then use
+                 clip-path on it to make that white shape. But we can do another thing which is solid-color gradient.
+                 That is just another background-color that we have on top of an image.So that is actually a gradient. So in our
+                 case, this solid-color gradient starts from left side with white color and then after that non-straight edge,
+                 we have a transparent color instead of that white image. So in fact we have really a gradient. Which starts from
+                 white color to transparent in this case.
+                 So in this case we want this gradient to be on top of the image(background-image in .book class).So we must add
+                 ANOTHER background image, plus that image which is specified by url() . So we must use a comma. But remember. Because
+                 the image is UNDER the gradient in this case, the gradient or it's function which is linear-gradient() must be the first
+                 one. So the order in this case is very important.
+                 So in background-image prop the thing that must be on top of others, must be the first one and then the under one and
+                 then the under one and ... .
+
+                 We need a container for the <form>. So in this case, this .book__form is a container which would be sitting on the
+                 left side of that inner box which ahs background-image or in other words it would sit in that white area and that
+                 form is unique to home page so let's put the container of it in _home.scss
+
+                 action attr on <form> is the file we want this form to send it's data when get's submitted or as soon as the
+                 user hits the submit button.
+
+                 Learn: When you click on the <label> which is connected to <input> , that <input> would be focused. Even without clicking
+                  on the <input> itself.
+
+                 We used <div class="form__group"> to give the elements which are in this <div> some space to the other elements which
+                 are outside of that <div class="form__group"> . So with this, the <label> and the <input> are connected.
+
+                 The form is a reusable component so I named it's class form instead of something else which is related to this
+                 specific section.-->
+
+                <div class="book__form">
+                    <form action="#" class="form">
+
+                        <div class="u-margin-bottom-medium">
+                            <h2 class="heading-secondary">Start booking now</h2>
+                        </div>
+
+                        <div class="form__group">
+                            <input type="text" class="form__input" placeholder="Full Name" id="name" required>
+                            <label for="name" class="form__label">Full Name</label>
+                        </div>
+
+                        <div class="form__group">
+                            <input type="email" class="form__input" placeholder="Email Address" id="email" required>
+                            <label for="email" class="form__label">Email Address</label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
 </main>
 
 

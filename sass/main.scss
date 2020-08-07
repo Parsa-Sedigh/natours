@@ -14,6 +14,7 @@
 @import "components/card";
 @import "components/story";
 @import "components/bg-video";
+@import "components/form";
 
 @import "layout/header";
 @import "layout/_grid.scss";
@@ -456,6 +457,14 @@ In padding: <value-1> <value-2> value-1 is for top and bottom and value-2 is for
       2)
       If the child content is block level (display:block) set text:align:center; on the parent, then give the child margin:0 auto
       and a width less than that of the parent*/
+/* 16. Building the Booking Section - Part 1:
+1) How to implement sth called "solid-color gradients"
+2) How the general and adjacent sibling selectors work and why we need them?
+3) How to use the ::input-placeholder pseudo element
+4) How and when to use :focus, :invalid , :placeholder-shown and :checked pseudo classes?
+5) Techniques to build custom radio buttons
+
+*/
 
 
 
