@@ -17,7 +17,7 @@
   is to set text-align:center; to the parent of this <a>. */
 
 .btn {
-  &:link, &:visited {
+  &, &:link, &:visited {
     text-decoration: none;
     text-transform: uppercase;
 
@@ -44,6 +44,10 @@
     position: relative;
     font-size: $default-font-size;
     box-shadow: 0rem 1rem 2rem rgba($color-black, 0.5);
+
+    /*Some styles for <button> elements which use this class and these styles will adopt <button> elements which use this class. */
+    border: none;
+    cursor: pointer;
   }
 
   &:hover {
@@ -60,10 +64,11 @@
 
   /* :active pseudo class is when we click on element.
    Important: This -0.5rem is in relation to the initial state (:link state) of this element and not to the :hover state.*/
-  &:active {
+  &:active, &:focus {
     /* When the element is in active state, we want the shadow to looks smaller.*/
     transform: translateY(-0.5rem);
     box-shadow: 0rem 0.5rem 1rem rgba($color-black, 0.5);
+    outline: none;
   }
 
   /* pseudo elements allow us to style certain parts of an element.For example: ::after adds a virtual element right after the element itself
@@ -116,7 +121,6 @@
     &::after {
       background-color: $color-white;
     }
-
   }
 
   &--green {

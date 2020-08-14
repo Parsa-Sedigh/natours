@@ -13,6 +13,7 @@ the codes that are in that @mixin will be kind of extracted wherever we @include
    clear:both; will clear both float:left; and float:right; on the childes of an element which we're using clearfix on it.*/
 /* It's better to add used colors in project in this file which can be like a color palette!
  $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* You can also make the next color $color-grey-dark-2 but currently I don't have time for that.*/
 /* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
  "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
  the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
@@ -20,6 +21,7 @@ the codes that are in that @mixin will be kind of extracted wherever we @include
 /* It's very good to have some variables for gutter of grids. */
 /* It's better to add used colors in project in this file which can be like a color palette!
  $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* You can also make the next color $color-grey-dark-2 but currently I don't have time for that.*/
 /* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
  "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
  the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
@@ -142,6 +144,7 @@ body {
 
 /* It's better to add used colors in project in this file which can be like a color palette!
  $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* You can also make the next color $color-grey-dark-2 but currently I don't have time for that.*/
 /* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
  "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
  the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
@@ -273,7 +276,7 @@ body {
   margin-bottom: 8rem; }
 
 .u-margin-bottom-medium {
-  margin-bottom: 4rem; }
+  margin-bottom: 4rem !important; }
 
 .u-margin-bottom-small {
   margin-bottom: 1.5rem; }
@@ -286,6 +289,7 @@ body {
 
 /* It's better to add used colors in project in this file which can be like a color palette!
  $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* You can also make the next color $color-grey-dark-2 but currently I don't have time for that.*/
 /* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
  "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
  the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
@@ -310,7 +314,7 @@ body {
   /* pseudo elements allow us to style certain parts of an element.For example: ::after adds a virtual element right after the element itself
    that we are selecting it. The trick in this case is to add an element that looks like EXACTLY like the button that we already have, but
    we put it behind the button and when we hover OUT of the button, then this hidden pseudo element goes back behind the button.*/ }
-  .btn:link, .btn:visited {
+  .btn, .btn:link, .btn:visited {
     text-decoration: none;
     text-transform: uppercase;
     /* Remember: If you want to give some padding or height or width or ... to inline elements, first you must make them inline-block or block
@@ -332,7 +336,10 @@ body {
     /* We have a child in this element that has a position:absolute; and it needs a reference to get behind he actual button (this element) */
     position: relative;
     font-size: 1.6rem;
-    box-shadow: 0rem 1rem 2rem rgba(0, 0, 0, 0.5); }
+    box-shadow: 0rem 1rem 2rem rgba(0, 0, 0, 0.5);
+    /*Some styles for <button> elements which use this class and these styles will adopt <button> elements which use this class. */
+    border: none;
+    cursor: pointer; }
   .btn:hover {
     /* We want the element to move up, so it would be negative value in () of translateY(). Because the Y axis in CSS is opposite of
      Y direction in math.
@@ -341,10 +348,11 @@ body {
     /* box-shadow: <offset in x direction> <offset in y direction> <blur- (in :hover we declare higher blur than in :active
     so it would seem that in hover we are further away from element and in :active the element backs closer to the page.)> <rgba> */
     box-shadow: 0rem 1rem 2rem black; }
-  .btn:active {
+  .btn:active, .btn:focus {
     /* When the element is in active state, we want the shadow to looks smaller.*/
     transform: translateY(-0.5rem);
-    box-shadow: 0rem 0.5rem 1rem rgba(0, 0, 0, 0.5); }
+    box-shadow: 0rem 0.5rem 1rem rgba(0, 0, 0, 0.5);
+    outline: none; }
   .btn::after {
     /*  But first in order for pseudo element to actually appear on the web page, we need to specify it's content property (necessary!),
      it doesn't matter what the content is but we have to specify it, otherwise it's not going to appear and the same rule for
@@ -459,6 +467,7 @@ body {
 
 /* It's better to add used colors in project in this file which can be like a color palette!
  $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* You can also make the next color $color-grey-dark-2 but currently I don't have time for that.*/
 /* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
  "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
  the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
@@ -540,6 +549,7 @@ body {
 
 /* It's better to add used colors in project in this file which can be like a color palette!
  $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* You can also make the next color $color-grey-dark-2 but currently I don't have time for that.*/
 /* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
  "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
  the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
@@ -587,6 +597,7 @@ body {
 
 /* It's better to add used colors in project in this file which can be like a color palette!
  $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* You can also make the next color $color-grey-dark-2 but currently I don't have time for that.*/
 /* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
  "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
  the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
@@ -897,6 +908,7 @@ body {
  transform: rotateY(180deg); when you hover over card it won't rotate and you can easily debug the back side of card.*/
 /* It's better to add used colors in project in this file which can be like a color palette!
  $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* You can also make the next color $color-grey-dark-2 but currently I don't have time for that.*/
 /* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
  "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
  the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
@@ -1150,6 +1162,341 @@ body {
 
 /* It's better to add used colors in project in this file which can be like a color palette!
  $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* You can also make the next color $color-grey-dark-2 but currently I don't have time for that.*/
+/* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
+ "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
+ the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
+ we define a default value for font-size in our code because we used this 1.6rem too much! So it's better to define a variable for it.*/
+/* It's very good to have some variables for gutter of grids. */
+.form {
+  /* We don't want the margin-bottom on the last element which has .form__input on it, so we used :not(:last-child) */
+  /*learn::placeholder-shown is for selecting the input itself when it’s placeholder text is being shown. As opposed to
+     ::placeholder which styles the placeholder text.
+
+   Learn: The :placeholder-shown pseudo-class selects the input element itself when placeholder text exists in a form input.
+    When the placeholder of an input element does not exist? Well, when we even don't specify it in an input element. Or when we
+    already wrote some text on that input which has some placeholder, but the text we wrote is currently showing and the placeholder
+    isn't showing, so it does not exist in that moment. Therefore, by using :placeholder-shown which must be used on the <input>
+    element, we can determine if the placeholder is currently showing or not and then apply some styles based on that determining.
+    :placeholder-shown can still affect the styling of the placeholder text, since it’s a parent element (e.g. font-size).
+    Note that :placeholder-shown is a pseudo-class (it’s an element in a particular state) and ::placeholder is a
+    pseudo-element (a visible thing that isn’t really in the DOM). Distinguishable by single-versus-double colons.
+
+  So when the placeholder is shown on the .form__input , then these styles would applied. But we don't want to style the input itself,
+  because that's what the <input selector>:placeholder-shown would do. Actually it would style the input when the placeholder of
+  that input is shown. But we don't want that. We want to style the <label> element when the placeholder of the input is shown.
+  So we can say: &__input:placeholder-shown &__label to select the <label> of that input which it's placeholder is currently shown.
+  But that wouldn't work. Because &__label or .form__label is not a child element of .form__input in our html code. But instead
+  .form__input and .form__label in home page, are siblings of together and .form__label is not a child of .form__input . So the
+  styles that we want to apply, won't applied to those 2 elements in home page in that form. But if you had some other elements which
+  .form__label is child of .form__input , those styles would apply to them, but not in that form. Because in that form, .form__label
+  is not a child of .form__input .
+  Important: When you are selecting elements like:
+   <class-a> <class-b>
+   The element which has class-b must be a child of element which has class-a (direct or indirect doesn't matter. What does matter is
+   that element that has class-b MUST be a CHILD of class-a to apply the styles we would write, to those elements) .
+   ALSO it is very crucial, that you notice, when you have sth like: <class-a> <class-b> {...} , the styles you specified in
+   {...} would only applied to class-b not class-a . RIGHT?!!! If you want to apply some styles to class-a , you must select it
+   without that class-b . Also when you have sth like: <selector-a> + <selector-b> {...} the styles you specified in {...}
+   would only applied to <selector-b> not <selector-a>.
+  So in our case those 2 classes are at the same level so these styles won't apply to them. They are both children to .form__group
+  element in that form. But we can use adjacent sibling selector. So the select must be: &__input:placeholder-shown + &__label
+  Learn: Adjacent sibling comes IMMIDIATELY after the element we select in the first place. So when we have sth like:
+   <selector-1> + <selector2> {
+    ...
+   }
+   The styles would apply IF <selector-2> which is on element-2 , element-2 MUST BE AN IMMIDIATE adjacent of element-1 which has
+   class-1 . So there shouldn't any other elements in between element-1 and element-2 otherwise the styles won't applied to element-2.
+
+  So what is an adjacent sibling? It's just a sibling that comes immidiately after the element that we selects in the first place
+  (first place means: <selector-1> + <selector-2> , selector-1 is for the first element.).
+  So when we have sth like: form__input:placeholder-shown + form__label , in between the element which has form__input and the element
+  which has form__label class on it, there shouldn't be another element anyways, otherwise the styles we specified for this selector
+  won't applied to form__label class.
+  So when we have:
+  <input type="email" class="form__input" placeholder="Email Address" id="email" required>
+  <label for="email" class="form__label">Email Address</label>
+  There shouldn't be another element in between these 2 elements, therefore these styles would applied to form__label class.
+  But if there was some other elements in between of these 2, we COULD STILL USE sibling selector, but we couldn't use adjacent sibling
+  selector. So we could use form__input:placeholder-shown ~ form__label
+
+  Learn: sibling selector(not adjacent sibling selector) is ~ . So ~ is the general sibling selector. So this would work if there was
+   some other elements in between the elements you had selected as siblings of together. But in our case we used adjacent sibling
+   selector, because the second one is RIGHT NEXT TO THE FIRST ONE(IMMIDIATE ADJACENT).
+
+  One other particular thing about the sibling selector is that the sibling we want to apply some style on it (in this case .form__input
+  class), HAS TO BE AFTER THE FIRST element(.form__input in this case), so we can successfully apply those styles on the second selector.
+  So in this case, .form__label needs to be AFTER the .form__input , inorder to be selected with the sibling selector. So if the
+  HTML was written the other way around, so the .form__label was first and then we had the element with .form__input , that wouldn't work
+  and there wouldn't be no way of selecting the .form__label , based on it's sibilingness to .form__input and that's the reason why
+  we wrote the HTML in that order.
+
+  So currently we have:
+   &__input:placeholder-shown + &__label {
+    opacity: 0;
+  }
+
+  So at the beginning, the label of .form__input elements, would have opacity:0; because the placeholder would be shown at the
+  first place. But when you start writing sth in that .form__input , the placeholder wouldn't shown and therefore these styles won't applied
+  on &__label .
+
+  We want the <label> to be hidden in this situation. */
+  /* Now let's do the trick which when we typed one letter at least, the place holder will fly out and go to the bottom! That's why
+  I actually write the same text for placeholder of the inputs and the <label>s of those inputs.
+  But first, let's style the lables:*/
+  /* .form__radio-button is actually 2 parts. Because we have a green circle outside which inside of it we have a green dot. So
+  we have 2 parts, because we can have an empty radio button which hasn't a dot inside of it and we have one which has a dot inside
+  of it. So inside of &__radio-button for the dot we're gonna create another element for the dot itself, but instead of doing it in
+  HTML (creating 2 parts of that circle and the dot inside of it inside the html), we're going to MAKE(create) a pseudo element by using
+  ::after pseudo element.
+  So form__radio-button::after is actually that dot inside of radio button which is selected and the outter circle is &__radio-button .
+
+  Right now, the .form__radio-button has 0 width and 19px height. So let's change that. So I defined some height and width for it.
+  Because we want to make a circle out of .form__radio-button , we gave it the same height and width. But even after giving it the same
+  height and width, because the <span> element which we are using this class on it, has no content OR BECAUSE IT HAS inline display by
+  default, it still got it's 0 width and 19px height.
+  But after defining some border for it, it gets some width so we can see it, but the width and height of it wouldn't be 30px yet.
+  So we can make it an inline-block or block element, in order to . So we can give it display of inline-block or block to make it gets
+  those width and height because as you know we can't apply width or height to inline elements. Because their width is affected by their
+  content inside of them. So their content is their width and how much their content gets width that's the width that <span> or inline
+  elements get. So we can change that by setting it to inline-block or block element.
+  Also we gave the outer circle a border-radius: 50%; in order to make it completely round.
+
+  Still it's a bit difficult to actually position the .form__radio-button inside of the label or .form__radio-label element. Because
+  they aren't on the same level still. So let's use absolute positioning in order to put that radio button where we want it exactly
+  to be and in order that to work, we need to make the parent has position: relative; usually. So let's give &radio__label that because
+  it's the parent of radio button in html.
+  Now by using position: absolute; on radio button, the &__radio-button and &__radio-label overlap each other. Because the text or label
+  starts at the beginning of the container from left side and also the radio button is also doing that so they overlapped.
+  In other words, the radio button gets out of flow by using absolute on it and the label sees that there isn't anything on it's left
+  side so it goes to the left side of the container too, where the radio button is also there so they overlapped.
+  So let's give label some padding.*/
+  /* By selecting &__radio-input:checked &__radio-button , we are saying we want to select the &__radio-button which are in the
+   &__radio-input , when this &__radio-input is checked. So when we have &__radio-input:checked , we want to apply these styles:
+   BUT WAIT A MINUTE !!!!!!!!!!
+   These styles won't apply. Because in our html, the &__radio-button elements which have this &__radio-button class, aren't the
+   children of &__radio-input . So &__radio-input:checked &__radio-button selector won't work. Because there isn't a relationship
+   of parent-child in our html with these classes. So <selector1> <selector2> won't apply the styles on <selector2>.
+   Important: Because this <selector1> <selector2> would only apply the styles on <selector2> , IF the <selector2> is a child of
+    <selector1> in the html.
+   Important: When an element with <selector1> in html is the sibling of element with <selector2>, we can use sibling selector or + ,to
+    say if an element with <selector2> which <selector2> is a class or id, is the sibling of <selector1> , then apply those styles.
+
+   This selector means when &__radio-input is checked , select the sibling of &__radio-input which is named &__radio-label and then
+   in &__radio-label select a child of it, which is named &__radio-button and apply these styles to &__radio-button::after .
+   In other words, with this long! selector, we are saying: As soon as we hit the &__radio-input element, the element with &__radio-input
+   becomes checked and then we select the sibling of &__radio-input , which is &__radio-label and then the child of &__radio-label which
+   that child is &__radio-button . Because we want to change &__radio-button , WHEN the &__radio-input is checked. So for doing that,
+   we need to first select the &__radio-label and THEN &__radio-button::after . Because we can not directly select &__radio-button::after
+   based on &__radio-input, so we need some kind of a mediation which is &__radio-label .
+
+   RECAP:So each time the  &__radio-input is checked, we want to apply some styles to ::after of &__radio-button element.
+
+   The same technique that we used here for radio buttons can be applied for check boxes. Because in check boxes we have :checked
+   pseudo class available to us.
+   Now we just need to hide the real! radio button which is the default radio button and we couldn't style it, which is form__radio-input
+   */ }
+  .form__group:not(:last-child) {
+    margin-bottom: 2rem; }
+  .form__input {
+    font-size: 1.5rem;
+    /* Learn: In buttons and form elements like <input> , when we're defining some padding for them, we usually give them more padding
+        for left and right than top and bottom for their padding. Because by doing this, it would make elements look better.
+        Because if we give them equal padding for both top and bottom and left and right, it would look a bit strange and it looks
+        like that element is smaller on the sides of it that it actually is! So always give them a bit more for their right and left
+        padding. */
+    padding: 1.5rem 2rem;
+    border-radius: .5rem;
+    /* We can use background-color for inputs with some opacity defined in rgba() which is the value of background-color prop, so we can
+     look through them.  */
+    background-color: rgba(255, 255, 255, 0.5);
+    /* Important: The input html elements has a default border. So we can get rid of it.
+
+       IMPORTANT: Also the font-family of the text user writes into <input> elements and also the placeholder of the <input> elements
+        are not the same as the font we defined in our entire website and that's a default thing that browsers do. So by default, the
+        browsers do. So we can set font-family of our rest of the website in this class. So we can set it to Lato. But we can do it
+        in a better way. So we can set the value of font-family to inherit. Because we know that USUALLY all html elements AUTOMATICALLY
+        inherit the font-family except <input> elements.
+         */
+    border: none;
+    font-family: inherit;
+    border-bottom: .3rem solid transparent;
+    /*Important: The box-sizing property allows us to include the padding and border in an element's total width and height.
+       If you set box-sizing: border-box; on an element, padding and border are included in the width and height of the element.
+       So here when we set the width, width would be the content and padding and the border of the element which plus together would
+       be 90% of parents width.
+
+     border-box tells the browser to account for any border and padding in the values you specify for an element's width and height.
+     If you set an element's width to 100 pixels, that 100 pixels will include any border or padding you added, and the content box will
+     shrink to absorb that extra width*/
+    width: 90%;
+    display: block;
+    color: inherit;
+    /* When you select or focus <input> element, it would get a black border by default or a blue border in older versions of chrome
+ browser BY DEFAULT. So we must set outline to none. So we can use focus pseudo element.
+ But the :focus specially with inputs is very important because, because for people who use the webpage which has <input> with
+ outline: none; , without using a mouse but only with keyboard and therefore when they move around the website which has an input
+ with outline: none; with a keyboard, and when they are using keyboard with inputs, they need to know which form elements are actually
+ focused and so for accessibility reasons, WE SHOULD NEVER JUST DO:
+ <some selector>:focus {
+    outline: none;
+  }
+  IT'S A VERY BAD PRACTICE! So we can never do just that css and then call it a day!!! So we should always make the form elements that
+  are focused, visible.
+  In other words, we can't just set <input's class>:focus and then set outline of it to none. Instead we also have to SHOW that
+  focused input somehow to the user which is using just a keyboard. So we can give the focused input element a box-shadow and
+  some border-bottom instead of that default border which is applied by the browser.
+  */
+    /* When we have type of email for <input>, google chrome will validate if the user submitted data in that email input is valid or
+      not? and we can use that thing in CSS. Because on an input element we can use the :invalid pseudo class and also the :valid
+      pseudo class. So we can add specific styles when a value in those special inputs(because they have type="email") are valid or not.
+      So we can add an orange or red border-bottom when the value of that input is not valid. Also when we have required attr on an
+      input, if the input is empty we can add a red border to it.
+      But when we want that behavior to happen?
+      Well we want that invalid specific style to happen, ONLY when the field is actually focused. So when the input is focused AND
+      invalid. So :focused:invalid .
+      Learn: So now when we typed @ and then a letter after @, the :invalid would removed and we won't see that orange border anymore.
+       and for type="text" when we type a letter (you can change it with JS), the :invalid would gone and it would be valid.
+      So when we have .form__input AND focused AND invalid, then we want these styles to happen:*/
+    /* Right now if you start typing in placeholders, the text you wrote would be black because color of text wouldn't inherited.
+      So when we set it on &::-webkit-input-placeholder , it won't inherited by the text we wrote in the input automatically, so let's
+      set the color prop of .form__input to inherit.
+      Remember: The color prop when is used in the class which we use that class in <input> , would specify the color of the text
+      we WRITE in the <input> and not the color of placeholder. The color of placeholder of that input would be set by
+      the ::-webkit-input-placeholder pseudo element.
+      Now by doing that, the color of text we write would be inherited from the color prop in &::-webkit-input-placeholder .
+      Also we must use font-family: inherit; too!!! Because that won't inherited automatically by inputs.
+      Learn: So we learnt that the input elements don't inherit the font related properties.
+      */
+    /* ::webkit-input-placeholder pseudo element.
+    Learn: It is pseudo element so it has :: because it is a pseudo ELEMENT, instead of : which is for pseudo classes.
+     Pseudo elements are representing things that are actually on the webpage and we can see those things but pseudo classes
+     are stand for states of elements usually.
+     This pseudo element will only work on safari and chrome right now.   */
+    /* It's not good to use this pseudo class in here. So it's not good to nest it inside the related class, which in this case is
+     &__input. So let's don't use the power of nesting in scss for this case. Right? Why?
+     Because */
+    /* This transition is for changing the color of border-bottom of this class. */
+    transition: all .5s; }
+    .form__input:focus {
+      outline: none;
+      box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.5);
+      /* Right now, if you click on the first input you see that the second input goes down a little bit. Or if you would have some
+       elements after the second input, when you focus on the second input, the bottom elements go down a little bit and that's because
+       the .3rem border for those inputs appear when we focus on those inputs.
+       IMPORTANT: For solving the problem with borders, which when you hover over or click or focus or ... on an element and then
+        that element gets some border and therefore the other elements go further a little bit, you can add another border in normal
+        state of that element which gets border when we click on it or hover or ... , which that border we add to initial state of that
+        element must almost like the border we have in hover or focus or ... state, except with one difference, which is it must
+        be a TRANSPARENT border.
+       So I added border-bottom: .3rem solid transparent; to initial state of &__input . So that border with same amount of thikness
+       of the border in focus state, would be invisible in normal state and as soon as we click in that input it becomes green. */
+      border-bottom: 0.3rem solid #55c57a; }
+    .form__input:focus:invalid {
+      border-bottom: 0.3rem solid #ff7730; }
+    .form__input::-webkit-input-placeholder {
+      /* Let's specify the color of place holder for the elements (inputs) which have form__input class. So let's create a new
+      variable for this new color.*/
+      color: #999; }
+  .form__input:placeholder-shown + .form__label {
+    opacity: 0;
+    /* We set visibility: hidden; because if we JUST set opacity to 0, then the element which has opacity: 0; , would STILL exists on the
+     page, but our purpose was to set opacity to 0 to make the element not on the page but only invisible, (maybe in some cases you don't
+     want to ALSO add visibility: hidden; but in this case we want it.), but if you set it to visibility to hidden, then the element would
+     really gone. So why we JUST don't use visibility: hidden, without opacity: 0; ?
+     Because if we comment opacity: 0; out, we can't animate the visibility. So we also used opacity because we actually want to
+     animate that effect.
+     So let's add transition to &__label .So with this transition, you can see the effect already.
+     Now we want to move down the placeholder to where the label is exists.
+     So when the placeholder is still showing, the label is not visible and is gone because of opacity adn visibility props and also
+     we move the label -4rem up in Y axis and when we start typing, this selector won't be anymore applied to label and therefore
+     the label would be visible and translate of it would be removed and therefore it would go back to it's origin, so it would get down
+     a little bit. Also we give label some transition too. In it's normal state so in it's animation, it would takes ome time(.3s)
+     to get back to it's origin. Also if you remove all of the text, this selector that we're currently in it, would AGAIN apply to
+     the <label> and therefore it would get hidden and go up a little bit which takes .3 seconds.*/
+    visibility: hidden;
+    transform: translateY(-4rem); }
+  .form__label {
+    font-size: 1.2rem;
+    font-weight: 700;
+    /* I give the label this margin because I want to position it exactly where the placeholder is on the top of the label.
+     But right now, the <label> elements are inline elements. So they wouldn't get horizontal padding and horizontal margins.
+     So we have to make them display: inline-block or block too.*/
+    margin-left: 2rem;
+    margin-top: .7rem;
+    /* By default, the <label> html elements, aren't block level element, instead, they are inline elements. But we can change
+     that default behavior by setting display: block; for those elements.*/
+    display: block;
+    transition: all .3s; }
+  .form__radio-group {
+    /* Learn: We want to make .form__radio-group sit side by side. Therefore we can use floats, for making them sit side by side(because
+        they are sitting on <div> elements), or we can set their display prop to inline-block. Therefore they won't create line breaks.
+        But right now, they won't cause line breaks(because you can't see any margins of them any more), but they also aren't sit side
+        by side! So let's deacrese their width to 49%.
+        */
+    width: 49%;
+    display: inline-block; }
+  .form__radio-label {
+    font-size: 1.6rem;
+    cursor: pointer;
+    position: relative;
+    padding-left: 4.5rem; }
+  .form__radio-button {
+    height: 3rem;
+    width: 3rem;
+    border: 0.5rem solid #55c57a;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: -.4rem;
+    /* We need to create a circle here. So we need to give this class an equal height and width to make this element be a circle and
+    also the border-radius of 50% .
+    Important: Each time we use the ::after pseudo element , we have to specify it's content property and display property.
+     */ }
+    .form__radio-button::after {
+      content: "";
+      display: block;
+      height: 1.3rem;
+      width: 1.3rem;
+      border-radius: 50%;
+      /* Now we want to position the .form__radio-button::after EXACTLY at the center both horizontally and vertically of the
+      outer circle which is form__radio-button. So we can use absolute positioning. So the parent(some kind of parent) of this,
+      must be also position: relative; . So I set position: relative; on the &__radio-button . BUT WAIT!!!!! THE PARENT CURRENTLY
+      HAS A position SET FOR IT AS absolute and remember: Learn: When you set the position of an element to absolute and then
+      you want to set the position of the reference of that absolute positioned element, it doesn't have to be relative. It can
+      be absolute too! Just like this case.
+      So in this case the reference of this ::after element has position: absolute; so it can be the reference of this ::after
+      element. But now that reference needs a reference with position: absolute or relative, but we specified the reference of it
+      which is &__radio-label , with position relative. So we're done because everything with absolute positioning has a reference.
+
+      Now we have a dot inside the &__radio-button . So after that, we need to hide these custom dots at the beginning. Also we
+      need to hide the default radio buttons too.
+      So we can use opacity: 0;
+
+      So now we must make things up, so each time we click on the label or custom circle, we need to make the green dot be appear
+      in that custom outer circle. So basically opacity: 1; for the &__radio-button::after .
+      Learn: So we can use another pseudo class which is :checked and this pseudo class is available on all of the radio buttons which
+       are clicked by us right now and their dot is visible. So because this pseudo class is available on the radio button itself,
+       in this case, we can use it on &__radio-input , which this &__radio-input is used on the <input type="radio"> in our html.
+       So we would have &__radio-input:checked .*/
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #55c57a;
+      opacity: 0;
+      /* This is just for when we check the radio button, this time it could take to opacity goes from 0 to 1 and also for when
+      we check the other radio button, the opacity goes from 1 to 0 in .3s .*/
+      transition: opacity .3s; }
+  .form__radio-input:checked ~ .form__radio-label .form__radio-button::after {
+    opacity: 1; }
+  .form__radio-input {
+    display: none; }
+
+/* It's better to add used colors in project in this file which can be like a color palette!
+ $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* You can also make the next color $color-grey-dark-2 but currently I don't have time for that.*/
 /* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
  "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
  the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
@@ -1259,6 +1606,7 @@ body {
 
 /* It's better to add used colors in project in this file which can be like a color palette!
  $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* You can also make the next color $color-grey-dark-2 but currently I don't have time for that.*/
 /* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
  "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
  the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
@@ -1366,6 +1714,7 @@ the codes that are in that @mixin will be kind of extracted wherever we @include
 
 /* It's better to add used colors in project in this file which can be like a color palette!
  $color-grey-light-2 is a bit darker than $color-grey-light-1*/
+/* You can also make the next color $color-grey-dark-2 but currently I don't have time for that.*/
 /* Imagine that we have a client. So now your website is nicely set up and you're going to show this site to client and he says
  "This text is too small!". So do you prefer to go to all of your code and change font-size manually from 1.6rem to 1.8rem all over
  the place? Or you can simply come in variables partial file and make everything changes? So the second approach is better and that's why
@@ -1970,6 +2319,32 @@ In padding: <value-1> <value-2> value-1 is for top and bottom and value-2 is for
 3) How to use the ::input-placeholder pseudo element
 4) How and when to use :focus, :invalid , :placeholder-shown and :checked pseudo classes?
 5) Techniques to build custom radio buttons
+
+Important: When you have set the position of an element to absolute and therefore you need to specify the reference of this
+ absolute positioned element by specifying the position of reference of it, you don't need to give that reference a relative
+ position! The absolute position of reference would do the work and therefore if the parent would have the position of absolute, it
+ would be the reference of that element with position absolute. BUT! Now the parent needs to have a reference with having
+ position relative or position absolute. So every position: absolute element needs to have a reference which that reference
+ must has position: absolute; or position: relative; . But if the reference has position: absolute; then ITSELF needs to have
+ a reference with absolute or relative position and ... .So if you set the position of reference to relative, then it doesn't need
+ a reference anymore.
+
+ Learn: For centring something both vertically and horizontally, you need to give it:
+ position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+So we need a reference for it, which that reference must be positioned.(absolute or relative doesn't matter. If you give it
+absolute, we need to specify a reference for that reference too which must be positioned as well.)
+
+ Property           | occupies space | consumes clicks |
++--------------------+----------------+-----------------+
+| opacity: 0         |        ✓       |        ✓        |
++--------------------+----------------+-----------------+
+| visibility: hidden |        ✓       |        ✗        |
++--------------------+----------------+-----------------+
+| display: none      |        ✗       |        ✗        |
 
 */
 /*

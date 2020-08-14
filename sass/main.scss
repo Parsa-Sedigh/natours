@@ -464,6 +464,32 @@ In padding: <value-1> <value-2> value-1 is for top and bottom and value-2 is for
 4) How and when to use :focus, :invalid , :placeholder-shown and :checked pseudo classes?
 5) Techniques to build custom radio buttons
 
+Important: When you have set the position of an element to absolute and therefore you need to specify the reference of this
+ absolute positioned element by specifying the position of reference of it, you don't need to give that reference a relative
+ position! The absolute position of reference would do the work and therefore if the parent would have the position of absolute, it
+ would be the reference of that element with position absolute. BUT! Now the parent needs to have a reference with having
+ position relative or position absolute. So every position: absolute element needs to have a reference which that reference
+ must has position: absolute; or position: relative; . But if the reference has position: absolute; then ITSELF needs to have
+ a reference with absolute or relative position and ... .So if you set the position of reference to relative, then it doesn't need
+ a reference anymore.
+
+ Learn: For centring something both vertically and horizontally, you need to give it:
+ position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+So we need a reference for it, which that reference must be positioned.(absolute or relative doesn't matter. If you give it
+absolute, we need to specify a reference for that reference too which must be positioned as well.)
+
+ Property           | occupies space | consumes clicks |
++--------------------+----------------+-----------------+
+| opacity: 0         |        ✓       |        ✓        |
++--------------------+----------------+-----------------+
+| visibility: hidden |        ✓       |        ✗        |
++--------------------+----------------+-----------------+
+| display: none      |        ✗       |        ✗        |
+
 */
 
 

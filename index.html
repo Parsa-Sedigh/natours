@@ -704,6 +704,99 @@ So <main> is like a huge container that will contain most of our website. -->
                             <input type="email" class="form__input" placeholder="Email Address" id="email" required>
                             <label for="email" class="form__label">Email Address</label>
                         </div>
+
+                        <!-- When you add u-margin-bottom-medium on this element, in inspector you see that this class doesn't apply
+                         it's styles because .form__group:not(:last-child) takes precedence over u-margin-bottom-medium . Because
+                         .form__group:not(:last-child) is more specific. We can do something that we shouldn't do but in utilities
+                         classes it's different. So when we add a utility class on an element, we really want to apply that styles of
+                         utility classes anyway.
+                         So I added !important there. However I just added !important on the u-margin-bottom-medium  for now but we can
+                                      add it on all of those utility classes. -->
+                        <div class="form__group u-margin-bottom-medium">
+                            <div class="form__radio-group">
+                                <!-- We need to put an id attr for the <input> we want to connect that input to it's label.
+                                The first input is for small groups so we called it's id, small.-->
+                                <input type="radio" class="form__radio-input" id="small" name="size">
+                                <label for="small" class="form__radio-label">
+                                    <span class="form__radio-button"></span>
+                                    Small tour group</label>
+                            </div>
+
+                            <div class="form__radio-group">
+                                <!-- By default, when you select a radio button you can't deselect it anymore by clicking on
+                                 some other radio button or even by clicking on outside or ... ! So I think we need to fix this behavior.
+                                 So when you click on one radio button and then click on another one, that old one is still selected!
+                                 That's because we forgot one attr. So in order for HTML to consider these radio buttons as a group of
+                                 radio buttons and not individual ones, we need to give them a same name.
+                                 Now all of these problems are solved with this trick.
+                                 So now, either ONE of these radio buttons which have the same name can be selected, because when you
+                                 have some inputs with same name, JUST ONE OF THEM can be selected. So now if you selected one radio button
+                                 and then select the other one which has the same name of the prior one, the prior one would be deselected.
+                                 We choose the name, size because each radio button is for different group size.
+
+                                 In CSS we can't style the radio buttons.So for radio buttons, we have no way of styling them in css.
+                                 So what we have to do is basically build our own buttons and we're gonna do that inside of the labels.
+                                 So first let's create a <span> and we leave that <span> empty because that span is just for styling
+                                 purposes and there's not really any content in those <span>s.
+                                 So now, the radio button would be that <span> element instead of that <input type="radio"> , So we need
+                                 to hide that <input type="radio"> and now since we connected the <label> with <input type="radio"> ,
+                                 then even if that <input type="radio"> is hidden, it will still become selected.
+                                 So when we click on the label, what gets selected is <input type="radio"> , but with our html and the trick,
+                                 we will make it look that the <span> which would look like a radio button, is selected!
+                                 So in the background, the <input type="radio"> is selected which is hidden, but in the eyes of viewers,
+                                 the <span> is selected.That's the logic we would build.
+                                 So .form__radio-button is our custom button and it is what the users see and the <input type="radio">
+                                 is the real radio button behind the scenes, which we hide it.-->
+                                <input type="radio" class="form__radio-input" id="large" name="size">
+                                <label for="large" class="form__radio-label">
+                                    <span class="form__radio-button"></span>
+                                    Large tour group</label>
+                            </div>
+                        </div>
+
+                        <div class="form__group">
+                            <!-- We can't use <a> element instead of <button> here. So we could easily use the old button we created before
+                             here too. NO! So if you use the old classes like btn or btn--green or ... which makes a <a>
+                             element like a beautiful button, won't work here and if you see the results, it won't be the expected results.
+                             Because we used those class for a elements which have :link :visited and ... pseudo classes which aren't
+                             available for <button> elements.
+
+                             The solution for make those styles that we specified in &:link and &:visited to work also for <button> element
+                             with .btn class is to add & to the selectors. Because & means , select .btn itself and not in a special
+                             condition like :visited or :link . So by doing that, we have .btn too which would work on <button> which
+                             this element doesn't know about :link or :visited but we also specified .btn itself, when styling the
+                             .btn:visited and .btn:link . So those styles would also work on any element which even doesn't have
+                             :link or :visited too.
+                             Learn: Now when you click on the button which has .btn on it, or in other words make that button in
+                              :focus state, you would see a black border around the button or a blue border in older versions of chrome,
+                              which is a default style by the browsers. But remember, as I said, we should not simply remove the
+                              focus there. Because yeah, we could go ahead and simply say:
+                              <selector of button>:focus {
+                                outline: none;
+                              }
+                              But for accessibility reasons we shouldn't do that. So we can do sth else and say :focus should exact looks
+                              like the :active state of that button. So I added :focus besides the .btn:active in the _buttons.scss file.
+                              Because :focus happens when we hit or active the button. So we must put that :focus besides :active and then
+                              specify outline: none; there.
+                              So by doing that, yeah we removed the outline: none; but we have some other styles that are there too. Like
+                              transform: translateY(-0.5rem);
+                              box-shadow: 0rem 0.5rem 1rem rgba($color-black, 0.5);
+                              So we didn't completely remove the outline.
+
+
+                             Important: A difference between a <button> and a <a> element, is that <button> element doesn't have
+                              :link or :visited or ... pseudo classes which we could define on the classes or id we place on that
+                              <button>. So the styles that we define on :link and ... on the classes which we used on <button> won't applied
+                              on the <button> elements. But <a> elements have this pseudo classes, which we can use those pseudo classes
+                              on the classes or id we placed on the <a> to style that <a> .
+
+
+                             Learn: So in a form, we really need a real <button> element not an anchor tag which we make it looks like a
+                              <button>. Because the <button> element used in a <form> , allows us to submit the form.
+                             -->
+
+                            <button class="btn btn--green">Next step &rarr;</button>
+                        </div>
                     </form>
                 </div>
             </div>
