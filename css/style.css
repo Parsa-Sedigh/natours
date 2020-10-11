@@ -1712,6 +1712,129 @@ the codes that are in that @mixin will be kind of extracted wherever we @include
   .row .col-3-of-4 {
     width: calc((3 * (100% - 3 * 6rem)) / 4 + 2 * 6rem); }
 
+.footer {
+  background-color: #333;
+  /* We don't use very much space or big font-size in the footer, unlike other sections of website, because footer is not important
+  as other parts of website.*/
+  padding: 10rem 0;
+  font-size: 1.4rem;
+  color: #f7f7f7; }
+  .footer__logo-box {
+    /* The <img> is an inline element and therefore for centering it horizontally we can use text-align: center; on it's parent. */
+    text-align: center;
+    margin-bottom: 8rem; }
+  .footer__logo {
+    width: 15rem;
+    height: auto; }
+  .footer__navigation {
+    padding-top: 2rem;
+    border-top: 1px solid #777;
+    /* We only want the border to comes to end of the <li>s .So till end of the actual content of the element which has this class.
+     So we can use display: inline-block; .Why with that prop? Because we don't want the border to come all of the width of the
+     element. So because inline-block elements also don't occupy the 100% available width but only the amount of width which
+     it's content needs.*/
+    display: inline-block; }
+  .footer__list {
+    list-style: none; }
+  .footer__item {
+    /* We want the <li> elements which have this class, to sit side by side but we don't do this by using float. So we can use
+    display: inline-block;*/
+    display: inline-block; }
+    .footer__item:not(:last-child) {
+      margin-right: 1.5rem; }
+  .footer__link:link, .footer__link:visited {
+    /* I commented out the color props on this class and also in &__copyright , because we can set the color on the parent of these
+       classes. Because the color of text would inherit by the children unless we use another color for each child.*/
+    text-decoration: none;
+    text-transform: uppercase;
+    color: inherit;
+    /* We set display to inline-block because <a> is an inline element. */
+    display: inline-block;
+    transition: all .3s;
+    background-color: #333; }
+  .footer__link:hover, .footer__link:active {
+    color: #55c57a;
+    /* When you add this box-shadow, you can see after hover or in active state, it's some kind of a box around the link.
+       Actually we added this box-shadow to when we hover or active this class, we would see it clearly and distinguished from the
+       dark background in footer.
+       After adding this transform prop here, when you hover over some elements which have this class, you can see that the
+       background of the hovered element which has this class, is a bit transparent and actually we can see the elements which are
+       under or very close to this element with this class. So we must fix that.
+       Important: For fixing that, we can again use the background-color of the footer on this class.
+        So when sth is hovered with some box-shadow but you can see the near elements of that hovered element, you can use the
+        background-color of the hovered and near elements on the class of hovered element like this case.
+       */
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.4);
+    transform: rotate(5deg) scale(1.3); }
+  .footer__copyright {
+    padding-top: 2rem;
+    border-top: 1px solid #777;
+    width: 80%;
+    /* We use float here to move the element as far to right as it can. */
+    float: right; }
+
+.navigation__button {
+  background-color: #fff;
+  /* I give this class more height and width than the &__background, because if we didn't do this, maybe we would see some green
+    behind this &__button white circle. So this is only for make sure, let's completely cover &__background with &__button.
+    Also I give this, position: fixed; because it must be in fixed position when we scroll the page and also must be always on top of
+    the &__background which is also position: fixed; so this class must also has position: fixed; .
+
+    Also I give this class top: 6rem; and right: 6rem; why?
+    Because the height and width of this class have 1rem more than the width and height of &__background and we want &__button to
+    completely cover the &__background, so we gave it top and right of 6rem because:
+    For covering the &__background circle with &__button circle, we need the center of &__button completely on top of the other one.
+    Also we know that the &__button is bigger than &__background.
+    For making that happen, we need to play with their top and right props, because they both have position defined.
+    Because the width and height of &__button is 1 more than &__button, we need to give the top and right of &__button, .5rem less
+    than the top and right of &__background. Why .5 less?
+    Because .5 + .5 = 1 for both Y-axis and X-axis . TODO till 13:20*/
+  height: 7rem;
+  width: 7rem;
+  border-radius: 50%;
+  position: fixed;
+  top: 6rem;
+  right: 6rem;
+  z-index: 2000; }
+
+.navigation__background {
+  /* The <div class="navigation__background">&nbsp;</div> is just a circle expanding from the button(<label>) and when the nav is open
+    if we click on the button again, it would go back to that button like a circle but decreasing in size.
+    So what we need is a circle, behind the button which that button is also a circle.
+    So first we must create a circle which is the &__background which is behind the white circle button.
+    So that white circle button is on top of the &__background circle.
+
+    So the &__button would be on top of the &__background. In other words, in this case, the element which has &__button, is the
+    <label> and it's on top of the element which has &__background class and this &__background would be a circle in the beginning but as
+    soon as we click on the  &__button , &__background would expand over the entire page.
+    So we click on the &__button which in this case is on the <label> element of the checkbox and then the &__background circle which is
+    behind the &__button, would expand to the entire page.
+    Learn: For creating a circle, it's crucial to define a same width and height and a border-radius: 50%;
+
+    position: fixed; is very similar to position: absolute; with the difference that position: fixed; doesn't change the coordinates of the
+    element, when we scroll the page. But it also take out the element out of the flow and allows us to specify it's coordinates,
+    in relation to it's nearest positioned parent element, by specifying top left and ... props.
+
+    Learn: Until this point, for specifying a gradient, we always used linear-gradient() in background-image property. But now
+     we want to use radial-gradient() .
+     What's the difference of linear-gradient() and radial-gradient() ?
+     The linear-gradient() goes from one side of the element to the other one, while the radial-gradient() starts in the middle of
+     an element and goes from there to all of the outside directions of that element.
+     In radial-gradient($colorA, $colorB) , the inner(middle) color would be the first color and the outer color would be $colorB .
+
+    Currently if you scroll, you see that the element which has this class(&__background) would get under other elements of the page.
+    So we need to add a z-index .
+    Learn: z-index only work on the classes which those classes which have a position defined(any position other than static(default
+     position of an element)). */
+  height: 6rem;
+  width: 6rem;
+  border-radius: 50%;
+  position: fixed;
+  top: 6.5rem;
+  right: 6.5rem;
+  background-image: radial-gradient(#7ed56f, #28b485);
+  z-index: 1000; }
+
 /* It's better to add used colors in project in this file which can be like a color palette!
  $color-grey-light-2 is a bit darker than $color-grey-light-1*/
 /* You can also make the next color $color-grey-dark-2 but currently I don't have time for that.*/
@@ -1879,7 +2002,7 @@ the codes that are in that @mixin will be kind of extracted wherever we @include
     height: 50px; }
 
 /*
- What you will learn in this course:
+ What you will learn in this section:
  1)...
 
  ) How to make text flow around shapes with shape-outside and floats
@@ -2299,20 +2422,20 @@ In padding: <value-1> <value-2> value-1 is for top and bottom and value-2 is for
  border-top-left-radius: 0.3rem;
  border-top-right-radius: 0.3rem;*/
 /* Learn: Block elements automatically (and if they aren't already wiped out of normal flow), gets 100% width of their parents,
-      but for this .story element, we don't want it to get's 100% width of it's parent automatically so we gave it a width.
-      If you don't specify a width for a block element AND if that block element doesn't already wiped out of normal flow,
-      the width of that block element is 100%.
-      Now when you already centered a block element inside another block element, if you give this block element any other
-      width than 100% it won't be no longer centered.
-      So we can use margin: 0 auto; on element that we want to center it horizontally and that element will be CENTERED ITSELF!
-      This approach(margin: 0 auto;) won't center the children that are inside this block element.
-      For making the content that is inside block element to center:
-      1)
-      Set the child elements to either display:inline or display:inline-block, then set the parent container to text-align:center,
-      the children will center in the parent- depending on whatever its width
-      2)
-      If the child content is block level (display:block) set text:align:center; on the parent, then give the child margin:0 auto
-      and a width less than that of the parent*/
+    but for this .story element, we don't want it to get's 100% width of it's parent automatically so we gave it a width.
+    If you don't specify a width for a block element AND if that block element doesn't already wiped out of normal flow,
+    the width of that block element is 100%.
+    Now when you already centered a block element inside another block element, if you give this block element any other
+    width than 100% it won't be no longer centered.
+    So we can use margin: 0 auto; on element that we want to center it horizontally and that element will be CENTERED ITSELF!
+    This approach(margin: 0 auto;) won't center the children that are inside this block element.
+    For making the content that is inside block element to center:
+    1)
+    Set the child elements to either display:inline or display:inline-block, then set the parent container to text-align:center,
+    the children will center in the parent- depending on whatever its width
+    2)
+    If the child content is block level (display:block) set text:align:center; on the parent, then give the child margin:0 auto
+    and a width less than that of the parent*/
 /* 16. Building the Booking Section - Part 1:
 1) How to implement sth called "solid-color gradients"
 2) How the general and adjacent sibling selectors work and why we need them?
@@ -2330,10 +2453,10 @@ Important: When you have set the position of an element to absolute and therefor
  a reference anymore.
 
  Learn: For centring something both vertically and horizontally, you need to give it:
- position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
 So we need a reference for it, which that reference must be positioned.(absolute or relative doesn't matter. If you give it
 absolute, we need to specify a reference for that reference too which must be positioned as well.)
@@ -2345,8 +2468,54 @@ absolute, we need to specify a reference for that reference too which must be po
 | visibility: hidden |        ✓       |        ✗        |
 +--------------------+----------------+-----------------+
 | display: none      |        ✗       |        ✗        |
-
 */
+/* Learn: Inline elements can be centered horizontally by saying text-align: center; on their parent. Because an inline element,
+     behaves just like a text.
+When using emmet: <element>.<class-1>.<class-2> will create an element with class attr of: class="class-1 class-2"*/
+/*
+20. Building the Navigation - Part 1:
+- What is the "checkbox hack" and how it works?(Actually our navigation is working with this hack!)
+- How to create custom animation timing functions, using cubic bezier curves
+- How to animate "solid-color gradients(to create nice hover effects in this case)"
+- How and why use transform-origin
+
+As I mentioned, what makes the entire of our navigation and especially the clicks(when we click and navigation opens) work, is so called
+checkbox hack. How that works?
+Remember we had custom checkboxes in our form? What we had there, was a radio button(<input type="radio">) connected to a <label> and
+when we clicked on that <label>, then that radio button would become selected(also by clicking the radio button itself, it would be
+checked). And that's the same thing that we're gonna do, but except the radio button, we're gonna use a checkbox.
+
+So like in the form, we make 2 <input type="radio"> hidden and if their labels which were connected to those hidden radio buttons,
+were selected, because of their connectivity, that radio button was selected actually. So the actual input was hidden but it's connected
+label was shown and INSIDE those <label>s, we created a circle which was a <span> and it looks like a radio button and also the actual text
+of that label.
+Why inside of labels we created those circles and text?
+Because that <label> and whatever is inside of that <label> are connected to radio button, so I put them INSIDE of that <label>.
+
+The 3 steps for this to work is:
+First to have a checkbox which we will make it hidden later.
+
+Second we must have a label connected to that checkbox(<input type="checkbox">) which that <label> is where we click and
+that <label> would be the button for opening that nav menu.
+
+The third step is to reveal the entire navigation which is in the background, as soon as the checkbox(<input type="checkbox">) becomes
+checked and for that we can use the :checked pseudo class.
+
+So first put the HTML code for that navigation, on top of everything else in <body>. So that navigation would be the first element
+in our entire web document.
+
+Now for checkbox hack, first we created an <input type="checkbox"> and give it an id to connect it to it's <label>.
+Then create it's label which we created it after the <input> itself.
+Important: And we know that in checkbox hack, we need to hide the <input type="checkbox"> itself and instead it's <label> which is
+ connected to that checkbox, would be a kind of button which we can click on that <label> to check that checkbox and that's exactly
+ what we did in radio button hack, which in that case, the <input type="radio"> was hidden and instead we click on the label of that
+ radio input and make it selected.
+
+Learn: When we have li.navigation__item>a.navigation__link in emmet:
+  it means INSIDE of li with class of navigation__item, we would have <a> element with class of navigation__link.
+  So in emmet, a>b means directly INSIDE of the a element, we create the b element.
+
+  */
 /*
 light-green:#7ed56f
 medium-green:#55c57a

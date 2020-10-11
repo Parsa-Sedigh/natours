@@ -13,6 +13,48 @@
     <title>Natours 🚎 | Exciting tours for adventurous people</title>
 </head>
 <body>
+<!-- TODO: 1)Create double-thumb range input, like what I wanted to do in darsad -->
+
+<div class="navigation">
+    <input type="checkbox" class="navigation__checkbox" id="navi-toggle">
+
+    <!-- I named the class of this <label> , navigation__button, because it plays the role of a button for checking that
+    <input type="checkbox"> and when that checkbox was checked, the navigation will be shown.-->
+    <label for="navi-toggle" class="navigation__button">MENU</label>
+
+    <!-- Background of navigation is this <div> and it would be empty so no other elements would be in it, but in order to
+     show it and make it visible to us, we must give it a width or height or I just add a &nbsp; in it.
+
+     The navigation would be on top of this <div class="navigation__background"> .
+     Now let's create that navigation which is <nav class="navigation__nav"> and that element would be a huge container which
+     containing the entire page, when we clicked on the <label> to see that navigation. So because that <nav> would be containing
+     all of the page, we can vertically and horizontally center the <ul>, exactly in the center of page.
+
+     After creating the markup, first let's style the navigation__background .
+
+     Also remember the navigation is part of the layout, so let's put it's styles inside layout folder.-->
+    <div class="navigation__background">&nbsp;</div>
+
+    <nav class="navigation__nav">
+        <ul class="navigation__list">
+            <li class="navigation__item">
+                <a href="#" class="navigation__link">About Natours</a>
+            </li>
+            <li class="navigation__item">
+                <a href="#" class="navigation__link">Your Benefits</a>
+            </li>
+            <li class="navigation__item">
+                <a href="#" class="navigation__link">Popular Tours</a>
+            </li>
+            <li class="navigation__item">
+                <a href="#" class="navigation__link">Stories</a>
+            </li>
+            <li class="navigation__item">
+                <a href="#" class="navigation__link">Book Now</a>
+            </li>
+        </ul>
+    </nav>
+</div>
 
 <!-- The <header> is obviously a block in BEM. Because it is a standalone component that is meaningful on it's own.So it's a block and
  so all the elements that are inside it, should also have the header attached to them.For example: .logo-box can only exist in the header,
@@ -534,7 +576,7 @@ So <main> is like a huge container that will contain most of our website. -->
         <div class="u-center-text u-margin-top-huge">
             <a href="#" class="btn btn--green">Discover all tours</a>
         </div>
-        
+
     </section>
 
     <!-- We START styling a section by give some style to <section> itself. -->
@@ -719,7 +761,8 @@ So <main> is like a huge container that will contain most of our website. -->
                                 <input type="radio" class="form__radio-input" id="small" name="size">
                                 <label for="small" class="form__radio-label">
                                     <span class="form__radio-button"></span>
-                                    Small tour group</label>
+                                    Small tour group
+                                </label>
                             </div>
 
                             <div class="form__radio-group">
@@ -750,7 +793,8 @@ So <main> is like a huge container that will contain most of our website. -->
                                 <input type="radio" class="form__radio-input" id="large" name="size">
                                 <label for="large" class="form__radio-label">
                                     <span class="form__radio-button"></span>
-                                    Large tour group</label>
+                                    Large tour group
+                                </label>
                             </div>
                         </div>
 
@@ -802,9 +846,40 @@ So <main> is like a huge container that will contain most of our website. -->
             </div>
         </div>
     </section>
-
 </main>
 
+<!-- The footer is outside of <main> element. Because the footer is not really the main content of the website. We use the
+class named footer for the <footer> HTML element, because we are still using the BEM methodology. In BEM methodology, each element
+should get a class.-->
+<footer class="footer">
+    <div class="footer__logo-box">
+        <!-- We can specify the width and the height of img in scss and not in html. -->
+        <img src="img/logo-green-2x.png" alt="Full logo" class="footer__logo">
+    </div>
+    <!-- When we say: .row>.col-1-of-2*2 It would create a <div> with class of row which has 2 divs which each of them have
+     class of col-1-of-2 .-->
+    <div class="row">
+        <div class="col-1-of-2">
+            <div class="footer__navigation">
+                <!-- We can use ul.footer__list>li.footer__item>a.footer__link to create a <ul> with li which has that class and ...
+                 The file of the footer of our page must be in layout folder.-->
+                <ul class="footer__list">
+                    <li class="footer__item"><a href="#" class="footer__link">Company</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Contact us</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Careers</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Privacy policy</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Terms</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-1-of-2">
+            <p class="footer__copyright">
+                Built my <a href="#" class="footer__link">Parsa Sedigh</a> for my practice with awesome
+                <a href="#" class="footer__link">CSS and Sass</a>. Copyright &copy; by Parsa Sedigh.
+            </p>
+        </div>
+    </div>
+</footer>
 
 </body>
 </html>

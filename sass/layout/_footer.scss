@@ -1,0 +1,99 @@
+
+.footer {
+  background-color: $color-grey-dark-3;
+
+  /* We don't use very much space or big font-size in the footer, unlike other sections of website, because footer is not important
+  as other parts of website.*/
+  padding: 10rem 0;
+  font-size: 1.4rem;
+  color: $color-grey-light-1;
+
+  &__logo-box {
+    /* The <img> is an inline element and therefore for centering it horizontally we can use text-align: center; on it's parent. */
+    text-align: center;
+    margin-bottom: 8rem;
+  }
+
+  &__logo {
+    width: 15rem;
+    height: auto;
+  }
+
+  &__navigation {
+    padding-top: 2rem;
+    border-top: 1px solid $color-grey-dark;
+    /* We only want the border to comes to end of the <li>s .So till end of the actual content of the element which has this class.
+     So we can use display: inline-block; .Why with that prop? Because we don't want the border to come all of the width of the
+     element. So because inline-block elements also don't occupy the 100% available width but only the amount of width which
+     it's content needs.*/
+    display: inline-block;
+  }
+
+  &__list {
+    list-style: none;
+  }
+
+  &__item {
+    /* We want the <li> elements which have this class, to sit side by side but we don't do this by using float. So we can use
+    display: inline-block;*/
+    display: inline-block;
+
+    &:not(:last-child) {
+      margin-right: 1.5rem;
+    }
+  }
+
+  &__link {
+    &:link, &:visited {
+      /* I commented out the color props on this class and also in &__copyright , because we can set the color on the parent of these
+       classes. Because the color of text would inherit by the children unless we use another color for each child.*/
+      //color: $color-grey-light-1;
+      text-decoration: none;
+      text-transform: uppercase;
+      color: inherit;
+
+      /* We set display to inline-block because <a> is an inline element. */
+      display: inline-block;
+      transition: all .3s;
+      background-color: $color-grey-dark-3;
+    }
+
+    &:hover, &:active {
+      color: $color-primary;
+
+      /* When you add this box-shadow, you can see after hover or in active state, it's some kind of a box around the link.
+       Actually we added this box-shadow to when we hover or active this class, we would see it clearly and distinguished from the
+       dark background in footer.
+       After adding this transform prop here, when you hover over some elements which have this class, you can see that the
+       background of the hovered element which has this class, is a bit transparent and actually we can see the elements which are
+       under or very close to this element with this class. So we must fix that.
+       Important: For fixing that, we can again use the background-color of the footer on this class.
+        So when sth is hovered with some box-shadow but you can see the near elements of that hovered element, you can use the
+        background-color of the hovered and near elements on the class of hovered element like this case.
+       */
+      box-shadow: 0 1rem 2rem rgba($color-black, .4);
+      transform: rotate(5deg) scale(1.3);
+    }
+  }
+
+  &__copyright {
+    //color: $color-grey-light-1;
+    padding-top: 2rem;
+    border-top: 1px solid $color-grey-dark;
+    width: 80%;
+    /* We use float here to move the element as far to right as it can. */
+    float: right;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+

@@ -18,11 +18,13 @@
 
 @import "layout/header";
 @import "layout/_grid.scss";
+@import "layout/footer";
+@import "layout/navigation";
 
 @import "pages/_home.scss";
 
 /*
- What you will learn in this course:
+ What you will learn in this section:
  1)...
 
  ) How to make text flow around shapes with shape-outside and floats
@@ -443,20 +445,20 @@ In padding: <value-1> <value-2> value-1 is for top and bottom and value-2 is for
  border-top-left-radius: 0.3rem;
  border-top-right-radius: 0.3rem;*/
 /* Learn: Block elements automatically (and if they aren't already wiped out of normal flow), gets 100% width of their parents,
-      but for this .story element, we don't want it to get's 100% width of it's parent automatically so we gave it a width.
-      If you don't specify a width for a block element AND if that block element doesn't already wiped out of normal flow,
-      the width of that block element is 100%.
-      Now when you already centered a block element inside another block element, if you give this block element any other
-      width than 100% it won't be no longer centered.
-      So we can use margin: 0 auto; on element that we want to center it horizontally and that element will be CENTERED ITSELF!
-      This approach(margin: 0 auto;) won't center the children that are inside this block element.
-      For making the content that is inside block element to center:
-      1)
-      Set the child elements to either display:inline or display:inline-block, then set the parent container to text-align:center,
-      the children will center in the parent- depending on whatever its width
-      2)
-      If the child content is block level (display:block) set text:align:center; on the parent, then give the child margin:0 auto
-      and a width less than that of the parent*/
+    but for this .story element, we don't want it to get's 100% width of it's parent automatically so we gave it a width.
+    If you don't specify a width for a block element AND if that block element doesn't already wiped out of normal flow,
+    the width of that block element is 100%.
+    Now when you already centered a block element inside another block element, if you give this block element any other
+    width than 100% it won't be no longer centered.
+    So we can use margin: 0 auto; on element that we want to center it horizontally and that element will be CENTERED ITSELF!
+    This approach(margin: 0 auto;) won't center the children that are inside this block element.
+    For making the content that is inside block element to center:
+    1)
+    Set the child elements to either display:inline or display:inline-block, then set the parent container to text-align:center,
+    the children will center in the parent- depending on whatever its width
+    2)
+    If the child content is block level (display:block) set text:align:center; on the parent, then give the child margin:0 auto
+    and a width less than that of the parent*/
 /* 16. Building the Booking Section - Part 1:
 1) How to implement sth called "solid-color gradients"
 2) How the general and adjacent sibling selectors work and why we need them?
@@ -474,10 +476,10 @@ Important: When you have set the position of an element to absolute and therefor
  a reference anymore.
 
  Learn: For centring something both vertically and horizontally, you need to give it:
- position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
 So we need a reference for it, which that reference must be positioned.(absolute or relative doesn't matter. If you give it
 absolute, we need to specify a reference for that reference too which must be positioned as well.)
@@ -489,12 +491,55 @@ absolute, we need to specify a reference for that reference too which must be po
 | visibility: hidden |        ✓       |        ✗        |
 +--------------------+----------------+-----------------+
 | display: none      |        ✗       |        ✗        |
-
 */
+/* Learn: Inline elements can be centered horizontally by saying text-align: center; on their parent. Because an inline element,
+     behaves just like a text.
+When using emmet: <element>.<class-1>.<class-2> will create an element with class attr of: class="class-1 class-2"*/
+/*
+20. Building the Navigation - Part 1:
+- What is the "checkbox hack" and how it works?(Actually our navigation is working with this hack!)
+- How to create custom animation timing functions, using cubic bezier curves
+- How to animate "solid-color gradients(to create nice hover effects in this case)"
+- How and why use transform-origin
 
+As I mentioned, what makes the entire of our navigation and especially the clicks(when we click and navigation opens) work, is so called
+checkbox hack. How that works?
+Remember we had custom checkboxes in our form? What we had there, was a radio button(<input type="radio">) connected to a <label> and
+when we clicked on that <label>, then that radio button would become selected(also by clicking the radio button itself, it would be
+checked). And that's the same thing that we're gonna do, but except the radio button, we're gonna use a checkbox.
 
+So like in the form, we make 2 <input type="radio"> hidden and if their labels which were connected to those hidden radio buttons,
+were selected, because of their connectivity, that radio button was selected actually. So the actual input was hidden but it's connected
+label was shown and INSIDE those <label>s, we created a circle which was a <span> and it looks like a radio button and also the actual text
+of that label.
+Why inside of labels we created those circles and text?
+Because that <label> and whatever is inside of that <label> are connected to radio button, so I put them INSIDE of that <label>.
 
- /*
+The 3 steps for this to work is:
+First to have a checkbox which we will make it hidden later.
+
+Second we must have a label connected to that checkbox(<input type="checkbox">) which that <label> is where we click and
+that <label> would be the button for opening that nav menu.
+
+The third step is to reveal the entire navigation which is in the background, as soon as the checkbox(<input type="checkbox">) becomes
+checked and for that we can use the :checked pseudo class.
+
+So first put the HTML code for that navigation, on top of everything else in <body>. So that navigation would be the first element
+in our entire web document.
+
+Now for checkbox hack, first we created an <input type="checkbox"> and give it an id to connect it to it's <label>.
+Then create it's label which we created it after the <input> itself.
+Important: And we know that in checkbox hack, we need to hide the <input type="checkbox"> itself and instead it's <label> which is
+ connected to that checkbox, would be a kind of button which we can click on that <label> to check that checkbox and that's exactly
+ what we did in radio button hack, which in that case, the <input type="radio"> was hidden and instead we click on the label of that
+ radio input and make it selected.
+
+Learn: When we have li.navigation__item>a.navigation__link in emmet:
+  it means INSIDE of li with class of navigation__item, we would have <a> element with class of navigation__link.
+  So in emmet, a>b means directly INSIDE of the a element, we create the b element.
+
+  */
+/*
 light-green:#7ed56f
 medium-green:#55c57a
 dark green:#28b485

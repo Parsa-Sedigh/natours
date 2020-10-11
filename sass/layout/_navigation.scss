@@ -1,0 +1,78 @@
+.navigation {
+
+  &__checkbox {}
+  &__button {
+    background-color: $color-white;
+
+    /* I give this class more height and width than the &__background, because if we didn't do this, maybe we would see some green
+    behind this &__button white circle. So this is only for make sure, let's completely cover &__background with &__button.
+    Also I give this, position: fixed; because it must be in fixed position when we scroll the page and also must be always on top of
+    the &__background which is also position: fixed; so this class must also has position: fixed; .
+
+    Also I give this class top: 6rem; and right: 6rem; why?
+    Because the height and width of this class have 1rem more than the width and height of &__background and we want &__button to
+    completely cover the &__background, so we gave it top and right of 6rem because:
+    For covering the &__background circle with &__button circle, we need the center of &__button completely on top of the other one.
+    Also we know that the &__button is bigger than &__background.
+    For making that happen, we need to play with their top and right props, because they both have position defined.
+    Because the width and height of &__button is 1 more than &__button, we need to give the top and right of &__button, .5rem less
+    than the top and right of &__background. Why .5 less?
+    Because .5 + .5 = 1 for both Y-axis and X-axis . TODO till 13:20*/
+    height: 7rem;
+    width: 7rem;
+    border-radius: 50%;
+    position: fixed;
+    top: 6rem;
+    right: 6rem;
+    z-index: 2000;
+  }
+  &__background {
+    /* The <div class="navigation__background">&nbsp;</div> is just a circle expanding from the button(<label>) and when the nav is open
+    if we click on the button again, it would go back to that button like a circle but decreasing in size.
+    So what we need is a circle, behind the button which that button is also a circle.
+    So first we must create a circle which is the &__background which is behind the white circle button.
+    So that white circle button is on top of the &__background circle.
+
+    So the &__button would be on top of the &__background. In other words, in this case, the element which has &__button, is the
+    <label> and it's on top of the element which has &__background class and this &__background would be a circle in the beginning but as
+    soon as we click on the  &__button , &__background would expand over the entire page.
+    So we click on the &__button which in this case is on the <label> element of the checkbox and then the &__background circle which is
+    behind the &__button, would expand to the entire page.
+    Learn: For creating a circle, it's crucial to define a same width and height and a border-radius: 50%;
+
+    position: fixed; is very similar to position: absolute; with the difference that position: fixed; doesn't change the coordinates of the
+    element, when we scroll the page. But it also take out the element out of the flow and allows us to specify it's coordinates,
+    in relation to it's nearest positioned parent element, by specifying top left and ... props.
+
+    Learn: Until this point, for specifying a gradient, we always used linear-gradient() in background-image property. But now
+     we want to use radial-gradient() .
+     What's the difference of linear-gradient() and radial-gradient() ?
+     The linear-gradient() goes from one side of the element to the other one, while the radial-gradient() starts in the middle of
+     an element and goes from there to all of the outside directions of that element.
+     In radial-gradient($colorA, $colorB) , the inner(middle) color would be the first color and the outer color would be $colorB .
+
+    Currently if you scroll, you see that the element which has this class(&__background) would get under other elements of the page.
+    So we need to add a z-index .
+    Learn: z-index only work on the classes which those classes which have a position defined(any position other than static(default
+     position of an element)). */
+    height: 6rem;
+    width: 6rem;
+    border-radius: 50%;
+    position: fixed;
+    top: 6.5rem;
+    right: 6.5rem;
+    background-image: radial-gradient($color-primary-light, $color-primary-dark);
+    z-index: 1000;
+  }
+  &__nav {}
+  &__list {}
+  &__item {}
+  &__link {}
+}
+
+
+
+
+
+
+
