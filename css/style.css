@@ -1494,6 +1494,32 @@ body {
   .form__radio-input {
     display: none; }
 
+.popup {
+  height: 100vh;
+  /* This width: 100%; isn't necassary because it's already have a width of 100%.
+
+  Remember: position:fixed; just like absolute, takes the element out of the flow.
+
+  Right now, the .navigation__button is still on top of this .popup, so let's give this class a higher z-index than that
+  .navigation__button .*/
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 9999; }
+  .popup__content {
+    /* This width: 75%; will always occupy 75% of the container and therefore of the viewport as well. Because the width of
+    container is also relative to width of page so viewport.*/
+    width: 75%;
+    background-color: #fff;
+    box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.2); }
+    .popup__content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); }
+
 /* It's better to add used colors in project in this file which can be like a color palette!
  $color-grey-light-2 is a bit darker than $color-grey-light-1*/
 /* You can also make the next color $color-grey-dark-2 but currently I don't have time for that.*/
@@ -1773,9 +1799,53 @@ the codes that are in that @mixin will be kind of extracted wherever we @include
     /* We use float here to move the element as far to right as it can. */
     float: right; }
 
-.navigation__button {
-  background-color: #fff;
-  /* I give this class more height and width than the &__background, because if we didn't do this, maybe we would see some green
+.navigation {
+  /* When the &__checkbox is checked, then we want to FIRST select the .navigation__button which is adjacent sibling of
+  &__checkbox so we can select that &__button with + sign and then we need to select .navigation__icon which is the child
+  element of .navigation__button so we select that icon with space after .navigation__button .
+  Now we want to make that icon disappear, but we don't really want to really change the size of that icon. WHY?
+  Because the ::after and ::before pseudo elements of that icon which we want to disappear it, are depend on the size of
+  the &__icon and they are positioned in relation to that size of icon and if we remove that size here(if we remove the
+  width and height of the &__icon), then that would change the positions of ::before and ::after pseudo elements too. So
+  we don't want that. So we will keep that disappearence very simple and we just make the background-color of that middle
+  line to transparent, so it's still there but we just can't see it.
+
+  Now if the ::after and ::before pseudo elements of &__icon , rotate in opposite directions, they should create a multiple
+  cross.
+  But right now, if you look at them, they just creating a shape like > . Why is it not working?
+  Because of 2 factors. First, we should move them to middle when the &__checkbox is in checked state. Because if you don't
+  move them to middle, they're still spaced out or stand out in relation to that line in the middle but that line is now
+  invisible, so we should move them back to 0 in relation to top.
+
+  Now let's make it a bit cooler. Because I want to make those ::after and ::before to rotate more and THEN make a cross
+  together. So we want to rotate them 180deg - 45 and -180deg - 45 instead of just 45 deg.
+  Because 180deg is half of a full rotation and if we subtract 45 from it, we end of basically with not a quarter of a circle,
+  which is 45deg, but with 3 quarters of a circle which is 135deg. So instead of using 45deg, we use 135deg. Because they
+  are straight line, in this case there's no difference for final result for using 45 and 135deg, because they will create
+  a cross anyways.
+
+  Learn:
+   transform-origin prop basically describes where the transformation happens.
+   For example when you say: transform-origin: right; in normal state of ::before, the origin of transformation would be at
+   the right side. In other words, what it does is that the center of rotation must be on the right side of the element which
+   has this prop.
+   So if we set it to right for &::before, when that class rotates, you see that it rotates base on the right side of
+   &::before and the right side of that element, stays at it's place, because the origin of transformation is placed there.
+   So if the origin of transformation of an element is at for example left side of the element, the left side of that element,
+   wouldn't move during the transformation of that element, but other places of that element would.
+   Why we are saying rotate() here a lot? Because rotate() is one of the values of transform prop which transform prop is
+   relative to transform-origin. So rotate() is also in relation to transform-origin.
+   So if you don't specify the rotate-origin prop for an element that somehow rotates, it would rotate base on center of
+   itself. So the center of element wouldn't move in relation to element itself.(If you move the element like using position
+   absolute or translate() it doesn't do with transform-origin place. Because it moves all of the element.)
+
+  Learn: In rotate(), 0 .. 180 is clockwise, 0 .. -180 is counterclockwise. So, positive number rotates clockwise. */ }
+  .navigation__checkbox {
+    /* I gave this class, a display of none, because we never want to actually see this checkbox. Now let's go to &__nav.*/
+    display: none; }
+  .navigation__button {
+    background-color: #fff;
+    /* I give this class more height and width than the &__background, because if we didn't do this, maybe we would see some green
     behind this &__button white circle. So this is only for make sure, let's completely cover &__background with &__button.
     Also I give this, position: fixed; because it must be in fixed position when we scroll the page and also must be always on top of
     the &__background which is also position: fixed; so this class must also has position: fixed; .
@@ -1788,17 +1858,43 @@ the codes that are in that @mixin will be kind of extracted wherever we @include
     For making that happen, we need to play with their top and right props, because they both have position defined.
     Because the width and height of &__button is 1 more than &__button, we need to give the top and right of &__button, .5rem less
     than the top and right of &__background. Why .5 less?
-    Because .5 + .5 = 1 for both Y-axis and X-axis . TODO till 13:20*/
-  height: 7rem;
-  width: 7rem;
-  border-radius: 50%;
-  position: fixed;
-  top: 6rem;
-  right: 6rem;
-  z-index: 2000; }
+    Because .5 + .5 = 1 for both Y-axis and X-axis.
+    In other words, the top and right props of &__background is 6.5rem and we gave __button which is on top of &__background ,
+    a top and right of 6rem. Why we gave it 6rem?
+    Because the height and width or in other words the radius of &__button is 1rem more than radius of &__background, therefore that's
+    why we gave the top and right of &__background , a half of difference of the radiuses of &__button and &__background .
+    So because the &__button is 1rem wider or have 1rem bigger radius than the &__background and that's why the &__button is .5rem,
+    further to the top and further to the right and that .5rem which I mentioned is half of the 1rem which is the difference between the
+    size of &__background and &__button circles. So now they are really on top of each other and cocentric.
 
-.navigation__background {
-  /* The <div class="navigation__background">&nbsp;</div> is just a circle expanding from the button(<label>) and when the nav is open
+    So:
+    The differences between the top and right(the distances) of the smaller and bigger circle =
+    (radius of bigger circle - radius of smaller circle) / 2 .
+
+    So in this case, base of the above formula we have:
+    x = (7 - 6) / 2
+    x = .5
+
+    In above example, the assumption is that we are using absolute positioning for cocentric 2 those 2 circles.
+    In above example, 7 is the radius of bigger circle(the radius of a circle is equal to it's height and width- because the height and
+    width of a circle is equal together.)
+
+    All of the formulas and explanation in above, are because we want to cocentric 2 circles(in this case, those 2 circles are
+    &__button(the bigger one) and &__background(the smaller one)) in css .
+
+    Now we need to hide the checkbox, so let's go to &__checkbox. So we give it a display of none.*/
+    height: 7rem;
+    width: 7rem;
+    border-radius: 50%;
+    position: fixed;
+    top: 6rem;
+    right: 6rem;
+    z-index: 2000;
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1);
+    text-align: center;
+    cursor: pointer; }
+  .navigation__background {
+    /* The <div class="navigation__background">&nbsp;</div> is just a circle expanding from the button(<label>) and when the nav is open
     if we click on the button again, it would go back to that button like a circle but decreasing in size.
     So what we need is a circle, behind the button which that button is also a circle.
     So first we must create a circle which is the &__background which is behind the white circle button.
@@ -1826,14 +1922,272 @@ the codes that are in that @mixin will be kind of extracted wherever we @include
     So we need to add a z-index .
     Learn: z-index only work on the classes which those classes which have a position defined(any position other than static(default
      position of an element)). */
-  height: 6rem;
-  width: 6rem;
-  border-radius: 50%;
-  position: fixed;
-  top: 6.5rem;
-  right: 6.5rem;
-  background-image: radial-gradient(#7ed56f, #28b485);
-  z-index: 1000; }
+    height: 6rem;
+    width: 6rem;
+    border-radius: 50%;
+    position: fixed;
+    top: 6.5rem;
+    right: 6.5rem;
+    background-image: radial-gradient(#7ed56f, #28b485);
+    z-index: 1000;
+    /* As soon as the navigation is opened, we need to scale the entire &__background(because this element at the beginning is small,
+    because in the beginning it has width and height of 6rem, but we need to scale it till it span the entire viewport) , so we need
+    to use transform: scale() in order to make it bigger. For now we write this transform: scale(); here, but later we will take it
+    to another place. So for development purposes, we write it here.
+    Now with this, a circle which is this class and the element that this class sits on it, we will take almost the entire of page.
+    Also for value of scale() , we can give it 80 in order to this class covers the bigger screens too.
+    Now let's style the links of list items, which those links are in &__link . */
+    transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1); }
+  .navigation__nav {
+    visibility: hidden;
+    /* We could don't specify a width of 100% for this class, because the element that uses this class is a block element and
+    therefore it automatically gets the entire width of it's parent. But if you wanted to make a block element to gets 50% of width
+    of it's parent, well, you must definitely specify that prop. But for 100% it isn't necessary.
+    Also I gave it a position of fixed, because remember when the navigation is open in our website, even if you scroll, the navigation
+    must be stay at the same place. I gave it top: 0; and right: 0; (or left: 0; - but in this case it doesn't matter because it is
+    getting the entire width of it's parent.) so this class starts in the top right corner of page or viewport and spanning the
+    entire viewport, because we gave it height of 100vh.(yes entire page, because it occupies the entire page).
+
+    About the value of z-index of this class, we know that the &__button must be always on top of this class but the &__nav (this class)
+    should be on top of &__background . So the z-index of this class must be higher than &__background but also smaller than
+    &__button.*/
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    /* If you set this to right: 0; , the element that has this class, would come in from right side. Because the width
+    of this class, when the checkbox increasing from 0 to 100% and because this class is always stick to right(if we were
+    saying: right: 0;), therefore it comes from right and also it goes to right, when the checkbox was unchecked.
+    But right now, we are saying: left: 0; , so it's always stick to left side and therefore when the width of this class
+    increases, it is coming from left side and ... .*/
+    left: 0;
+    z-index: 1500;
+    /* For getting rid of the element which has navigation__nav , we used this opacity: 0; but the problem with this, is
+     with JUST ONLY using opacity: 0; , we actually just make it opeque but you see the links are still there and you see
+     the pointer cursor is still in some places of page. In other words, we just make this class, invisible but they are still
+     there.
+     So what we should do there, is to also set the width to 0. Or we could use display: none;*/
+    opacity: 0;
+    width: 0;
+    transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+  .navigation__list {
+    /* This class is on the ul element in html and we want to center it both horizontally and vertically in the &__nav.
+    So we need to give this class a position: absolute; in order to center it both horizontally and vertically. Then:
+    top: 50%; left: 50%; and transform: translate(-50%, -50%);
+
+    We could also write a @mixin for centring elements, both horizontally and vertically inside their wrapper.
+    Why a mixin? Because we are using this code multiple times and it's the same code without any changes.
+
+    list-style: none; will get rid of bullets of <li> elements.*/
+    list-style: none;
+    text-align: center;
+    width: 100%; }
+    .navigation__list {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); }
+  .navigation__item {
+    margin: 1rem; }
+  .navigation__link {
+    /* font-weight with value of 300, would make a thin text not a bold text. Also we need to make this class to have
+    display: inline-block; so the padding and margin gets applied and also with that, the transform prop works too.*/
+    /* When we hover on this class, a white background would come IN from the left side of this class and that white background is
+    slightly rotated edge and when we hover out of that element which has this class, that white background goes away from the
+    opposite side that it was came in. Also the text of the link which we have it in the html, is moving a little bit, when we hover
+    on the &__item .
+    The best way of creating that effect is to write solid color gradient technique such as we used that technique in the form which
+    was in the booking section in the past.
+
+    So how we create a solid color gradient?
+    We use a background-image prop which it's value is linear-gradient() and then we use a deg in () of linear-gradient() and then
+    we use percentage values and with those values, we specify the color of background which those background colors, advance till
+    the value of their percentage. So for example when we have sth like:
+    linear-gradient(120deg, <color-1> 0%, <color-1> 50%, <color-3> 50%) , this means from the beginning(beginning means 0%) we have
+    <color-1> and this color would advance till 50% of the background of the element that we have this prop on it and then at 50%,
+    the color would change from color-2 to color-3 and that color-3 would advance till end of the background of that element.
+    Important: Why we used color-1 in both 0% and 50% ?
+     Because in that example we wanted to have color-1 from 0% till 50% of background of element and no other colors in between of those
+     percentages of background. But if you used another color for the second arg in that example, first we had that color-1 in the
+     beginning and then with some percentages take, the color changes from color-1 to color-2 and ... . So remember when we set the
+     same color in the beginning of a percentage and also in end of that percentage, it means that color WAS FINISHED.
+     So the thing is, if you write 2 different colors which one of them is starting after the other one, there won't be a some kind
+     of a separation place for these 2 colors, in other words, if you don't EXPLICITELY specify the place(that place is based on
+     percentages) that those 2 colors, are separated from each other, we would have a range of mixing those 2 colors together and
+     in the end of that mixing, the PURE color of the second color would start.
+     For example, if you say:
+     linear-gradient(120deg, green 0%,orangered 0%, orangered 50%, $color-white 50%);
+     Because we EXPILICELY wrote the place that the second color(orangered) was started, we wouldn't have
+     a mixing colors of green and orangered but if we write:
+     linear-gradient(120deg, green 0% orangered 50%, $color-white 50%);
+     Because the place that the orangered was begun is not EXPLICITELY specified, we would have a mix of those
+     2 colors and therefore the orangered wouldn't start from 0% and would start in 10% or 20% or ...
+     Also if you say: linear-gradient(120deg, green 0%,green 0%, orangered 50%, $color-white 50%);
+     Again the place that the next color which is orangered isn't EXPLICITELY defined, we would have a mix of
+     those 2 colors and therefore the first color wouldn't stop at 0%(which we expect that behavior but it
+     doesn't occur) and also the second color wouldn't start at 0%.
+     Important: So the thing that we learend was, always specify the START of the next color in those cases.
+     (The next color in our example was the orangered, which it's start point must EXPLICITELY specified in
+     those examples, in order to don't get a mix of those 2 colors which the result would be an unexpected
+     behavior which is the first color wouldn't finish in the place we specified for it- which in our example
+     was 0% and also the NEXT color wouldn't start at the place we defined for it- which in our example that
+     starting point for second color is 0% but if we don't specify that starting place for NEXT color, the
+     starting point wouldn't be the starting point that we expect- so in our example that point wouldn't be
+     0%.)
+     So we learned that for separating the colors from each other in a solid color gradient the NEXT color
+     is important, not the current background-color. This means when you want to switch from color-1 to
+     color-2 , you shouldn't say: (10deg, color1 0%, color1 10%, color2 10%);
+     that would not separate the colors immediately, which it is what we expected, */ }
+    .navigation__link:link, .navigation__link:visited {
+      display: inline-block;
+      font-size: 3rem;
+      font-weight: 300;
+      color: #fff;
+      text-decoration: none;
+      text-transform: uppercase;
+      background-image: linear-gradient(120deg, transparent 0%, transparent 50%, #fff 50%);
+      /* For styling an anchor element, you need to target both &:link and &:visited of class which we placed on that anchor
+      but the &:hover and &:active can be separate from each other or can also both have same styles. But in this case, we
+      want to use same styles for both the hover and the active state of this class.
+      Remember: It's a good practice to when you want to give some padding to an element, give more
+      padding in the left and right of the element than it's top and bottom, like what we did here. So
+      when we have 2 values for padding, the first value is top and bottom and second one is right and left
+      which is better to give left and right more padding than top and bottom.
+      So the padding in the sides of an element is good to be more than padding of top and bottom of that element.
+
+      background-size: 100%; is the same as we say background-size: cover; and if you increase the value from 100% for that prop,
+      you would see that the background of the element which has this class, basically is moving to the right side! That's because
+      we're increasing the entire thing, but it's not visible because the box ends there but you can imagine that the entire
+      background wraps all the element and also the place around that element and if we set the background-size to 200% ,
+      it will go all the way far from the right side of the element (because the background of this class, has some deg so that
+      background is rotated a bit and therefore we need to push it a lot (to right side- by increasing the background-size)
+      in order to make the background spans all of the element.)
+      So now, because we set background-size to 200% and because the background of this element is a lot rotated(120deg) ,
+      it now wrap all of the element and also went a lot from the right side of the element(yes right side, because in this
+      case when we increase the background-size , the background goes to the right side of the parent but because in this case
+      it is rotated a bit, it needs to go much further than 100% in order to span the entire of element. But if the background
+      of this class wasn't rotated at all, when we set the background-size to 100% , it will span the entire of element,
+      because, well, the background isn't rotated at all and therefore when it's size is set to 100%, it will span the entire
+      of that element and therefore we don't need to increase the size of the background, even more than 100% , in order to
+      make the background span the entire of it's element.)
+      Also when we set the background-size to 200% in this case, which the background also is a bit rotated, the parts of the
+      background which is outside of the element, is not visible by our eyes. Because it is outside of the element.
+
+      But in this case we don't need the background to span all of it's element, so in order to make our animation with this
+      effect which is: when we increase the background-size of the element, that background goes to right side of the element,
+      we can use that effect for our animation.
+      In order to create that animation, we need to move the entire gradient to LEFT side. So the white part would be on the
+      element actually and the transparent part of background of element, would be completely at the left side of element and
+      we can't see that part which is on the left side. So if we shift the entire background-size, 100% to the left side
+      of element, we have our effect.
+
+      Now by setting background-size to 200%, the background of element goes to right side of element and in hover, we set
+      the background of this class to 100%, means the background would shift from right to left when we hover it or focus
+      the element that has this class, because the position of background is 100%, when we hover this class.
+
+      Learn: The lesser the background-position, the more background of element to left of element. So when we set the
+       background-position to 90%, the background of element would be more right of element than when we say the
+       background-position to 50%.
+       This behavior is the same as background-size, because when the bigger the value of background-size , the background
+       of element would go more to the right of element and the more the background-position, the background of element would
+       go to the right side of element.
+
+      Also in &:hover, :state of this class, we could use background-size prop and use for example 50% for it's value.(why
+      50%? Because we want to when hover over this class, the background goes to left side and we know the less the
+      value of background-size, the more it goes to left of element. So we set a less value than the value of 200% in
+      hover and focus state of this class, to make it go to left.)
+
+      Important: The initial value of background-size is 0%, which is as far as it can in left side of element.
+
+      Right now, if you hover the element that has this class, we still see a little of the old background which is at
+      top left corner of element in it's hover or focus state and that's because of 120deg we set for background-image of
+      this class. So because of that rotation of background, it doesn't quite cover the element.
+      In order to get rid of the old background when we hover or focus this class, we can increase the background-size of
+      the normal state of this class, so with that, the background of element would go even further to the right side of
+      element because it was got BIGGER, so when we hover over the element that has this class, the background would
+      completely cover the element and no old background would be seen. So here, I set the background-size from 200% to
+      220%.
+      Now because when we hover over this class and the white background cover the entire element, we can't see the text
+      of link, so let's add color: $color-primary;.
+
+      Now another thing that we must add, is when we hover over this class, the element must moves a bit to the right side
+      and when we hover out, it goes back to it's original position. So we use translateX() and remember:
+      You don't need to specify the normal position of an element, when you define some translate() for it's other states.
+      Because the initial value for translate() and translateX() and ... is always translate(0) even if we don't specify
+      it. So here, in normal state we also have that and when we hover out or focus out, we know we get back to normal
+      state, and in there, we have translate(0) , so it goes back to it's original position. */
+      padding: 1rem 2rem;
+      background-size: 225%;
+      transition: all .4s; }
+      .navigation__link:link span, .navigation__link:visited span {
+        display: inline-block;
+        margin-right: 1.5rem; }
+    .navigation__link:hover, .navigation__link:active {
+      /* For hover animation, if we shift the  background of element, completely to the left side of the element, then we
+      have our animation and we can do that, by using background-position.
+      For specifying the entire thing, usually means: 100%.
+      Also we need to animate this prop, when the state of class is changed to hover or focus. So let's add the transition
+      prop in normal state of this class.*/
+      background-position: 100%;
+      color: #55c57a;
+      transform: translateX(1rem); }
+  .navigation__checkbox:checked ~ .navigation__background {
+    transform: scale(80); }
+  .navigation__checkbox:checked ~ .navigation__nav {
+    visibility: visible;
+    opacity: 1;
+    width: 100%; }
+  .navigation__icon {
+    position: relative;
+    margin-top: 3.5rem;
+    /* With these, now the line in the middle is <span class="navigation__icon"> and ::before is the upper one and ::after is
+    in the bottom.
+
+    Now if you want to center these 3 lines, horizontally, we can set the text-align prop of their parent to center. So
+    let's go to .navigation__button and do that. After that, we just have to move down all of those 3 lines which are in
+    <span class="navigation__icon">, a little bit. So I gave it some margin-top .*/ }
+    .navigation__icon, .navigation__icon::before, .navigation__icon::after {
+      /* I used 2px instead of .2rem for height, because we always want it to be 2px and don't change no matter the root
+      font-size is.
+
+      Important: In order to make ::after and ::before pseudo elements to actually appear on the page, they need to have their
+       content prop defined for each and also they need to have their display prop set and we do that in the shared styles,
+       because we want all of them to be inline-blocks.
+      RECAP: In order to ::after and ::before pseudo elements actually appear on the page, they need to have their content
+      and display props set.
+
+      Now if you inspect them, you see the upper line is the <span class="navigation__icon"> itself and under it, we have the
+      ::before pseudo element and under this one, we have ::after . I don't know why they're located where they are now!, but
+      it doesn't matter, we'll fix it.
+      So how we position them?
+      We can use absolute positioning, on the ::before and ::after and then on the parent of them, we give it relative
+      position. With that, the ::before and ::after pseudo elements are positioned relative to <span class="navigation__icon">
+      element.*/
+      width: 3rem;
+      height: 2px;
+      background-color: #333;
+      display: inline-block; }
+    .navigation__icon::before, .navigation__icon::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      transition: all .2s; }
+    .navigation__icon::before {
+      /* With top: -1rem; we basically move it up. */
+      top: -.8rem; }
+    .navigation__icon::after {
+      top: .8rem; }
+  .navigation__button:hover .navigation__icon::before {
+    top: -1rem; }
+  .navigation__button:hover .navigation__icon::after {
+    top: 1rem; }
+  .navigation__checkbox:checked + .navigation__button .navigation__icon {
+    background-color: transparent; }
+  .navigation__checkbox:checked + .navigation__button .navigation__icon::before {
+    top: 0;
+    transform: rotate(135deg); }
+  .navigation__checkbox:checked + .navigation__button .navigation__icon::after {
+    top: 0;
+    transform: rotate(-135deg); }
 
 /* It's better to add used colors in project in this file which can be like a color palette!
  $color-grey-light-2 is a bit darker than $color-grey-light-1*/
@@ -2390,8 +2744,7 @@ all of these columns should be inside a container called row.So let's say that a
 in one ROW. All of the excercises are in test-grid section.
 After writing the html code for this exercise, we must create a new scss file to build this grid which is a layout, we must create a
 new scss partial file in layout folder and call it _grid.scss and then import this new file in main.scss .
-
- */
+*/
 /* In native css, in calc() we can mix units. But in preprocessors we can't do mathmatical operations with multiple units and it's
 actually pretty logical why it is that way. Because we COMPILE the sass files while we're developing the page, so even before the
 page is served to the user. But this kind of calculation depends on layout. So it has to happen when the website is rendered using the
@@ -2472,8 +2825,7 @@ absolute, we need to specify a reference for that reference too which must be po
 /* Learn: Inline elements can be centered horizontally by saying text-align: center; on their parent. Because an inline element,
      behaves just like a text.
 When using emmet: <element>.<class-1>.<class-2> will create an element with class attr of: class="class-1 class-2"*/
-/*
-20. Building the Navigation - Part 1:
+/* 20. Building the Navigation - Part 1:
 - What is the "checkbox hack" and how it works?(Actually our navigation is working with this hack!)
 - How to create custom animation timing functions, using cubic bezier curves
 - How to animate "solid-color gradients(to create nice hover effects in this case)"
@@ -2512,10 +2864,115 @@ Important: And we know that in checkbox hack, we need to hide the <input type="c
  radio input and make it selected.
 
 Learn: When we have li.navigation__item>a.navigation__link in emmet:
-  it means INSIDE of li with class of navigation__item, we would have <a> element with class of navigation__link.
-  So in emmet, a>b means directly INSIDE of the a element, we create the b element.
+ it means INSIDE of li with class of navigation__item, we would have <a> element with class of navigation__link.
+ So in emmet, a>b means directly INSIDE of the a element, we create the b element. */
+/* 21. Building the Navigation - Part 2:
+Now we need to make the navigation works, as soon as we hit the navigation button. First of all we need to hide the
+.navigation__background and also hide the .navigation__nav. So I commented out transform: scale(80); in &__background.
 
-  */
+For checkbox hack in this case, we have navigation__checkbox , navigation__button(or our <label>) and navigation__background.
+In this hack, we click on the <label> and the checkbox becomes checked and then after the checkbox is checked, we want the
+navigation__background to become visible. So how we translate that into a css selector?
+We use :checked on the <input type="checkbox"> class, just like what we did in radio button hack and then we use the sibling
+selector or ~(but not the adjacent sibling selector) to select .navigation__background which is not the adjacent sibling of
+.navigation__checkbox. So we didn't use direct or adjacent sibling of .navigation__checkbox which that adjacent sibling of it
+is .navi-toggle but we don't want to select that, but we just want to select a normal sibling of .navigation__checkbox ,
+so we used ~ selector.
+
+Now for increasing the size of navigation__background , we use scale() function on it. But remember, you can not make sth visible
+by using scale() if that element wasn't visible in the beginning. You can just make it bigger by using scale().
+Now also if you again click on the .navigation__button, the checkbox becomes unchecked and therefore the styles that we have
+inside of &:checked ~ .navigation__background would be removed and therefore the .navigation__background would again go
+under the .navigation__button and won't be visible to us.
+We COULD nest this selector in the &__checkbox but I prefer to write it out of &__checkbox , because it was done in a
+separate video.
+Now let's make the .navigation__nav visible after the &__checkbox is in checked state, by setting it's opacity:1; and
+width to 100%(it was 0 before.)
+
+Now we need to animate those 2(I mean when .navigation__background gets bigger and when the .navigation__nav gets visible).
+So let's add transition prop in normal state of .navigation__background and .navigation__nav and in .navigation__nav we just
+want to animate the opacity and therefore the width transition should be instantaneous because we didn't specify it in
+transition prop. So the width transition from 0% to 100% would be instantaneous. But now, you see the .navigation__nav goes
+to the right side during the .8 transition of :checked state to normal state. So we actually need to animate the width too.
+So let's change the opacity in transition prop of .navigation__nav to all.
+But after that, now you see that the list items weirdly moving in, from right side and also moving out to right side again,
+when we uncheck and we don't want that to happen. By doing that, we also get rid of a tiny white background that we had on
+one of our list items(04 stories one) during the animation.
+That's because we didn't specify the width for .navigation__list . So if we set it's width to 100%, then that weird moving
+from right and moving out to right shouldn't happenning. So go to .navigation__list and add width prop 100%.
+Now if you see that, the latter problem solved but the first one not. Because remember, when we close the .navigation__background
+and .navigation__nav , the entire container there, reduces it's width from 100% to 0, so everything kinda collapse all way
+until to 0 and since we fix that .navigation__background to the right side by saying: right: 0; , then it moves to the
+right side.
+
+Now, I want a custom transition time and function for .navigation__background and .navigation__nav transition props.
+There are some built-in transition timing functions like ease-in and ... but this time we want to use a custom one and for that,
+we use sth called cubic-bezier functions and in cubic-bezier() we have to put 4 numbers which define the cubic-bezier curve.
+But since we don't know which numbers to put, we can use easing.net and cubic-bezier.com .
+
+Learn: Easing function is basically a function that specifies how much change occurs, over time. For example start slow and
+ then accelerated and then slow down again. We used easeInOutQuint.
+For .navigation__nav , let's use easeInOutBounce. So let's use it's numbers and copy them from that website to our code.
+Now you see that the .navigation__nav actually moved a bit to other side(left-because it was coming from right side to the
+left and then it goes a little bit again to right side) and then goes to it's specified location.
+That's because when we are in transition from normal state of .navigation__checkbox to checked state of it, we are going from
+width: 0; of it in normal state to 100% of width, but the 100% even gets a bit larger maybe 110% so it goes to 110% width,
+because of the type of function we used in cubic-bezier, which was easeInOutBounce and in that curve, it comes out even from
+the final step. So if we assume the final step as 1, it goes to 1.3 . In other words, that curve contains some values out of
+range. */
+/* 22. Building the Navigation - Part 3:
+The icon that you see in navigation__button, is composed of 3 lines. The line in the middle is simply a small <span> and the
+upper one would be a ::before pseudo element and the bottom one would be ::after pseudo element. So instead of putting 3
+same elements in the html, we just put 1 and then use pseudo elements to make the rest.
+Then when we click on the .navigation__button , you see that the middle line disappears and the other ones rotate, in order to
+form the multiply or cancel sign.
+So go to <label for="navi-toggle" class="navigation__button"> and create .navigation__icon and that <span> would be empty, so
+let's put &nbsp;
+There are also some styles that those 3 elements(::before, span itself and ::after) share between each other.
+
+Now we want when we hover over <label for="navi-toggle" class="navigation__button">, ::after and ::before of
+<span class="navigation__icon">, move a little bit up and down respectively.
+For doing that, first we need to select the hover state of .navigation__button and then because the .navigation__icon is inside
+of .navigation__button and also the ::before and ::after of .navigation__icon are also inside of that &__button, so
+we can select those ::before and ::after by saying: .navigation__button:hover .navigation__icon::before {} and ... .
+
+Remember: We knew that in css, when you select like: <a> <b> {} it means the <b> is child of <a> (direct or indirect).
+Also we need to animate the top prop of those ::before and ::after , so we have to set transition prop on normal state of them.
+
+Also you could use translate() functions to do those things(when we hover on &__button , the lines must go up and down) instead
+of using absolute positioning and top prop.
+
+Now we must make the ::after and ::before of that <span class="navigation__icon"> , to make a cross and the middle line to
+disappear, when we hover over :checked state of <input type="checkbox">.*/
+/* Important:
+    descendant selector (space)
+    child selector (>)
+    adjacent sibling selector (+)
+    general sibling selector (~)
+ */
+/* 23) Building a pure CSS popup - Part 1
+- How to build a nice popup with only css?(This time we don't use checkbox hack for that functionality(which you could use
+it, but instead we'll use the :target pseudo class))
+- How to use the :target pseudo class?
+- How to create boxes with equal height by using display: table-cell; ? (Remember my long problem when I had some columns that
+sit next to each other but I wanted them to have equal height to the tallest column and I solve that problem badly be setting
+fixed height on the parent and childes must have that height too by using height: 100%; and ... .)
+- Some tools for text formatting like creating column layouts and automatic hyphenation of words using new hyphens prop.
+- How to create css text columns?
+-How to automatically hyphenate words using hyphens?
+
+When the popup opens, the background becomes dark and we saw that the popup box itself came in with a nice animation and all of
+that dark background and the popup box are on top of entire web page, so even on top of navigation__button which has a z-index
+and the popup and the dark background behind it, are fixed position. Therefore if you scroll up or down, the popup and it's
+background stays in the same place.
+So we have an element which covers the entire viewport and there we have the popup itself.
+
+You can put the html code of popup and it's background where ever you want, because they are not really tied to any of
+sections of our site or any other html of our site. So let's put it at the end of everything in markup, even after the footer.
+
+In the popup, we have 2 boxes side by side which they have the same height. In the right box, the content is vertically centered.
+
+So how make 2 boxes side by side TODO till 7:20*/
 /*
 light-green:#7ed56f
 medium-green:#55c57a

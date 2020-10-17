@@ -20,7 +20,9 @@
 
     <!-- I named the class of this <label> , navigation__button, because it plays the role of a button for checking that
     <input type="checkbox"> and when that checkbox was checked, the navigation will be shown.-->
-    <label for="navi-toggle" class="navigation__button">MENU</label>
+    <label for="navi-toggle" class="navigation__button">
+        <span class="navigation__icon">&nbsp;</span>
+    </label>
 
     <!-- Background of navigation is this <div> and it would be empty so no other elements would be in it, but in order to
      show it and make it visible to us, we must give it a width or height or I just add a &nbsp; in it.
@@ -35,22 +37,48 @@
      Also remember the navigation is part of the layout, so let's put it's styles inside layout folder.-->
     <div class="navigation__background">&nbsp;</div>
 
+    <!-- This <nav> should be a huge element which occupies the entire of viewport and therefore with occupying the whole of viewport,
+    we can then center the .navigation__list which is inside .navigation__nav, both horizontally and vertically. SO because the
+    navigation__nav is occupying the entire viewport, so we can center the .navigation__list both horizontally and vertically in the
+    viewport. So it would be in center of page.
+    In order to make the .navigation__nav to occupy the entire page, we gave it a height of 100vh.
+
+    Because we have some space between the numbers of these items and their actual text, we need to keep those numbers inside
+    their <span> to be able to give them some space.
+
+    Important: In BEM, every element has to have a class. But in this case, for <span> elements, it's an overkill to give them
+    a separate class. So in css we select them by their element type.-->
     <nav class="navigation__nav">
         <ul class="navigation__list">
             <li class="navigation__item">
-                <a href="#" class="navigation__link">About Natours</a>
+                <a href="#" class="navigation__link">
+                    <span>01</span>
+                    About Natours
+                </a>
             </li>
             <li class="navigation__item">
-                <a href="#" class="navigation__link">Your Benefits</a>
+                <a href="#" class="navigation__link">
+                    <span>02</span>
+                    Your Benefits
+                </a>
             </li>
             <li class="navigation__item">
-                <a href="#" class="navigation__link">Popular Tours</a>
+                <a href="#" class="navigation__link">
+                    <span>03</span>
+                    Popular Tours
+                </a>
             </li>
             <li class="navigation__item">
-                <a href="#" class="navigation__link">Stories</a>
+                <a href="#" class="navigation__link">
+                    <span>04</span>
+                    Stories
+                </a>
             </li>
             <li class="navigation__item">
-                <a href="#" class="navigation__link">Book Now</a>
+                <a href="#" class="navigation__link">
+                    <span>05</span>
+                    Book Now
+                </a>
             </li>
         </ul>
     </nav>
@@ -880,6 +908,13 @@ should get a class.-->
         </div>
     </div>
 </footer>
+
+<!-- <div class="popup"> is for that dark background and the popup box itself is <div class="popup__content"> -->
+<!--<div class="popup">-->
+<!--    <div class="popup__content">-->
+<!--        POPUP-->
+<!--    </div>-->
+<!--</div>-->
 
 </body>
 </html>

@@ -15,6 +15,7 @@
 @import "components/story";
 @import "components/bg-video";
 @import "components/form";
+@import "components/popup";
 
 @import "layout/header";
 @import "layout/_grid.scss";
@@ -413,8 +414,7 @@ all of these columns should be inside a container called row.So let's say that a
 in one ROW. All of the excercises are in test-grid section.
 After writing the html code for this exercise, we must create a new scss file to build this grid which is a layout, we must create a
 new scss partial file in layout folder and call it _grid.scss and then import this new file in main.scss .
-
- */
+*/
 /* In native css, in calc() we can mix units. But in preprocessors we can't do mathmatical operations with multiple units and it's
 actually pretty logical why it is that way. Because we COMPILE the sass files while we're developing the page, so even before the
 page is served to the user. But this kind of calculation depends on layout. So it has to happen when the website is rendered using the
@@ -495,8 +495,7 @@ absolute, we need to specify a reference for that reference too which must be po
 /* Learn: Inline elements can be centered horizontally by saying text-align: center; on their parent. Because an inline element,
      behaves just like a text.
 When using emmet: <element>.<class-1>.<class-2> will create an element with class attr of: class="class-1 class-2"*/
-/*
-20. Building the Navigation - Part 1:
+/* 20. Building the Navigation - Part 1:
 - What is the "checkbox hack" and how it works?(Actually our navigation is working with this hack!)
 - How to create custom animation timing functions, using cubic bezier curves
 - How to animate "solid-color gradients(to create nice hover effects in this case)"
@@ -535,10 +534,115 @@ Important: And we know that in checkbox hack, we need to hide the <input type="c
  radio input and make it selected.
 
 Learn: When we have li.navigation__item>a.navigation__link in emmet:
-  it means INSIDE of li with class of navigation__item, we would have <a> element with class of navigation__link.
-  So in emmet, a>b means directly INSIDE of the a element, we create the b element.
+ it means INSIDE of li with class of navigation__item, we would have <a> element with class of navigation__link.
+ So in emmet, a>b means directly INSIDE of the a element, we create the b element. */
+/* 21. Building the Navigation - Part 2:
+Now we need to make the navigation works, as soon as we hit the navigation button. First of all we need to hide the
+.navigation__background and also hide the .navigation__nav. So I commented out transform: scale(80); in &__background.
 
-  */
+For checkbox hack in this case, we have navigation__checkbox , navigation__button(or our <label>) and navigation__background.
+In this hack, we click on the <label> and the checkbox becomes checked and then after the checkbox is checked, we want the
+navigation__background to become visible. So how we translate that into a css selector?
+We use :checked on the <input type="checkbox"> class, just like what we did in radio button hack and then we use the sibling
+selector or ~(but not the adjacent sibling selector) to select .navigation__background which is not the adjacent sibling of
+.navigation__checkbox. So we didn't use direct or adjacent sibling of .navigation__checkbox which that adjacent sibling of it
+is .navi-toggle but we don't want to select that, but we just want to select a normal sibling of .navigation__checkbox ,
+so we used ~ selector.
+
+Now for increasing the size of navigation__background , we use scale() function on it. But remember, you can not make sth visible
+by using scale() if that element wasn't visible in the beginning. You can just make it bigger by using scale().
+Now also if you again click on the .navigation__button, the checkbox becomes unchecked and therefore the styles that we have
+inside of &:checked ~ .navigation__background would be removed and therefore the .navigation__background would again go
+under the .navigation__button and won't be visible to us.
+We COULD nest this selector in the &__checkbox but I prefer to write it out of &__checkbox , because it was done in a
+separate video.
+Now let's make the .navigation__nav visible after the &__checkbox is in checked state, by setting it's opacity:1; and
+width to 100%(it was 0 before.)
+
+Now we need to animate those 2(I mean when .navigation__background gets bigger and when the .navigation__nav gets visible).
+So let's add transition prop in normal state of .navigation__background and .navigation__nav and in .navigation__nav we just
+want to animate the opacity and therefore the width transition should be instantaneous because we didn't specify it in
+transition prop. So the width transition from 0% to 100% would be instantaneous. But now, you see the .navigation__nav goes
+to the right side during the .8 transition of :checked state to normal state. So we actually need to animate the width too.
+So let's change the opacity in transition prop of .navigation__nav to all.
+But after that, now you see that the list items weirdly moving in, from right side and also moving out to right side again,
+when we uncheck and we don't want that to happen. By doing that, we also get rid of a tiny white background that we had on
+one of our list items(04 stories one) during the animation.
+That's because we didn't specify the width for .navigation__list . So if we set it's width to 100%, then that weird moving
+from right and moving out to right shouldn't happenning. So go to .navigation__list and add width prop 100%.
+Now if you see that, the latter problem solved but the first one not. Because remember, when we close the .navigation__background
+and .navigation__nav , the entire container there, reduces it's width from 100% to 0, so everything kinda collapse all way
+until to 0 and since we fix that .navigation__background to the right side by saying: right: 0; , then it moves to the
+right side.
+
+Now, I want a custom transition time and function for .navigation__background and .navigation__nav transition props.
+There are some built-in transition timing functions like ease-in and ... but this time we want to use a custom one and for that,
+we use sth called cubic-bezier functions and in cubic-bezier() we have to put 4 numbers which define the cubic-bezier curve.
+But since we don't know which numbers to put, we can use easing.net and cubic-bezier.com .
+
+Learn: Easing function is basically a function that specifies how much change occurs, over time. For example start slow and
+ then accelerated and then slow down again. We used easeInOutQuint.
+For .navigation__nav , let's use easeInOutBounce. So let's use it's numbers and copy them from that website to our code.
+Now you see that the .navigation__nav actually moved a bit to other side(left-because it was coming from right side to the
+left and then it goes a little bit again to right side) and then goes to it's specified location.
+That's because when we are in transition from normal state of .navigation__checkbox to checked state of it, we are going from
+width: 0; of it in normal state to 100% of width, but the 100% even gets a bit larger maybe 110% so it goes to 110% width,
+because of the type of function we used in cubic-bezier, which was easeInOutBounce and in that curve, it comes out even from
+the final step. So if we assume the final step as 1, it goes to 1.3 . In other words, that curve contains some values out of
+range. */
+/* 22. Building the Navigation - Part 3:
+The icon that you see in navigation__button, is composed of 3 lines. The line in the middle is simply a small <span> and the
+upper one would be a ::before pseudo element and the bottom one would be ::after pseudo element. So instead of putting 3
+same elements in the html, we just put 1 and then use pseudo elements to make the rest.
+Then when we click on the .navigation__button , you see that the middle line disappears and the other ones rotate, in order to
+form the multiply or cancel sign.
+So go to <label for="navi-toggle" class="navigation__button"> and create .navigation__icon and that <span> would be empty, so
+let's put &nbsp;
+There are also some styles that those 3 elements(::before, span itself and ::after) share between each other.
+
+Now we want when we hover over <label for="navi-toggle" class="navigation__button">, ::after and ::before of
+<span class="navigation__icon">, move a little bit up and down respectively.
+For doing that, first we need to select the hover state of .navigation__button and then because the .navigation__icon is inside
+of .navigation__button and also the ::before and ::after of .navigation__icon are also inside of that &__button, so
+we can select those ::before and ::after by saying: .navigation__button:hover .navigation__icon::before {} and ... .
+
+Remember: We knew that in css, when you select like: <a> <b> {} it means the <b> is child of <a> (direct or indirect).
+Also we need to animate the top prop of those ::before and ::after , so we have to set transition prop on normal state of them.
+
+Also you could use translate() functions to do those things(when we hover on &__button , the lines must go up and down) instead
+of using absolute positioning and top prop.
+
+Now we must make the ::after and ::before of that <span class="navigation__icon"> , to make a cross and the middle line to
+disappear, when we hover over :checked state of <input type="checkbox">.*/
+/* Important:
+    descendant selector (space)
+    child selector (>)
+    adjacent sibling selector (+)
+    general sibling selector (~)
+ */
+/* 23) Building a pure CSS popup - Part 1
+- How to build a nice popup with only css?(This time we don't use checkbox hack for that functionality(which you could use
+it, but instead we'll use the :target pseudo class))
+- How to use the :target pseudo class?
+- How to create boxes with equal height by using display: table-cell; ? (Remember my long problem when I had some columns that
+sit next to each other but I wanted them to have equal height to the tallest column and I solve that problem badly be setting
+fixed height on the parent and childes must have that height too by using height: 100%; and ... .)
+- Some tools for text formatting like creating column layouts and automatic hyphenation of words using new hyphens prop.
+- How to create css text columns?
+-How to automatically hyphenate words using hyphens?
+
+When the popup opens, the background becomes dark and we saw that the popup box itself came in with a nice animation and all of
+that dark background and the popup box are on top of entire web page, so even on top of navigation__button which has a z-index
+and the popup and the dark background behind it, are fixed position. Therefore if you scroll up or down, the popup and it's
+background stays in the same place.
+So we have an element which covers the entire viewport and there we have the popup itself.
+
+You can put the html code of popup and it's background where ever you want, because they are not really tied to any of
+sections of our site or any other html of our site. So let's put it at the end of everything in markup, even after the footer.
+
+In the popup, we have 2 boxes side by side which they have the same height. In the right box, the content is vertically centered.
+
+So how make 2 boxes side by side TODO till 7:20*/
 /*
 light-green:#7ed56f
 medium-green:#55c57a

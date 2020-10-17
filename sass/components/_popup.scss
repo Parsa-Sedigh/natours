@@ -1,0 +1,24 @@
+.popup {
+  height: 100vh;
+
+  /* This width: 100%; isn't necassary because it's already have a width of 100%.
+
+  Remember: position:fixed; just like absolute, takes the element out of the flow.
+
+  Right now, the .navigation__button is still on top of this .popup, so let's give this class a higher z-index than that
+  .navigation__button .*/
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba($color-black, .8);
+  z-index: 9999;
+  &__content {
+    /* This width: 75%; will always occupy 75% of the container and therefore of the viewport as well. Because the width of
+    container is also relative to width of page so viewport.*/
+    width: 75%;
+    @include centerHorizontalVertical;
+    background-color: $color-white;
+    box-shadow: 0 2rem 4rem rgba($color-black, .2);
+  }
+}
