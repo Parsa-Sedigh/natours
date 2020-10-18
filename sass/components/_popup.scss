@@ -20,5 +20,48 @@
     @include centerHorizontalVertical;
     background-color: $color-white;
     box-shadow: 0 2rem 4rem rgba($color-black, .2);
+    border-radius: .3rem;
+    display: table;
+    overflow: hidden;
+  }
+
+  &__left {
+    /* It's not an exaggeration to put such a high amount of numbers after the comma in a decimal number and you can totally do that. */
+    width: 33.33%;
+    //float: left;
+    display: table-cell;
+  }
+
+  &__right {
+    width: 66.67%;
+    //float: right;
+    display: table-cell;
+    vertical-align: middle;
+
+    /* It's good to always give the element more padding in horizontal direction than the vertical direction. */
+    padding: 3rem 5rem;
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+  }
+
+  &__text {
+    font-size: 1.4rem;
+    margin-bottom: 4rem;
+    -moz-column-count: 2;
+    -moz-column-gap: 4rem;
+    -moz-column-rule: .1rem solid $color-grey-light-2;
+    column-count: 2;
+
+    /* What is the value of 1em in this place?
+    It's 1rem which is 14 px in our project. Learn: Because 1em is always equal to font-size of current element. */
+    column-gap: 4rem;
+    column-rule: .1rem solid $color-grey-light-2;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
   }
 }

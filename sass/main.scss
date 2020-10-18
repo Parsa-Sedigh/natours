@@ -25,6 +25,11 @@
 @import "pages/_home.scss";
 
 /*
+light-green:#7ed56f
+medium-green:#55c57a
+dark green:#28b485
+ */
+/*
  What you will learn in this section:
  1)...
 
@@ -640,17 +645,141 @@ So we have an element which covers the entire viewport and there we have the pop
 You can put the html code of popup and it's background where ever you want, because they are not really tied to any of
 sections of our site or any other html of our site. So let's put it at the end of everything in markup, even after the footer.
 
-In the popup, we have 2 boxes side by side which they have the same height. In the right box, the content is vertically centered.
+In the popup, we have 2 boxes side by side which they have the same height. In the right box, the content is vertically centered based on
+it's container(right box) or based on the other table-cell basically, because those 2 elements side by side, have the same height
+and also it's also centered vertically based on the left box too. Because the height of right and left boxes are same.
 
-So how make 2 boxes side by side TODO till 7:20*/
-/*
-light-green:#7ed56f
-medium-green:#55c57a
-dark green:#28b485
- */
+So how make 2 boxes side by side having automatically the same height.
+
+For making those 2 <div>s side by side, we can use float. So float: left; for the element in the left and right for the element in
+right. Also you could give them both float: right; or float: left; because TOGETHER they make 100% of the width.
+Now the problem with this approach is that in this case, the left element has the entire height of it's parent but the right one
+only has the height that it needs and not more. It's a normal behavior.
+
+Now what we want is that those 2 boxes have the same height, because if they have a same height, it's easier to center the content of
+the shorter box(the box that has a shorter height) vertically in it's parent.
+
+So instead of using floats, we're gonna simulate a table. So let's set the display prop of &__left and &__right to table-cell and then
+their parent element which is &__content should have display: table;
+Important: Now with that, the browser will automatically give the children which have display: table-cell; , a same height.
+
+Now all there's left to do is to use a prop that we can use on all display: table-cell; elements which that prop is vertical-align and
+we set it to middle and we give it to the box that we want to make it vertically centered which that box is definitely the shorter one
+because the taller one don't need to vertically centered, because well, it is occupying the entire height of those 2 boxes.
+
+Important: The height of both are STILL same as the height they actually occupy and demand even with all of that table and table-cell and ...,
+ so technically they still do not have a same height but by using table-cell on both of them, the shorter one gets some padding which that
+ padding make that element to has the same height with the other one, by help of the automatic given padding by browser.
+
+In that technique, you see the shorter one which has a shorter height, got some padding in order to make it kinda same height of
+the taller one, but that padding is not showing up in box-model of dev tools, neither it is not the real height of that element.
+So basically they are not the same height, but the technique gets the job done.
+So we are faking that we have a table there. Because if it was a real table, we would have to use the proper html elements for that but by
+using display: table and ... we are basically faking and saying that this is a table.
+
+Now the image that we have on edges of our <div class="popup__left">, overlap the border-radius
+that we gave to that <div class="popup__left">.
+Learn: So when an image is overlapping the border and therefore the border-radius of that box isn't showing where the image is overlapping,
+ we give overflow: hidden; on the element that has border-radius. Now the parts of image which are overflowing that box with border-radius,
+ will not be visible anymore because of overflow: hidden; .
+So let's give &__content overflow: hidden;
+
+Now I want to separate my text into 2 different columns inside the .popup__text and also the Automatic hyphenation for that element.
+Automatic hyphenation means when all of the characters of a word can't fit in one line, css would place a hyphen at the end of the
+line and write remaining characters of that word in the next line. So you have a word but there's not enough space for it and therefore
+css would put a hyphen and that word continues on the next line and Important: if you select that word, it gets selected on the 2 lines
+not only one of those lines. It doesn't matter you select it from the next line or the first line that the word begins.
+
+First let's start with the text columns. Column layout is sth very new in css.
+For make it work. all we have to do is to specify prop called column-count on the element that has that text which you want to make it
+column like. With that, it will automatically create x columns for us.
+The column-gap is space BETWEEN the columns and the default for it is 1em.
+
+column-rule is basically just like a border which will be exactly in the middle of those columns. So the browser will automatically put it
+there.
+
+CSS automatically balances the height of those columns no matter how many of them are there. So you may see when we have column-count: 3;
+the first and second columns they have the same height because thy still have enough text(there is some remaining text to go to third column
+so therefore, the first and second column have the same height).
+
+For hyphenation, you give hyphens prop to the element that has the text you want to hyphenate it. The 3 possible values are:
+none(default value), manual which is not really useful because if we say manual, then we can go to our text and manually specify where
+we want hyphens to occur.
+So the only thing that is useful for hyphens prop is auto. So it will automatically figure out where to place the hyphens.
+Now in order for this to works correctly, you actually have to define the document language in the <html> element, you must put the
+lang attr and set it to en or your language.
+
+The hyphenation changes when the width of viewport changes. So it's kinda responsive.
+Important: The hyphens prop needs a lot of prefixes in order to make it work in all of the modern browsers. Because in older versions of
+ browsers, that prop won't work. So ON TOP OF the actual prop, give
+ the prefixed versions of that prop.
+ -ms- is for microsoft edge.
+ -webkit- is for chrome and safari.
+ Also we need to do this for column-count and it's relative props too.
+
+There's a tool named autoprefixer for doing these things. So usually you shouldn't add the prefixes yourself manually.
+
+Now we need to handle the open and closing functionality of popup. */
+/* 24. Building a Pure CSS Popup - Part 2:
+*/
+
+/* 2. Mobile-First vs Desktop-First and Breakpoints:
+2 fundamental aspects of modern responsive design are deciding about doing mobile-first or desktop-first for website or app, as well as
+selecting breakpoints for our project, when writing media queries.
+Responsive design strategies:
+In the desktop-first approach, we optimize our interfaces for large screens and therefore we start by writing css code for these large
+screens in our CSS files. This is what we have been doing all the time in the Natours project. Now later when we make the website responsive,
+we write media queries, in order to shrink the design to fit the smaller screens. This is the more traditional way fo doing things.
+The way we do that is by writing media queries which test for max-width.
+
+Recap: So in desktop first strategy, we START by writing css for large screens and THEN, we write media queries for smaller screens.
+
+Mobile first strategy, we START writing css code for smaller screens in order to optimize website for mobile and THEN move up to large
+screens from there, using media queries and in this approach, we do that by writing media queries which test for min-width instead of
+max-width .
+The philosophy behind this strategy is that the designers really have to think about the mobile experience, by reducing our websites or
+apps to absolute essentials and therefore we must strap away everything that's not really necessary for mobiles and smaller screens, in
+order to end up with a smaller and faster final product.
+
+The differences between the type of media queries that we have to write for desktop approach(with max-width) and mobile approach(min-width):
+As an example, we have a pixel spectrum, going from 0 to infinity, with a couple of breakpoints:
+----------------------------------------------------->infinity
+0px       600px      900px     1200px           |
+                                                |
+                                             Our initial desktop-first code goes here. So our initial code is on the right side of spectrum.
+
+max-width: 600px or is width <= 600px ? .A media query with testing max-width, checks if the current viewport width is smaller or equal to
+600px and if it is, then all the CSS code which is in this media query will apply and if not, that specific code in that media query won't
+apply.
+So in a media query with checking max-width: 600px; , 600px is the maximum width which at that width, the media query STILL works and it still
+applies it's code and after that maximum point, it stops working and applying it's code.
+
+Important: In these media queries, we just override specific parts of the global css code(only the parts that we want to change, because
+ all of the rest of the global css code will of course still apply).
+ So think of media queries as tools to overriding specific parts of our css, for specific viewport width.
+
+Now the same works for the next breakpoint(media query), for example 900px. So with that breakpoint, all of the code that is in this
+media query will work as long as the width is less or equal to 900. In other words, as long as the maximum width is 900px.
+But maybe now you are wondering, what if an element has a width of 500px? Which media query will apply?
+The codes of both media queries will apply. Because both conditions(max-width: 500px, max-width: 900px) are true, RIGHT?
+Important: Now, if you have conflicting css rules in those media queries (which is usually the case), like defining the global font-size
+ in both media queries, then the one which appears LAST in the code is the one that takes precedence(because of cascade).WHY?
+ Because media queries don't add any importance or specifity to our selectors.
+ SO THE ORDER OF CODE MATTERS A LOT AND THAT'S WHY WE KEEP MEDIA QUERIES ALWAYS AT THE END.
+
+Above 1200px, we have the desktop version of our project, which in slides, is outside of any media queries.
+-----------
+In mobile-first approach, our initial css code(the code other than our media queries- or the code we wrote at first, because at first we usually
+don't write any media queries, RIGHT?) is obviously on the left side of px spectrum, where the mobile screens exist.
+So where before we had max-width media queries(in the desktop-first), now, we have min-width based media queries.
+So before, we had max-width: 600px base media query, now we have min-width: 600px; media query, which basically asks the question:
+Is the current viewport width LARGER than or equal to 600px?
+If it is, then the code in that media query which tests min-width: 600px , applies. So it's called min-width media query, because 600px
+is the minimum width which at that point, the media query starts to apply till the next bigger min-width media query.
+Now visually speaking the last example translates to a pixel range which starts TODO till 6:20
 
 
-
+*/
 
 
 
