@@ -2387,6 +2387,11 @@ the codes that are in that @mixin will be kind of extracted wherever we @include
     height: 50px; }
 
 /*
+light-green:#7ed56f
+medium-green:#55c57a
+dark green:#28b485
+ */
+/*
  What you will learn in this section:
  1)...
 
@@ -3078,8 +3083,139 @@ There's a tool named autoprefixer for doing these things. So usually you shouldn
 Now we need to handle the open and closing functionality of popup. */
 /* 24. Building a Pure CSS Popup - Part 2:
 */
-/*
-light-green:#7ed56f
-medium-green:#55c57a
-dark green:#28b485
- */
+/* 2. Mobile-First vs Desktop-First and Breakpoints:
+2 fundamental aspects of modern responsive design are deciding about doing mobile-first or desktop-first for website or app, as well as
+selecting breakpoints for our project, when writing media queries.
+Responsive design strategies:
+In the desktop-first approach, we optimize our interfaces for large screens and therefore we start by writing css code for these large
+screens in our CSS files. This is what we have been doing all the time in the Natours project. Now later when we make the website responsive,
+we write media queries, in order to shrink the design to fit the smaller screens. This is the more traditional way fo doing things.
+The way we do that is by writing media queries which test for max-width.
+
+Recap: So in desktop first strategy, we START by writing css for large screens and THEN, we write media queries for smaller screens.
+
+Mobile first strategy, we START writing css code for smaller screens in order to optimize website for mobile and THEN move up to large
+screens from there, using media queries and in this approach, we do that by writing media queries which test for min-width instead of
+max-width .
+The philosophy behind this strategy is that the designers really have to think about the mobile experience, by reducing our websites or
+apps to absolute essentials and therefore we must strap away everything that's not really necessary for mobiles and smaller screens, in
+order to end up with a smaller and faster final product.
+
+The differences between the type of media queries that we have to write for desktop approach(with max-width) and mobile approach(min-width):
+As an example, we have a pixel spectrum, going from 0 to infinity, with a couple of breakpoints:
+----------------------------------------------------->infinity
+0px       600px      900px     1200px           |
+                                                |
+                                             Our initial desktop-first code goes here. So our initial code is on the right side of spectrum.
+
+max-width: 600px or is width <= 600px ? .A media query with testing max-width, checks if the current viewport width is smaller or equal to
+600px and if it is, then all the CSS code which is in this media query will apply and if not, that specific code in that media query won't
+apply.
+So in a media query with checking max-width: 600px; , 600px is the maximum width which at that width, the media query STILL works and it still
+applies it's code and after that maximum point, it stops working and applying it's code.
+
+Important: In these media queries, we just override specific parts of the global css code(only the parts that we want to change, because
+ all of the rest of the global css code will of course still apply).
+ So think of media queries as tools to overriding specific parts of our css, for specific viewport width.
+
+Now the same works for the next breakpoint(media query), for example 900px. So with that breakpoint, all of the code that is in this
+media query will work as long as the width is less or equal to 900. In other words, as long as the maximum width is 900px.
+But maybe now you are wondering, what if an element has a width of 500px? Which media query will apply?
+The codes of both media queries will apply. Because both conditions(max-width: 500px, max-width: 900px) are true, RIGHT?
+Important: Now, if you have conflicting css rules in those media queries (which is usually the case), like defining the global font-size
+ in both media queries, then the one which appears LAST in the code is the one that takes precedence(because of cascade).WHY?
+ Because media queries don't add any importance or specifity to our selectors.
+ SO THE ORDER OF CODE MATTERS A LOT AND THAT'S WHY WE KEEP MEDIA QUERIES ALWAYS AT THE END.
+
+Above 1200px, we have the desktop version of our project, which in slides, is outside of any media queries.
+-----------
+In mobile-first approach, our initial css code(the code other than our media queries- or the code we wrote at first, because at first we usually
+don't write any media queries, RIGHT?) is obviously on the left side of px spectrum, where the mobile screens exist.
+So where before we had max-width media queries(in the desktop-first), now, we have min-width based media queries.
+So before, we had max-width: 600px base media query, now we have min-width: 600px; media query, which basically asks the question:
+Is the current viewport width LARGER than or equal to 600px?
+If it is, then the code in that media query which tests min-width: 600px , applies. So it's called min-width media query, because 600px
+is the minimum width which at that point, the media query starts to apply till the next bigger min-width media query.
+Now visually speaking about the last example, that example(which is a media query with min-width of 600px) translates to a
+pixel range(not the pixel spectrum itself-because the pixel spectrum starts from 0px in both approaches obviously!) which
+starts from 600px, covering all the way until infinity.
+So all screens with the width larger than 600px, will have the code in this media query applied to the page.
+
+So we have to use that type of media query in the mobile-first approach, because basically we want the queries to stay away from our
+smallest screen styles. So we want them to work for bigger screens, therefore the max-width approach that we had before doesn't work
+in this case. Because max-width kinda block the styles when the screen arrives to a certain width which is that max-width point. But in
+mobile-first approach we don't have that philosophy.
+Because in mobile-first approach, we start from the smallest width and then go to larger screens, by setting breakpoints which those
+breakpoints check if we have the min-width of the screens of that district. So we must use min-width in those media queries and we must
+start from small screens.
+
+So we saw that the whole strategy behind mobile-first, is to narrow our interfaces being it websites or apps, to the bare minimum, in order
+to create small, fast and efficient product, completely optimized for MOBILE users. Because a huge amount of internet traffic is coming
+from mobile devices.
+
+Another advantage of mobile-first is having all these design constraints on small screens, therefore we automatically prioritize content over
+purely aesthetic design, which also makes sense. Because "content is king".
+
+Is mobile-first approach suits for your project?
+pros:
+-100% optimized for mobile experience
+-Reduces websites and apps to the absolute essentials
+-Results in smaller, faster and more efficient products
+-Prioritizes content over aesthetic design, which maybe desirable
+
+cons:
+-The desktop version might feel overly empty and simplestic (I mean why having an advanced system like a huge desktop computer, if
+websites don't even use the device's resources and capabilities, right?. Also if you're used to to see a whole lot of desktop websites,
+then it might seem a bit weird to develop mobile first. That's simply because a larger canvas(our monitor), where we can start designing
+without so many restrictions, will give you much more creative freedom, which is great to set your websites apart from the competition.)
+-More difficult and counterintuitive to develop
+-Less creative freedom, making it more difficult to create distinctive products
+-Clients are used to see a desktop version of the site as a prototype
+- Do your users even use the mobile internet? What's the purpose of your website. So users of a website in a certain business niche,
+might not even use the mobile that much for checking your website.
+
+No matter what you do, always keep both desktop and mobile in mind. You should never design only for one of the solutions and just
+leave the other one as a afterthought.
+
+In our project, we're using desktop-first approach. So the media queries that we're gonna write are all max-width based.
+
+Selecting our breakpoints: the options:
+Important: The breakpoints are the viewport width which at that point, we want our design to change. Or in other words, at those points,
+ we want to put(apply) our media queries, no matter what we decided about going mobile-first or desktop-first, one thing that is for sure,
+ is that we have to select breakpoints for our design and there are 3 major ways of doing that:
+1) The bad way: This way of choosing breakpoints, consist of simply using the width of popular devices as the breakpoints and the apple
+products are good for this. The problems for this approach are:
+A) You're optimizing for one very specific device and ignoring all of the users of other devices
+B) This strategy is not future proof at all. Because if apple decides to change resolutions on all their devices you must change your
+media queries. So using specific devices as breakpoints, is completely against reusable and maintainbale code.
+
+
+2) Good way: In this way, we look at all the most-used devices width on the entire internet and try to group them together in a logical
+way and then pick our breakpoints from those grouped width points. But remember, still this way is not good, because it's not ideal to
+use real devices to figure out breakpoints. But it's better than the first approach. Because we're using a lot of devices and we're also
+using the most popular deice width. Plus, we're not setting breakpoints at one specific point for each breakpoint but between similar devices.
+So for each breakpoint, we're considering a couple of devices.
+
+3) Perfect way: In this way we ignore devices all together and ONLY look at your content and design. So ideally: You begin at one size either
+mobile or desktop and then start increasing your screen width or decreasing that screen width for desktop-first approach.
+Then as soon as the design breaks, you insert a new breakpoint.
+So you put breakpoints, wherever your design STARTS TO LOOK WEIRD AND OUT OF PLACE and don't think about devices at all.
+This approach is difficult, because without constraints of not having at least a couple of pre-defined(the width of devices) breakpoints,
+it's hard to find the best ones and therefore we'll end up with really a lot of them! and that's why we're gonna use the second method.
+In the second one, we start with the most-used screen size which we can get from an app called statCounter.
+
+Important:
+ Usually you need one breakpoint for phones, one for portrait tablets, one for landscape tablets and one for the desktop. There can be more
+ but these are the basics.
+ The phone ranging from 0-600px, portrait tablets from 600-900px, 900-1200px landscape tablets and desktop 1200-1800px and big desktops
+ start from 1800px-...
+The last one is not mandatory and it's just IF we want to give users with big desktop screens sth SPECIAL.
+The real close example for respective widths are: iPhone8, iPad portrait and landscape and macbook pro 15inch and YEAH! it is TOTALLY ok
+to call those iPhone and Iad and ... . So in fact, we CAN and SHOULD use these devices to TEST our responsive designs. What we SHOULD NOT
+do though, is to just use their width as breakpoints. As I mentioned. */
+/* 3. Let's Use the Power of Sass Mixins to Write Media Queries:
+With our responsive breakpoints now defined, let's start to implement them in media queries. In this lecure:
+1) How to use a powerful sass mixin to write all our media queries
+2) How to use @content and @if sass directives
+3) Taking advantage of chrome devtools for responsive design
+*/

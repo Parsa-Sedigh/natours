@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "reload": "live-server",
+    "watch:sass": "live-server",
     "compile:sass": "node-sass sass/main.scss css/style.css -w"
   },
   "author": "Parsa",
