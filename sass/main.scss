@@ -621,7 +621,7 @@ Now we must make the ::after and ::before of that <span class="navigation__icon"
 disappear, when we hover over :checked state of <input type="checkbox">.*/
 /* Important:
     descendant selector (space)
-    child selector (>)
+    direct child selector (>)
     adjacent sibling selector (+)
     general sibling selector (~)
  */
@@ -855,10 +855,69 @@ to call those iPhone and Iad and ... . So in fact, we CAN and SHOULD use these d
 do though, is to just use their width as breakpoints. As I mentioned. */
 /* 3. Let's Use the Power of Sass Mixins to Write Media Queries:
 With our responsive breakpoints now defined, let's start to implement them in media queries. In this lecure:
-1) How to use a powerful sass mixin to write all our media queries
+1) How to use a powerful sass mixin to write all our media queries with only one mixin and in order to do that you must learn the 2).
 2) How to use @content and @if sass directives
 3) Taking advantage of chrome devtools for responsive design
-*/
+
+The traditional way(beginner way!) of writing media queries, was to simply create another css file and in there, write a BIG media query and
+in there like html{} body{} and then copy ALL of our component styles and paste them inside that HUGE media query and we would have one media
+query per breakpoint.
+But what if we could add the media query into each of our selectors? For example, imagine that we want to make our story component, responsive.
+We could add the media query inside for example, {} of .story{} selector and if you go ahead and write some styles inside that @media which itself
+is in {} of .story{} so it would be sth like:
+
+.story {
+  ...
+  @media(...) {
+    ...
+  }
+
+  ...
+}
+
+and then open up your compiled css file, you see sth like:
+
+.story {
+  ... (normal css without attention to be responsive)
+  @media (...) {
+    .story {
+      ...(the responsived styles live here)
+    }
+  }
+}
+
+So in compiled styles, you have your media query inside that selector and then inside that media query, again you would have the
+selector that you wrote that media query for that selector. So we're repeating the selector in that case and also in the example you can
+see that the .story is repeating. But in scss, you don't need to repeat that selector which you're writing that media query inside it.
+So in scss, when we place the @media query inside a selector, we're saying that we're writing that media query FOR that selector and that
+@media query will apply those styles which are in it, FOR that selector(of course if you select some other classes in that media query which
+is in selectorA, the styles of that media query will apply to those classes. Important: But remember, those classes would have the selectorA
+somehow in them too. Because, well, this is scss, and if you say:
+  <selectorB>{
+  ...
+    <selectorC> {
+      ...
+    }
+  }
+It will compiled to:
+selectorB {
+
+}
+
+selectorB selectorC {
+
+}
+So as you can see, you can select other classes and ... in the media query for a class too.)
+With this approach, we would have multiple media queries inside a selector in order to set breakpoints for that selector and apply
+some styles to that selector when the condition of that media query is true, maybe there would hundreds of those media queries, but it's not
+a big deal, because having hundreds of those small media queries or one big one is not really a problem.
+Learn: So you understood that you can make scss selectors responsive, by putting media queries inside those selectors. Also don't forget
+ that the breakpoints are certain numbers all over the project and we won't decide to pick a new breakpoint for a selector.
+
+Now imagine you have to write @media (max-width: 600px){...} in all of the files and in all of the selectors inside those files and even
+worse, imagine that some day you would decide to change your breakpoints, then you would have to go back and change all of those numbers.
+So there's an even better of that. So when you write a mixin, when you @include it, it would basically paste the code that it has in the
+place that it was included. */
 
 
 

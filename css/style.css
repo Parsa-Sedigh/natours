@@ -11,6 +11,85 @@ the codes that are in that @mixin will be kind of extracted wherever we @include
  In clearfix, we MUST specify the content property, otherwise the pseudo element won't appear on tha page BUT WE DON'T WANT TO SEE
    this pseudo element on the page, so we specify nothing inside the quotes for value of content property.
    clear:both; will clear both float:left; and float:right; on the childes of an element which we're using clearfix on it.*/
+/* First let's first specify our breakpoints.
+0-600px:       phone
+600-900px:    tablet in portrait mode
+900-1200px:    tablet in landscape mode
+[1200-1800px]: is where our normal styles apply(we don't write media queries for this range- because well, our out of @media queries are in this
+range. Because we're using desktop first approach, where our normal styles that we have written so far, which are outside of media queries,
+are for the desktop.)
+1800px +:      big desktops
+
+Now we must write max-width media queries for those 3 ranges(ranges before our normal range) and min-width media queries for 1800px + range,
+because well, a min-width media query checks if currently we have a screen bigger than the specified minimum width and because in that specific
+range we just know the minimum width and not the maximum width, I use min-width based @media query for that range.
+
+Our first media query is for phone devices.
+Now how do we pass css props into the @mixin, in order to change those props base on the device we are writing the mixin for?
+Learn: We can use @content directive and it allows us to pass a BLOCK of code into a @mixin.
+So let's use @content inside {} of our media query definition and then let's @include this media query in for example _base.scss and inside
+html selector. Then let's PASS(Yes pass!) the css props and values that we want to change in {} of @media query and those things we are passing
+to @mixin in this case, would be the @content. Because in respond-phone @mixin, we are saying everything that is inside {} of @media of this
+@mixin, is part of @content directive. But remember, in the past we used to pass arguments to a @mixin and in order to do that, we use () for
+both definition of @mixin(for GETTING or RECEIVING those args) and also when @including that @mixin (in order to SEND or PASS those args or in
+that case, values of properties), but by using @content, passing arguments to @mixins is different than using parentheses for @mixins in order to
+pass arguments.
+Because when using @content, we can pass an entire block of code into where the @content is defined inside the @mixin.
+Important: ALL of the codes that you put into the {} of included mixin, will injected where @content is sit in definition of that @mixin.
+ So when we want to use a @mixin which has @content in it, first we @include that @mixin, then pass the block of code that we want to PASS it
+ to where the @content which is inside of that @mixin, sits. After the block of codes were pasted where the @content is living, the @mixin will
+ do it's natural job and will paste ALL OF the codes that it has in it's body, where we @included it.
+EX)AN example for this process:
+Imagine we have respond-phone @mixin which is:
+@mixin respond-phone {
+  @media (max-width:600px) {
+    @content;
+  }
+}
+And this @mixin is @included in a file and in a selector which lives in that file and that selector is:
+html {
+  font-size: 50%;
+}
+
+Now let's first @include that mixin where we want:
+html {
+  font-size: 50%;
+  @include respond-phone;
+  // Right now, the mixin is injecting the code that it has in it's body, but without injecting the @content in here. Why?
+  // Well because we didn't pass a block of code to this included mixin yet!
+}
+
+Now because we have @content in definition of that @mixin, we can pass a BLOCK of code to that mixin by just writing the css props in the
+@mixin. So:
+@include respond-phone {
+  <some stuff>
+}
+Now that <some stuff> will be pasted where @content lives in definition of that mixin and THEN the mixin will do it's job and inject all of
+the code that it has in it's body, where it's included.
+
+So the difference between using @content and () for passing data to mixin is, the () way is very simple, but the @content way, is that we just
+write the styles that we want to pass to @mixin, in {} of @INCLUDED mixin and then the mixin will do it's job and inject whatever it has
+in it's body and ALSO the things we passed to it, in where it has been included.
+
+Now we can even make our approach better. Because right now, we have a mixin for making the selectors that we included that mixin for them,
+phone friendly. But we also need to define other mixins for making selectors responsive for tablets and desktops and ... and then
+include those mixins in where those selectors live. So it's not a good way.
+Instead, we want only one huge mixin which covers all of the cases.
+So let's create a new mixin, called respond and instead of having static breakpoints, we can pass a breakpoint into this new mixin, in order
+to just have ONE mixin for managing media queries.
+
+Now let's write the names of the breakpoints that I want to pass into that mixin as $breakpoint. So actually let's documenting that
+$breakpoint. (Of course we can pass anything we want, but I REALLY SPECIFIED and RESTRICTED the things that we can send to this mixin as
+$breakpoint arg. So we can't send any other value to this mixin because we are checking the things we passed, by using @if and the things
+that this mixin will inject in the place that it was included, depends on the name that we passed to this @mixin.)
+TODO till 11:00*/
+/* $breakpoint argument choices:
+- phone
+- tab-port (aka tablet-portrait)
+- tab-land
+- big-desktop
+
+ */
 /* It's better to add used colors in project in this file which can be like a color palette!
  $color-grey-light-2 is a bit darker than $color-grey-light-1*/
 /* You can also make the next color $color-grey-dark-2 but currently I don't have time for that.*/
@@ -1681,6 +1760,85 @@ the codes that are in that @mixin will be kind of extracted wherever we @include
  In clearfix, we MUST specify the content property, otherwise the pseudo element won't appear on tha page BUT WE DON'T WANT TO SEE
    this pseudo element on the page, so we specify nothing inside the quotes for value of content property.
    clear:both; will clear both float:left; and float:right; on the childes of an element which we're using clearfix on it.*/
+/* First let's first specify our breakpoints.
+0-600px:       phone
+600-900px:    tablet in portrait mode
+900-1200px:    tablet in landscape mode
+[1200-1800px]: is where our normal styles apply(we don't write media queries for this range- because well, our out of @media queries are in this
+range. Because we're using desktop first approach, where our normal styles that we have written so far, which are outside of media queries,
+are for the desktop.)
+1800px +:      big desktops
+
+Now we must write max-width media queries for those 3 ranges(ranges before our normal range) and min-width media queries for 1800px + range,
+because well, a min-width media query checks if currently we have a screen bigger than the specified minimum width and because in that specific
+range we just know the minimum width and not the maximum width, I use min-width based @media query for that range.
+
+Our first media query is for phone devices.
+Now how do we pass css props into the @mixin, in order to change those props base on the device we are writing the mixin for?
+Learn: We can use @content directive and it allows us to pass a BLOCK of code into a @mixin.
+So let's use @content inside {} of our media query definition and then let's @include this media query in for example _base.scss and inside
+html selector. Then let's PASS(Yes pass!) the css props and values that we want to change in {} of @media query and those things we are passing
+to @mixin in this case, would be the @content. Because in respond-phone @mixin, we are saying everything that is inside {} of @media of this
+@mixin, is part of @content directive. But remember, in the past we used to pass arguments to a @mixin and in order to do that, we use () for
+both definition of @mixin(for GETTING or RECEIVING those args) and also when @including that @mixin (in order to SEND or PASS those args or in
+that case, values of properties), but by using @content, passing arguments to @mixins is different than using parentheses for @mixins in order to
+pass arguments.
+Because when using @content, we can pass an entire block of code into where the @content is defined inside the @mixin.
+Important: ALL of the codes that you put into the {} of included mixin, will injected where @content is sit in definition of that @mixin.
+ So when we want to use a @mixin which has @content in it, first we @include that @mixin, then pass the block of code that we want to PASS it
+ to where the @content which is inside of that @mixin, sits. After the block of codes were pasted where the @content is living, the @mixin will
+ do it's natural job and will paste ALL OF the codes that it has in it's body, where we @included it.
+EX)AN example for this process:
+Imagine we have respond-phone @mixin which is:
+@mixin respond-phone {
+  @media (max-width:600px) {
+    @content;
+  }
+}
+And this @mixin is @included in a file and in a selector which lives in that file and that selector is:
+html {
+  font-size: 50%;
+}
+
+Now let's first @include that mixin where we want:
+html {
+  font-size: 50%;
+  @include respond-phone;
+  // Right now, the mixin is injecting the code that it has in it's body, but without injecting the @content in here. Why?
+  // Well because we didn't pass a block of code to this included mixin yet!
+}
+
+Now because we have @content in definition of that @mixin, we can pass a BLOCK of code to that mixin by just writing the css props in the
+@mixin. So:
+@include respond-phone {
+  <some stuff>
+}
+Now that <some stuff> will be pasted where @content lives in definition of that mixin and THEN the mixin will do it's job and inject all of
+the code that it has in it's body, where it's included.
+
+So the difference between using @content and () for passing data to mixin is, the () way is very simple, but the @content way, is that we just
+write the styles that we want to pass to @mixin, in {} of @INCLUDED mixin and then the mixin will do it's job and inject whatever it has
+in it's body and ALSO the things we passed to it, in where it has been included.
+
+Now we can even make our approach better. Because right now, we have a mixin for making the selectors that we included that mixin for them,
+phone friendly. But we also need to define other mixins for making selectors responsive for tablets and desktops and ... and then
+include those mixins in where those selectors live. So it's not a good way.
+Instead, we want only one huge mixin which covers all of the cases.
+So let's create a new mixin, called respond and instead of having static breakpoints, we can pass a breakpoint into this new mixin, in order
+to just have ONE mixin for managing media queries.
+
+Now let's write the names of the breakpoints that I want to pass into that mixin as $breakpoint. So actually let's documenting that
+$breakpoint. (Of course we can pass anything we want, but I REALLY SPECIFIED and RESTRICTED the things that we can send to this mixin as
+$breakpoint arg. So we can't send any other value to this mixin because we are checking the things we passed, by using @if and the things
+that this mixin will inject in the place that it was included, depends on the name that we passed to this @mixin.)
+TODO till 11:00*/
+/* $breakpoint argument choices:
+- phone
+- tab-port (aka tablet-portrait)
+- tab-land
+- big-desktop
+
+ */
 .row {
   /*First we need to define a width for the row and a standard is 1140 px. Now what's wrong with this? Yes, we must use rem instead
    of px and we know that in our project, 10px=1rem (remember: The root font-size is 62.5% of browser font-size which browser font-size
@@ -2982,7 +3140,7 @@ Now we must make the ::after and ::before of that <span class="navigation__icon"
 disappear, when we hover over :checked state of <input type="checkbox">.*/
 /* Important:
     descendant selector (space)
-    child selector (>)
+    direct child selector (>)
     adjacent sibling selector (+)
     general sibling selector (~)
  */
@@ -3215,7 +3373,66 @@ to call those iPhone and Iad and ... . So in fact, we CAN and SHOULD use these d
 do though, is to just use their width as breakpoints. As I mentioned. */
 /* 3. Let's Use the Power of Sass Mixins to Write Media Queries:
 With our responsive breakpoints now defined, let's start to implement them in media queries. In this lecure:
-1) How to use a powerful sass mixin to write all our media queries
+1) How to use a powerful sass mixin to write all our media queries with only one mixin and in order to do that you must learn the 2).
 2) How to use @content and @if sass directives
 3) Taking advantage of chrome devtools for responsive design
-*/
+
+The traditional way(beginner way!) of writing media queries, was to simply create another css file and in there, write a BIG media query and
+in there like html{} body{} and then copy ALL of our component styles and paste them inside that HUGE media query and we would have one media
+query per breakpoint.
+But what if we could add the media query into each of our selectors? For example, imagine that we want to make our story component, responsive.
+We could add the media query inside for example, {} of .story{} selector and if you go ahead and write some styles inside that @media which itself
+is in {} of .story{} so it would be sth like:
+
+.story {
+  ...
+  @media(...) {
+    ...
+  }
+
+  ...
+}
+
+and then open up your compiled css file, you see sth like:
+
+.story {
+  ... (normal css without attention to be responsive)
+  @media (...) {
+    .story {
+      ...(the responsived styles live here)
+    }
+  }
+}
+
+So in compiled styles, you have your media query inside that selector and then inside that media query, again you would have the
+selector that you wrote that media query for that selector. So we're repeating the selector in that case and also in the example you can
+see that the .story is repeating. But in scss, you don't need to repeat that selector which you're writing that media query inside it.
+So in scss, when we place the @media query inside a selector, we're saying that we're writing that media query FOR that selector and that
+@media query will apply those styles which are in it, FOR that selector(of course if you select some other classes in that media query which
+is in selectorA, the styles of that media query will apply to those classes. Important: But remember, those classes would have the selectorA
+somehow in them too. Because, well, this is scss, and if you say:
+  <selectorB>{
+  ...
+    <selectorC> {
+      ...
+    }
+  }
+It will compiled to:
+selectorB {
+
+}
+
+selectorB selectorC {
+
+}
+So as you can see, you can select other classes and ... in the media query for a class too.)
+With this approach, we would have multiple media queries inside a selector in order to set breakpoints for that selector and apply
+some styles to that selector when the condition of that media query is true, maybe there would hundreds of those media queries, but it's not
+a big deal, because having hundreds of those small media queries or one big one is not really a problem.
+Learn: So you understood that you can make scss selectors responsive, by putting media queries inside those selectors. Also don't forget
+ that the breakpoints are certain numbers all over the project and we won't decide to pick a new breakpoint for a selector.
+
+Now imagine you have to write @media (max-width: 600px){...} in all of the files and in all of the selectors inside those files and even
+worse, imagine that some day you would decide to change your breakpoints, then you would have to go back and change all of those numbers.
+So there's an even better of that. So when you write a mixin, when you @include it, it would basically paste the code that it has in the
+place that it was included. */
