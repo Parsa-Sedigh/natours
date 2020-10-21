@@ -82,14 +82,47 @@ Now let's write the names of the breakpoints that I want to pass into that mixin
 $breakpoint. (Of course we can pass anything we want, but I REALLY SPECIFIED and RESTRICTED the things that we can send to this mixin as
 $breakpoint arg. So we can't send any other value to this mixin because we are checking the things we passed, by using @if and the things
 that this mixin will inject in the place that it was included, depends on the name that we passed to this @mixin.)
-TODO till 11:00*/
+Now when you want to use this new mixin, you must pass it either phone or tab-port or ... .
+
+Also it's not good to use px units in media queries and that's because if the user changes the default font-size(which is 16px)
+in the browser, then the media queries
+
+So we can react ACCORDINGLY to the root font-size of the browser, even if the user changes it, by using rem units in media queries too
+and therefore REFLECT that new root font-size in our media queries and then the rem unit will converted into px unit in the browser and
+therefore we would have a new media query based on the new font-size that user set in and this is better than using static px units for
+media queries.
+
+Important: So if the user changes the default font-size of browser, then the media queries would not be affected by that new font-size.
+ However, we want them to be affected by the new font-size that the user sets in. So just like before in our styles, we use a relative unit
+ to px which would convert to px at the end.
+Now about rems and ems, there's an crucial particularity about them in media queries. That's because those 2 relative units in media
+queries, are not affected by our root font-size setting(the font-size: 62.5% prop in html in _base.scss). So they simply are not
+affected by what we do there(in opposite of other styles).
+Important: So what that means, is that 1rem or 1em in a media query, is always equal to the font-size that is coming from browser and
+ by default that is 16px, but if the user changes it to like 20px, then 1rem or 1em in media query would be 20px no matter what we have
+ in our base font settings. Now in here, we're gonna use ems and not rems. Because rems fail to work as intended in some of the browsers.
+ So ems are best option for media queries.
+ So keep in mind that by default in a media query, 1em is equal to 16px. So for example, when we have 600px, the equal em for it is:
+ 600 /16 = 37.5em
+ 900 / 16 = 56.25em
+ 1200 / 16 = 75em
+ 1800 / 16 = 112.25em
+
+Now, the checking statement of these media queries will be converted to px and will be adopted to the font-size that the user set for
+his browser, even if he changes it. So it's more accessible solution instead of using px in checking statement of media queries(it doesn't need
+to do that in body or the styles of media queries because that weird behavior of browsers won't apply there, it just applies to checking
+statement of media queries.)*/
+/*
+@mixin respond-phone {
+  @media (max-width:600px) {
+    @content;
+  }
+} */
 /* $breakpoint argument choices:
 - phone
 - tab-port (aka tablet-portrait)
 - tab-land
-- big-desktop
-
- */
+- big-desktop */
 /* It's better to add used colors in project in this file which can be like a color palette!
  $color-grey-light-2 is a bit darker than $color-grey-light-1*/
 /* You can also make the next color $color-grey-dark-2 but currently I don't have time for that.*/
@@ -121,7 +154,72 @@ we saw that when we convert our px units to rem, this font-size on html selector
 entire page. So it's not so much related to _typography but it's more like a base definition (global definition) which defines what 1 rem
 should be.  */
 html {
-  font-size: 62.5%; }
+  /* this defines what 1rem is and therefore this font-size is what defines the size of our entire layout. So by using rem, we will male
+  our entire layout of webpage, dependent on the root font-size of browser and that's a good thing, because in responsive design, we can
+  simply change the font-size(of our website) here and all of the measurements in rem will scale up or down according to this font-size.
+  So that's a huge advantage. Otherwise if we had everything based on pixels, we would go a head and change all of those pixels in our
+  styles to smaller numbers, but with this trick, we simply need to increase or decrease the font-size here and then the design will
+  basically shrink BUT OF COURSE that even is NOT ENOUGH to make the page entirely responsive, so there's a lot stuff we need to adjust
+  regarding changing the font-size here in responsive design, but it's a huge step forward already.
+  (and here we are basically using that font-size(we can't change the root font-size of browser!!!!!! Because the root font-size can
+  only be changed by the user, in here, we are just defining what 1rem is and what is the font-size of our entire website, based on the
+  root font-size).
+
+  Now when we are in default viewport width(1200-1800px), 1rem is 10px. Because that's the calculation in the beginning, where we said
+  that we want to have 10px as default font-size of our website-because it is a very straightforward number for defining rems in our styles
+  so we can get that 10px by dividing 16px(default font-size or browser) / 100 = 62.5% so now our default font-size is 62.5% of font-size
+  if browser so it would be 10px.
+
+  Now for 1rem in portrait tablet, we want it to be 8px. So 1rem is equal to 8px and that means 8(desired font-size) / 16(default font-size
+  of browser) = 50%
+  So now 1rem which is equal to root font-size of html and we know that the root font-size of html is 50% of root font-size of browser so
+  it would be 8px and therefore 1rem is 8px.
+  Important: Percentages when defining font-size in html is relative to root font-size of browser.*/
+  font-size: 62.5%;
+  /* I commented this out, because this is not a good way of writing media queries.
+   @include respond-phone {
+    font-size: 50%;
+  } */
+  /* In phone media query, we checks if the width of current viewport is lower than 600px or not? And the next media query asks the question
+  if the width of viewport is lower than 900px or not? So imagine that the width of device is 500px and therefore it would still less than
+  900, right? So 500 is still less than 600 but also less than 900. So both of these media queries would apply and what that means is that
+  we really don't need that first one. So if we have font-size: 50%;(if you specify different, we need both!) for both of them,
+  we really don't need the first one. Because both will apply, so the first one is unnecessary, therefore I commented it out.
+
+  Now let's test things out. Instead of resizing the browser, it's better to use devtools and it's toggle device toolbar.
+  Currently if you look at 900 breakpoint, you'll see no changes in root font-size of html element. WHY?
+  Important: Because if you go under 900 and if you click over <html> element in source code and see the styles tab in right, you
+   see that you have text through over font-size: 62.5%; , this means even you are currently under 900px but still the styles of
+   tab-land is applying. Why? Because of conflicting media queries in your code. Because each time an earlier media query applies the
+   next one is also applied and if you put the latter one AFTER the earlier media query, the latter one will apply if the current viewport
+   width is smaller than the earlier media query and therefore we expect the earlier media query applies, but the latter one would be
+   applied. (In the case that the current viewport is true for both checking statements of media queries, the latter one would be applied.)
+   But that's not what we want.So we must put the tab-port AFTER tab-land. Therefore now if we have 500px viewport width, the first one
+   which checks if viewport width < 900 ? and also the second one would apply which checks viewport width < 600 ? So they still are
+   conflicting, but the difference of this new order is now the smaller media query is latter therefore it would be applied and that is
+   exactly what we want, when both are true for a viewport width like 500px. So in that case, we don't want the larger media query
+   apply, but the smaller one.
+
+   So the right order is that the larger media queries(the ones that are checking the higher viewport widths.) MUST be BEFORE the
+   smaller ones. So the media query for phone must be AFTER the tab-port too.
+
+  Why we didn't put the media query for big-desktop before all of the others? Because it's a min-width base media query and therefore
+  it won't apply for the viewport widths like 500px which are smaller than the breakpoint of that media query. So we can keep it there.*/
+  /* @include respond(phone) {
+      font-size: 50%; // 1rem
+    } */
+  /* When we want this media query to happen?
+    We want this to happen, when the width of device is larger than 1800px. So because we want it to be LARGER than the breakpoint,
+    for checking if it is larger or not, we use min-width in @media.*/ }
+  @media (max-width: 75em) {
+    html {
+      font-size: 56.25%; } }
+  @media (max-width: 56.25em) {
+    html {
+      font-size: 50%; } }
+  @media (min-width: 112.25em) {
+    html {
+      font-size: 75%; } }
 
 /* You could take body to _typography except the box-sizing property. So we have 2 body selectors, one in _typography and one
  in this file which has only one style and that is box-sizing which is not related to typography.*/
@@ -1575,6 +1673,7 @@ body {
 
 .popup {
   height: 100vh;
+  display: none;
   /* This width: 100%; isn't necassary because it's already have a width of 100%.
 
   Remember: position:fixed; just like absolute, takes the element out of the flow.
@@ -1831,14 +1930,47 @@ Now let's write the names of the breakpoints that I want to pass into that mixin
 $breakpoint. (Of course we can pass anything we want, but I REALLY SPECIFIED and RESTRICTED the things that we can send to this mixin as
 $breakpoint arg. So we can't send any other value to this mixin because we are checking the things we passed, by using @if and the things
 that this mixin will inject in the place that it was included, depends on the name that we passed to this @mixin.)
-TODO till 11:00*/
+Now when you want to use this new mixin, you must pass it either phone or tab-port or ... .
+
+Also it's not good to use px units in media queries and that's because if the user changes the default font-size(which is 16px)
+in the browser, then the media queries
+
+So we can react ACCORDINGLY to the root font-size of the browser, even if the user changes it, by using rem units in media queries too
+and therefore REFLECT that new root font-size in our media queries and then the rem unit will converted into px unit in the browser and
+therefore we would have a new media query based on the new font-size that user set in and this is better than using static px units for
+media queries.
+
+Important: So if the user changes the default font-size of browser, then the media queries would not be affected by that new font-size.
+ However, we want them to be affected by the new font-size that the user sets in. So just like before in our styles, we use a relative unit
+ to px which would convert to px at the end.
+Now about rems and ems, there's an crucial particularity about them in media queries. That's because those 2 relative units in media
+queries, are not affected by our root font-size setting(the font-size: 62.5% prop in html in _base.scss). So they simply are not
+affected by what we do there(in opposite of other styles).
+Important: So what that means, is that 1rem or 1em in a media query, is always equal to the font-size that is coming from browser and
+ by default that is 16px, but if the user changes it to like 20px, then 1rem or 1em in media query would be 20px no matter what we have
+ in our base font settings. Now in here, we're gonna use ems and not rems. Because rems fail to work as intended in some of the browsers.
+ So ems are best option for media queries.
+ So keep in mind that by default in a media query, 1em is equal to 16px. So for example, when we have 600px, the equal em for it is:
+ 600 /16 = 37.5em
+ 900 / 16 = 56.25em
+ 1200 / 16 = 75em
+ 1800 / 16 = 112.25em
+
+Now, the checking statement of these media queries will be converted to px and will be adopted to the font-size that the user set for
+his browser, even if he changes it. So it's more accessible solution instead of using px in checking statement of media queries(it doesn't need
+to do that in body or the styles of media queries because that weird behavior of browsers won't apply there, it just applies to checking
+statement of media queries.)*/
+/*
+@mixin respond-phone {
+  @media (max-width:600px) {
+    @content;
+  }
+} */
 /* $breakpoint argument choices:
 - phone
 - tab-port (aka tablet-portrait)
 - tab-land
-- big-desktop
-
- */
+- big-desktop */
 .row {
   /*First we need to define a width for the row and a standard is 1140 px. Now what's wrong with this? Yes, we must use rem instead
    of px and we know that in our project, 10px=1rem (remember: The root font-size is 62.5% of browser font-size which browser font-size
@@ -3240,7 +3372,33 @@ There's a tool named autoprefixer for doing these things. So usually you shouldn
 
 Now we need to handle the open and closing functionality of popup. */
 /* 24. Building a Pure CSS Popup - Part 2:
-*/
+Now let's take care of functionality of popup. The way that we're going to make that to work, is by taking advantage of sth that
+exists in html, which is called anchors. How anchors work?
+Imagine on <section class="section-tours"> , we put an id and maybe call it again, section-tours (the name doesn't matter and
+it can be the same as class) and we know that ids are unique. Now if we go somewhere else on our document on an
+<a> element that we have in our header and in href attr of that button we put: #<the id name of the other
+element>, so in this case it would be: #section-tours . Now if you click on that <a> element, the page goes to that
+element which has that id and also in the url, you see /#<id> was added.
+So now, that section which has that id is an anchor or in other words we can say that <section> is the target of that
+<a href="#<the id of that target>">
+
+Remember: When an element has display: none; we can't animate it over time. So if you want an element to be hide in the
+beginning and also be able to animate it, we can set it's opacity to 0, instead of using display: none; which we can't
+animate it. Because the value of display: none; which is none can't be animated, because, well, it isn't a number which
+be able to increased or decreased over time in an animation, so we must use sth else which can accept a number for it's value
+in order to animate it, therefore we used opacity: 0; to hide the element and also be able to animate it. But we also need
+to use visibility: hidden; with opacity: 0; because if we ONLY use opacity:0; , then the text an content and elements will
+still be there but we can't see them. But we don't want that. We want the popup to be completely hidden.
+
+Now how we actually make the popup visible?
+We can use the anchor and the target. So first in the html, let's make the <a>Book now!</a> elements to be a
+real! anchor tag by giving it the id of target, so we gave it #popup. So that is the button which should show our popup
+when we click on it. Then give the element which should be a target element, it's id. So we gave it to <div class="popup">.
+Important: When we click on a real anchor element, we go to where the target element sits and also that target element can
+have a :target pseudo class when it becomes a target, so when the url changes to having #<id of target element> in it.
+Now when we click on the anchor element which has id of #popup, we go to the target and THAT TARGET IN THIS CASE IS THAT
+<div class="popup">and also we must make that popup visible with an animation which happens over time.
+TODO till 4:00*/
 /* 2. Mobile-First vs Desktop-First and Breakpoints:
 2 fundamental aspects of modern responsive design are deciding about doing mobile-first or desktop-first for website or app, as well as
 selecting breakpoints for our project, when writing media queries.
@@ -3436,3 +3594,5 @@ Now imagine you have to write @media (max-width: 600px){...} in all of the files
 worse, imagine that some day you would decide to change your breakpoints, then you would have to go back and change all of those numbers.
 So there's an even better of that. So when you write a mixin, when you @include it, it would basically paste the code that it has in the
 place that it was included. */
+/* 4. Writing media queries - base typography and layout:
+*/

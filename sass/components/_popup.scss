@@ -1,5 +1,6 @@
 .popup {
   height: 100vh;
+  display: none;
 
   /* This width: 100%; isn't necassary because it's already have a width of 100%.
 
@@ -63,5 +64,9 @@
     -ms-hyphens: auto;
     -webkit-hyphens: auto;
     hyphens: auto;
+  }
+
+  &:target {
+
   }
 }

@@ -721,7 +721,33 @@ There's a tool named autoprefixer for doing these things. So usually you shouldn
 
 Now we need to handle the open and closing functionality of popup. */
 /* 24. Building a Pure CSS Popup - Part 2:
-*/
+Now let's take care of functionality of popup. The way that we're going to make that to work, is by taking advantage of sth that
+exists in html, which is called anchors. How anchors work?
+Imagine on <section class="section-tours"> , we put an id and maybe call it again, section-tours (the name doesn't matter and
+it can be the same as class) and we know that ids are unique. Now if we go somewhere else on our document on an
+<a> element that we have in our header and in href attr of that button we put: #<the id name of the other
+element>, so in this case it would be: #section-tours . Now if you click on that <a> element, the page goes to that
+element which has that id and also in the url, you see /#<id> was added.
+So now, that section which has that id is an anchor or in other words we can say that <section> is the target of that
+<a href="#<the id of that target>">
+
+Remember: When an element has display: none; we can't animate it over time. So if you want an element to be hide in the
+beginning and also be able to animate it, we can set it's opacity to 0, instead of using display: none; which we can't
+animate it. Because the value of display: none; which is none can't be animated, because, well, it isn't a number which
+be able to increased or decreased over time in an animation, so we must use sth else which can accept a number for it's value
+in order to animate it, therefore we used opacity: 0; to hide the element and also be able to animate it. But we also need
+to use visibility: hidden; with opacity: 0; because if we ONLY use opacity:0; , then the text an content and elements will
+still be there but we can't see them. But we don't want that. We want the popup to be completely hidden.
+
+Now how we actually make the popup visible?
+We can use the anchor and the target. So first in the html, let's make the <a>Book now!</a> elements to be a
+real! anchor tag by giving it the id of target, so we gave it #popup. So that is the button which should show our popup
+when we click on it. Then give the element which should be a target element, it's id. So we gave it to <div class="popup">.
+Important: When we click on a real anchor element, we go to where the target element sits and also that target element can
+have a :target pseudo class when it becomes a target, so when the url changes to having #<id of target element> in it.
+Now when we click on the anchor element which has id of #popup, we go to the target and THAT TARGET IN THIS CASE IS THAT
+<div class="popup">and also we must make that popup visible with an animation which happens over time.
+TODO till 4:00*/
 
 /* 2. Mobile-First vs Desktop-First and Breakpoints:
 2 fundamental aspects of modern responsive design are deciding about doing mobile-first or desktop-first for website or app, as well as
@@ -918,6 +944,8 @@ Now imagine you have to write @media (max-width: 600px){...} in all of the files
 worse, imagine that some day you would decide to change your breakpoints, then you would have to go back and change all of those numbers.
 So there's an even better of that. So when you write a mixin, when you @include it, it would basically paste the code that it has in the
 place that it was included. */
+/* 4. Writing media queries - base typography and layout:
+*/
 
 
 

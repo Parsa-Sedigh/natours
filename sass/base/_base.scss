@@ -19,8 +19,74 @@ we saw that when we convert our px units to rem, this font-size on html selector
 entire page. So it's not so much related to _typography but it's more like a base definition (global definition) which defines what 1 rem
 should be.  */
 html {
-  //this defines what 1rem is:
+  /* this defines what 1rem is and therefore this font-size is what defines the size of our entire layout. So by using rem, we will male
+  our entire layout of webpage, dependent on the root font-size of browser and that's a good thing, because in responsive design, we can
+  simply change the font-size(of our website) here and all of the measurements in rem will scale up or down according to this font-size.
+  So that's a huge advantage. Otherwise if we had everything based on pixels, we would go a head and change all of those pixels in our
+  styles to smaller numbers, but with this trick, we simply need to increase or decrease the font-size here and then the design will
+  basically shrink BUT OF COURSE that even is NOT ENOUGH to make the page entirely responsive, so there's a lot stuff we need to adjust
+  regarding changing the font-size here in responsive design, but it's a huge step forward already.
+  (and here we are basically using that font-size(we can't change the root font-size of browser!!!!!! Because the root font-size can
+  only be changed by the user, in here, we are just defining what 1rem is and what is the font-size of our entire website, based on the
+  root font-size).
+
+  Now when we are in default viewport width(1200-1800px), 1rem is 10px. Because that's the calculation in the beginning, where we said
+  that we want to have 10px as default font-size of our website-because it is a very straightforward number for defining rems in our styles
+  so we can get that 10px by dividing 16px(default font-size or browser) / 100 = 62.5% so now our default font-size is 62.5% of font-size
+  if browser so it would be 10px.
+
+  Now for 1rem in portrait tablet, we want it to be 8px. So 1rem is equal to 8px and that means 8(desired font-size) / 16(default font-size
+  of browser) = 50%
+  So now 1rem which is equal to root font-size of html and we know that the root font-size of html is 50% of root font-size of browser so
+  it would be 8px and therefore 1rem is 8px.
+  Important: Percentages when defining font-size in html is relative to root font-size of browser.*/
   font-size: 62.5%;
+
+  /* I commented this out, because this is not a good way of writing media queries.
+   @include respond-phone {
+    font-size: 50%;
+  } */
+  /* In phone media query, we checks if the width of current viewport is lower than 600px or not? And the next media query asks the question
+  if the width of viewport is lower than 900px or not? So imagine that the width of device is 500px and therefore it would still less than
+  900, right? So 500 is still less than 600 but also less than 900. So both of these media queries would apply and what that means is that
+  we really don't need that first one. So if we have font-size: 50%;(if you specify different, we need both!) for both of them,
+  we really don't need the first one. Because both will apply, so the first one is unnecessary, therefore I commented it out.
+
+  Now let's test things out. Instead of resizing the browser, it's better to use devtools and it's toggle device toolbar.
+  Currently if you look at 900 breakpoint, you'll see no changes in root font-size of html element. WHY?
+  Important: Because if you go under 900 and if you click over <html> element in source code and see the styles tab in right, you
+   see that you have text through over font-size: 62.5%; , this means even you are currently under 900px but still the styles of
+   tab-land is applying. Why? Because of conflicting media queries in your code. Because each time an earlier media query applies the
+   next one is also applied and if you put the latter one AFTER the earlier media query, the latter one will apply if the current viewport
+   width is smaller than the earlier media query and therefore we expect the earlier media query applies, but the latter one would be
+   applied. (In the case that the current viewport is true for both checking statements of media queries, the latter one would be applied.)
+   But that's not what we want.So we must put the tab-port AFTER tab-land. Therefore now if we have 500px viewport width, the first one
+   which checks if viewport width < 900 ? and also the second one would apply which checks viewport width < 600 ? So they still are
+   conflicting, but the difference of this new order is now the smaller media query is latter therefore it would be applied and that is
+   exactly what we want, when both are true for a viewport width like 500px. So in that case, we don't want the larger media query
+   apply, but the smaller one.
+
+   So the right order is that the larger media queries(the ones that are checking the higher viewport widths.) MUST be BEFORE the
+   smaller ones. So the media query for phone must be AFTER the tab-port too.
+
+  Why we didn't put the media query for big-desktop before all of the others? Because it's a min-width base media query and therefore
+  it won't apply for the viewport widths like 500px which are smaller than the breakpoint of that media query. So we can keep it there.*/
+
+  @include respond(tab-land) { // Asks: width < 1200 ?
+    font-size: 56.25%; // 1rem = 9px (9 / 16 = 56.25%)
+  }
+
+  @include respond(tab-port) { // Asks: width < 900 ?
+    font-size: 50%; // 1rem = 8px
+  }
+
+  /* @include respond(phone) {
+      font-size: 50%; // 1rem
+    } */
+
+  @include respond(big-desktop) {
+    font-size: 75%; // 1rem = 12px
+  }
 
 }
 
