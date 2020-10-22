@@ -27,6 +27,13 @@
     font-size: 6rem;
     font-weight: 400;
     letter-spacing: 3.5rem;
+
+    /* I did put this media query mixin here and not inside .heading-primary , because we want to change the font-size and
+    letter-spacing of heading-primary class but it is defined here. So I put the media query here. */
+    @include respond(phone) {
+      letter-spacing: 1rem;
+      font-size: 5rem;
+    }
   }
 
   &__main {
@@ -45,6 +52,10 @@
     font-weight: 700;
     letter-spacing: 1.74rem;
     animation-fill-mode: backwards;
+
+    @include respond(phone) {
+      letter-spacing: .5rem;
+    }
   }
 
   &__sub {
@@ -78,12 +89,6 @@ body {
   /*font-size:16px;*/
   line-height: 1.7;
   color: $color-grey-dark;
-
-  /* We want all of our website to has some whitespace around it, so we give some padding to the body element.Why? because body
-   element contains entire web page, so if we set a padding here then this padding will apply to entire web page.
-   Note: This won't inherited by all other child elements of body. All it's happening that is we are applying 3rem padding around
-   the entire body or the whole web page.*/
-  padding: 3rem;
 }
 
 /* For have a gradient color INSIDE a text, the trick is to first set the background-image of the entire text(in this case text is <h2>) to
@@ -118,6 +123,16 @@ body {
     issues(rounding means approximately). BUT OKAY! Let's make it 0.2rem*/
   letter-spacing: 0.2rem;
   text-align: center;
+
+  /* As you can see, I wrote 2 media queries here and therefore I put the one which is for smaller devices AFTER the one for
+   larger devices.*/
+  @include respond(tab-port) {
+    font-size: 3rem;
+  }
+
+  @include respond(phone) {
+    font-size: 2.5rem;
+  }
 
   &:hover {
     /* For the value of transform property, we can put multiple things at the same time. When you want to use multiple things in

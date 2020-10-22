@@ -26,22 +26,59 @@
     z-index: 10;
     transition: all .3s;
 
+    @include respond(tab-port) {
+      /* In this media query, I want to float those images, side by side and for that to work, we need them to have relative position,
+         instead of position: absolute; which they had before on larger screens.
+         Also we need to distribute width for all of them and all of them to have the same width. So I divide the width of parent
+         to those 3 childes.
+
+         Now they're nicely sitting side by side. Also let's scale them up a little bit by using scale(). Also we need to put the
+         &--p2 on top of the other two. So let's give it a higher z-index(Yes we can actually give it a z-index, because it's a
+         positioned element with relative position.)
+
+         When we're not on the range of device which gets our normal styles(so when we're on a smaller screen), if you actually
+         click on sth that we defined :hover state on it, it would actually get the styles that we defined for it in hover state,
+         by actually clicking on it, instead of hovering over it! BUT ON A TOUCH DEVICE THAT EFFECT WON'T happen ANYWAYS!
+         So we can just ignore that.*/
+      float: left;
+      position: relative;
+      width: 33.33%;
+      box-shadow: 0 1.5rem 3rem rgba($color-black, 0.2);
+    }
+
     &--p1 {
       left: 0;
 
       /* We make the first image to be a bit higher in comparison to the text in other column. So with this, they aren't in the
       same line. Because if they were on the same line, it would seem a bit strange.*/
       top: -2rem;
+
+      @include respond(tab-port) {
+        top: 0;
+        transform: scale(1.2);
+      }
     }
 
     &--p2 {
       right: 0;
       top: 2rem;
+
+      @include respond(tab-port) {
+        top: -1rem;
+        transform: scale(1.3);
+        z-index: 100;
+      }
     }
 
     &--p3 {
       left: 20%;
       top: 10rem;
+
+      @include respond(tab-port) {
+        top: 1rem;
+        left: 0;
+        transform: scale(1.1);
+      }
     }
 
     &:hover {

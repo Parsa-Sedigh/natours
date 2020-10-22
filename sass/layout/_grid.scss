@@ -22,6 +22,11 @@
   max-width: $grid-width;
   margin: 0 auto;
 
+  @include respond(tab-port) {
+    max-width: 50rem;
+    padding: 0 3rem;
+  }
+
   /* We want the last one row to not have a margin-bottom. Also instead of &:not we can say: &:last-child {margin-bottom: 0} but we can
   do even better by using :not() pseudo selector and in parentheses of :not() we can specify another pseudo class or anything else,
   which in this case it's :last-child.
@@ -29,6 +34,10 @@
   */
   &:not(:last-child) {
     margin-bottom: $gutter-vertical;
+
+    @include respond(tab-port) {
+      margin-bottom: $gutter-vertical-small;
+    }
   }
 
   /* The result of this @include is the code that is in the clearFix @mixin which is:
@@ -63,9 +72,49 @@
 
     /* The gutter between each of the columns in one row is some kind of margin-right for the all of the columns except the last
      column. Right? Because last column does not have a space at the right side of it. So it hasan't a gutter so it hasen't a margin-right.
-     So in all of the types of col-x-of-y we want all of the columns to have margin-right except the last column.*/
+     So in all of the types of col-x-of-y we want all of the columns to have margin-right except the last column.
+
+     It doesn't matter you already included the media query mixin in outer {} of this &:not(:last-child) selector. It doesn't matter.
+     YOU NEED TO include it again in each {} scope that you want to make it responsive.
+
+     Also we need to give the columns some margin-bottom instead of having margin-right on smaller screens. Also right now, the
+     columns are way too wide. But now the rows and columns(which on smaller screens columns are like rows because they have width of
+     100% therefore their width is equal to their .row parent.)
+
+     Right now, the row is occupying 100% of it's available width, because the viewport width is smaller than $grid-width, so because
+     we wrote that the width of the .row must not go beyond $grid-width which is 114rem. So the MAXIMUM width of a .row must be
+     114rem and it CAN has less width than that number, because that number is the MAXIMUM width of .row that it can has.
+     SO IF .row couldn't have the max-width specified for it, it can has less width. When that happens? When the viewport width is
+     smaller than max-width of .row.
+     Learn: So when the width of the viewport is smaller than specified max-width of an element, then that element can't get it's
+      max-width that we specified for it so it would get all of the width that it actually can!
+      So what max-width does, is it checks if the width of viewport is lower than the specified value of max-width, then the element
+      which has that max-width will simply occupy of it's available width.
+
+     So now let's change the width of columns when we're on smaller screens too. Because currently they have width of 100% but
+     we can make the width of their parent to a lower number and therefore these columns which on smaller screens get a width of 100%,
+     would still get all of the width of their parent but now that width of their parent would be lower because we make the max-width
+     of their parent to a smaller value.
+
+     After these changes, we still have some responsive problems with individual components like composition. Because right now we're
+     working to make the overall layout, responsive.
+
+     Now let's work on header. The bottom line of header on smaller screens is way too steep, in comparison to the top line of
+     features section(currently we are in 600px of viewport width and smaller width-so basically mobile screen). So let's change that
+     bottom line of header for phones. So go to layout/header.scss*/
     &:not(:last-child) {
       margin-right: $gutter-horizontal;
+
+      @include respond(tab-port) {
+        margin-right: 0;
+        margin-bottom: $gutter-vertical-small;
+      }
+    }
+
+    @include respond(tab-port) {
+      /* Here I used !important, because I want to really make sure that the width props of col-1-of-2 and ... are overwritten by
+      this responsive width.*/
+      width: 100% !important;
     }
   }
 

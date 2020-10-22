@@ -945,7 +945,123 @@ worse, imagine that some day you would decide to change your breakpoints, then y
 So there's an even better of that. So when you write a mixin, when you @include it, it would basically paste the code that it has in the
 place that it was included. */
 /* 4. Writing media queries - base typography and layout:
-*/
+Now that we have a media query manager, let's start using it. But before we do it, let's think about the order of the media quereis that
+we wrote in _base.scss . Why the current order of them is right and not the other way around?
+Imagine we have 700px for width of screen. In that case both first ones of media queries in that file will apply, but since the
+both media queries apply, the last one would really apply and that's what we want. Because in that case, 900px(the smaller breakpoint) is
+the one which is closer to 700px(in other words, the latter media query must be the one that is closest to smallest viewport width(we're
+talking about max-width based media queries now!)). But the other way around, then at screen size of 700px, we would have a font-size
+of 56%, which was actually only supposed to be used in the range between 900 and 1200px and this is wrong.
+Important: All of these stuff, are related to desktop-first approach. If you were writing mobile-first approach it was completely
+ other way around. So in that case, we have to start with the lower width media query and move up to larger ones. Because in that
+ case you start by writing min-width media queries and at the end would have a max-width media query, so everything would be opposite.
+
+The good order of writing the media queries is to first start with: base and typography, then moving on to more general layout, like
+header, footer, navigation and ... and also the grid. Then the more specific page layout and then finally changing the styles of
+components. So:
+
+Important:
+ Order of making website responsive:
+ base + typography(the styles in _typography.scss file) then general layout(folder) + grid then page layout then components
+
+Also remember that we don't need to change many things because the responsive overall font-size of our web page which is set in
+_base.scss , takes care of the most changes that we want to make for making site responsive. So we just need some adjustments that we
+need to do which are pretty minor.
+So now, the first thing is to make typography responsive, so let's go to _typography file. Now when you're on toggle device toolbar
+in chrome devtools, click on those 3 vertical dots(more icon) and then click the show media queries. Now you can see that the
+56.25em range is the smallest viewport width of our media queries.
+In this mode, you can easily see which one of your media queries is currently applying, so when a range becomes darker, it means
+it is applying. Now when you click on a range, it will move the website to the breakpoint of that range.
+Also remember that in show media queries mode in chrome devtools, the blue ranges are max-width based media queries and the
+orange ranges, are min-width base media queries and up the page, we have "responsive" mode where we can decrease or increase freely
+our screen there also we have a list of devices.
+
+Now for making the typography responsive, let's take a look at the selectors that we have in that file in our website.
+So let's decrease the size of viewport and see if those classes have problems in smaller sizes.
+
+Also we need to get rid of our entire white border on small screen sizes. So let's do that in tab-port mode. So let's get rid of
+padding for body which is in _base.scss file on smaller screens. So until 900px of viewport width, we don't need to have an overall
+padding on body.
+
+Also don't forget to check your responsive design on real phones and tablets too. Rather than only check it on responsive mode
+or other devices in chrome devtools.
+
+After make typography responsive, let's go to layout folder and in there let's first make the grid responsive. In order to do that,
+go back to website and see what happens to grid when the viewport width gets less(why testing less? Because we are using desktop-first
+approach- if we were on mobile-first, the things were opposite.)
+Now you see the grid with 4 columns gets really small and where we should change it is in 900px breakpoint. Because even in for
+example 860px the columns are too narrow and we can't wait to reach the smaller breakpoint which is 600px, because it would be
+horrible. In other words, even BEFORE we arrive at 600px breakpoint we had a HORRIBLE design, so it's not good to just make those
+grids responsive only when we arrive to 600px. So we must make things about grid right, in 900px breakpoint.(We only have those
+2 breakpoints there and there's not other breakpoint between them.)
+
+Important: We can simply make the width of all of those columns in grid to 100% and that's what usually is done on MOBILE DEVICES.
+ So all the columns are transformed into rows actually because of making them to have width of 100%. So the entire mobile version of
+ our webpage will have only one single column basically.
+So let's add our mixin media query to {} of [class^="col-"] , because we want to make all of our columns responsive and all of them
+has this shared style. Since the columns are no longer side by side, we don't need that horizontal gutter.
+Also we need to remove any margin from those columns. Because right now, they all have a horizontal-gutter on their margin-right.
+So let's again include that mixin into {} of where that margin-right is declared.
+Important: Where ever you have some styles and you want to make them responsive, you MUST include that mixin into {} of those styles.
+ Even if you already included that mixin in parent selector of the selector of styles that you want to make them responsive, you
+ must include it AGAIN. For example see _grid.scss .
+
+Now we need to also change the vertical gutter which currently on all devices is 8rem but it's too much for smaller devices(also
+remember on smaller devices 1rem is no longer 10px, because we changed the font-size of html in base.scss for those devices.).
+So let's create a new variable for vertical gutter for smaller devices.
+
+After making the header responsive, the navigation button is moving to the center of page so let's take it back to corner in order to
+be aligned in one line with the logo of page. So let's go to _navigation.scss and there we have to change &__button and we know that
+the navigation button, starts to coming to center of page from around the tab-port breakpoint.
+Also because you change the position of &__button in that point, you also need to change the &__background at that point, because
+it is right under the &__button. And because both are cocentric. For values of top and right for respond media query of &__background,
+we say that for &__button, we decrease the top and right by 2rem therefore we need to ALSO decrease those props for &__background by
+2rem, because they most stay cocentric. Because in &__button, we had 6rem - 2rem = 4rem(the new top and right for tab-port and also
+this happens for &__background). Also remember, because those 2 classes are cocnetric, if one of them have a media query for phones, the
+other one also must have it with it's special values. Because we can't move on of them in one device but the other one stays there.
+
+Now the final layout to make it responsive is footer. Now you can see that the CONTENT of .row class in footer is not in center(but
+.row itself is centered). And let's also give it 100% width just like what we did with columns. So go to .footer.scss
+
+Remember: The most crucial breakpoints are tab-port and phone and for other breakpoints the change that we do would be probably
+only the root font-size which causes entire elements of page to smaller and just that change was enough for tab-land in order to
+make the page looking good for 900-1200px viewport.
+
+We should also have some padding on the .row on the left and right side of it, on smaller screens. Because on very small screen like
+under 470, because we have some columns which are direct children of a .row and the .row in that point has a width of 50rem and
+we set the width of columns in that small width, to be 100%. So that's why the content of footer is very close to edges of viewport
+and we don't want that, so we can give row some padding in those small devices. Also the same thing is happening at those 3 cards section
+and ... . So let's go to grid and give padding to left and right of .row.
+
+Also now(under 900px viewport), the webpage is larger than device screen! therefore we need to fix it. So we got a horizontal scrollbar.*/
+/* 5. Writing media queries - Layout, features and about sections:
+Important: It turns out that the horizontal scrollbar that I mentioned was it had nothing to do with media queries, it was
+ a bug in devtools and I have to was to click on toggle device toolbar and again click back.
+Now let's remove the space in footer and go to &__logo-box of footer.
+
+Now we took care all of our layouts in layout folder. After that let's go to pages folder and home.scss . But first let's take
+a look at our website, before making any changes for responsive. As you can see we have a lot of space in general in our page.
+So all of the sections have too much padding and you can see those spaces at 900px and in that breakpoint, we can see it already
+starts to have too much padding in each section.
+Also you can even decrease those paddings for mobile devices as well.
+
+I saw too much space that u-margin-bottom-big is causing which it's sitting on the first direct child of section-tours.
+So as you saw, you can add media queries to utilities file as well and since the normal styles in there have !important, we also
+need to give the styles in media queries !important as well.
+
+Now after layouts, let's go to components folder.
+In composition component, we want images to be side by side in smaller screens and the middle image is a bit bigger than the other
+2 and is on top of the other ones. So we need to make a lot of changes for that.
+Now let's see where the composition starts to look really bad?
+Close to 900px range.
+
+Learn: If you want to give an element a float, it shouldn't have position: absolute; otherwise it wouldn't work. But if you really
+ need that element to be positioned with top and right and ... and also need a float prop, you can give it a relative postion instead
+ of absolute one.
+
+After composition made responsive, let's go to feature-box and give it less padding than what it currently has.*/
+/* 6. Writing media queries - tours, stories and booking sections: */
+
 
 
 

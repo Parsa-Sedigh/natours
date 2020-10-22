@@ -94,4 +94,15 @@ html {
  in this file which has only one style and that is box-sizing which is not related to typography.*/
 body {
   box-sizing: border-box;
+
+  /* This padding of body has nothing to do with typography, so I put it in this base file.
+  We want all of our website to has some whitespace around it, so we give some padding to the body element.Why? because body
+  element contains entire web page, so if we set a padding here then this padding will apply to entire web page.
+  Note: This won't inherited by all other child elements of body. All it's happening that is we are applying 3rem padding around
+  the entire body or the whole web page.*/
+  padding: 3rem;
+
+  @include respond(tab-port) {
+    padding: 0;
+  }
 }

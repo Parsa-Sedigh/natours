@@ -20,6 +20,10 @@
   transition: transform 0.4s;
   //transform: skewY(7deg);
 
+  @include respond(tab-port) {
+    padding: 2rem;
+  }
+
   &__icon {
     /* The size of an icon can be changed using font-size property. */
     font-size: 6.2rem;
@@ -34,6 +38,10 @@
     background-image: linear-gradient(to right, $color-primary-light, $color-primary-dark);
     -webkit-background-clip: text;
     color: transparent;
+
+    @include respond(tab-port) {
+      margin-bottom: 0;
+    }
   }
   &__text {
     /* We don't need to specify the font-size for this class, at least there. But you may ask why in website, the <p> element

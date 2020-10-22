@@ -55,6 +55,16 @@
     box-shadow: 0 1rem 3rem rgba($color-black, .1);
     text-align: center;
     cursor: pointer;
+
+    @include respond(tab-port) {
+      top: 4rem;
+      right: 4rem;
+    }
+
+    @include respond(phone) {
+      top: 3rem;
+      right: 3rem;
+    }
   }
   &__background {
     /* The <div class="navigation__background">&nbsp;</div> is just a circle expanding from the button(<label>) and when the nav is open
@@ -103,6 +113,17 @@
     Now let's style the links of list items, which those links are in &__link . */
     //transform: scale(80);
     transition: transform .8s cubic-bezier(0.86, 0, 0.07, 1);
+
+    /* Put the media query for smaller screens, latest ones. */
+    @include respond(tab-port) {
+      top: 4.5rem;
+      right: 4.5rem;
+    }
+
+    @include respond(phone) {
+      top: 3.5rem;
+      right: 3.5rem;
+    }
   }
   &__nav {
     visibility: hidden;

@@ -224,7 +224,16 @@ html {
 /* You could take body to _typography except the box-sizing property. So we have 2 body selectors, one in _typography and one
  in this file which has only one style and that is box-sizing which is not related to typography.*/
 body {
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  /* This padding of body has nothing to do with typography, so I put it in this base file.
+  We want all of our website to has some whitespace around it, so we give some padding to the body element.Why? because body
+  element contains entire web page, so if we set a padding here then this padding will apply to entire web page.
+  Note: This won't inherited by all other child elements of body. All it's happening that is we are applying 3rem padding around
+  the entire body or the whole web page.*/
+  padding: 3rem; }
+  @media (max-width: 56.25em) {
+    body {
+      padding: 0; } }
 
 /* Generally there are 2 types of animations in CSS. The first one is to just use the transition property and then change the
  properties that we want to animate on an event like :hover and ... */
@@ -350,7 +359,14 @@ body {
     display: block;
     font-size: 6rem;
     font-weight: 400;
-    letter-spacing: 3.5rem; }
+    letter-spacing: 3.5rem;
+    /* I did put this media query mixin here and not inside .heading-primary , because we want to change the font-size and
+    letter-spacing of heading-primary class but it is defined here. So I put the media query here. */
+    /* This media query checks if the current width of device is less or equal than 600px, then it will apply it's body. */ }
+    @media (max-width: 37.5em) {
+      .heading-primary--main {
+        letter-spacing: 1rem;
+        font-size: 5rem; } }
   .heading-primary__main--animated {
     animation-name: moveInFromLeft;
     animation-duration: 3s;
@@ -362,7 +378,11 @@ body {
     font-size: 2rem;
     font-weight: 700;
     letter-spacing: 1.74rem;
-    animation-fill-mode: backwards; }
+    animation-fill-mode: backwards;
+    /* This media query checks if the current width of device is less or equal than 600px, then it will apply it's body. */ }
+    @media (max-width: 37.5em) {
+      .heading-primary--sub {
+        letter-spacing: .5rem; } }
   .heading-primary__sub--animated {
     animation-name: moveInFromRight;
     animation-duration: 3s;
@@ -386,12 +406,7 @@ body {
   /* Remember: You must use better techniques than px here. */
   /*font-size:16px;*/
   line-height: 1.7;
-  color: #777;
-  /* We want all of our website to has some whitespace around it, so we give some padding to the body element.Why? because body
-   element contains entire web page, so if we set a padding here then this padding will apply to entire web page.
-   Note: This won't inherited by all other child elements of body. All it's happening that is we are applying 3rem padding around
-   the entire body or the whole web page.*/
-  padding: 3rem; }
+  color: #777; }
 
 /* For have a gradient color INSIDE a text, the trick is to first set the background-image of the entire text(in this case text is <h2>) to
  a gradient. Now we want the gradient to stop where the text stop. Because the gradient is currently goes beyond the text to the end.
@@ -423,7 +438,16 @@ body {
     scale or not and no matter if we increase the root font-size or not, this will always translate to just 2px because of rounding
     issues(rounding means approximately). BUT OKAY! Let's make it 0.2rem*/
   letter-spacing: 0.2rem;
-  text-align: center; }
+  text-align: center;
+  /* As you can see, I wrote 2 media queries here and therefore I put the one which is for smaller devices AFTER the one for
+   larger devices.*/
+  /* This media query checks if the current width of device is less or equal than 600px, then it will apply it's body. */ }
+  @media (max-width: 56.25em) {
+    .heading-secondary {
+      font-size: 3rem; } }
+  @media (max-width: 37.5em) {
+    .heading-secondary {
+      font-size: 2.5rem; } }
   .heading-secondary:hover {
     /* For the value of transform property, we can put multiple things at the same time. When you want to use multiple things in
     transition, it doesn't need comma or anything else, just a space between each of them.*/
@@ -449,11 +473,17 @@ body {
   text-align: center; }
 
 /* Instead of using numbers like .u-margin-bottom-8 we are using names. The reason is explained in index.html . */
-.u-margin-bottom-big {
-  margin-bottom: 8rem; }
-
 .u-margin-bottom-medium {
   margin-bottom: 4rem !important; }
+  @media (max-width: 56.25em) {
+    .u-margin-bottom-medium {
+      margin-bottom: 3rem !important; } }
+
+.u-margin-bottom-big {
+  margin-bottom: 8rem !important; }
+  @media (max-width: 56.25em) {
+    .u-margin-bottom-big {
+      margin-bottom: 5rem !important; } }
 
 .u-margin-bottom-small {
   margin-bottom: 1.5rem; }
@@ -680,17 +710,50 @@ body {
      TODO: There's still a question. Imagine we hover on .composition element but still we don't hover on one of the images,
       therefore all of the elements that have .composition__photo must get's smaller because of scale(0.9) . It isn't true?
       */ }
+    @media (max-width: 56.25em) {
+      .composition__photo {
+        /* In this media query, I want to float those images, side by side and for that to work, we need them to have relative position,
+         instead of position: absolute; which they had before on larger screens.
+         Also we need to distribute width for all of them and all of them to have the same width. So I divide the width of parent
+         to those 3 childes.
+
+         Now they're nicely sitting side by side. Also let's scale them up a little bit by using scale(). Also we need to put the
+         &--p2 on top of the other two. So let's give it a higher z-index(Yes we can actually give it a z-index, because it's a
+         positioned element with relative position.)
+
+         When we're not on the range of device which gets our normal styles(so when we're on a smaller screen), if you actually
+         click on sth that we defined :hover state on it, it would actually get the styles that we defined for it in hover state,
+         by actually clicking on it, instead of hovering over it! BUT ON A TOUCH DEVICE THAT EFFECT WON'T happen ANYWAYS!
+         So we can just ignore that.*/
+        float: left;
+        position: relative;
+        width: 33.33%;
+        box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.2); } }
     .composition__photo--p1 {
       left: 0;
       /* We make the first image to be a bit higher in comparison to the text in other column. So with this, they aren't in the
       same line. Because if they were on the same line, it would seem a bit strange.*/
       top: -2rem; }
+      @media (max-width: 56.25em) {
+        .composition__photo--p1 {
+          top: 0;
+          transform: scale(1.2); } }
     .composition__photo--p2 {
       right: 0;
       top: 2rem; }
+      @media (max-width: 56.25em) {
+        .composition__photo--p2 {
+          top: -1rem;
+          transform: scale(1.3);
+          z-index: 100; } }
     .composition__photo--p3 {
       left: 20%;
       top: 10rem; }
+      @media (max-width: 56.25em) {
+        .composition__photo--p3 {
+          top: 1rem;
+          left: 0;
+          transform: scale(1.1); } }
     .composition__photo:hover {
       /* Let's make the hovered image bigger first and when something is bigger, it means it have a bigger box-shadow and a bit darker.
        So let's also change the box-shadow property on :hover.
@@ -748,6 +811,9 @@ body {
       transition on that property. Here we just write one property because we want to use transition on that one property.
       So in the transition you could also write: all 0.4s*/
   transition: transform 0.4s; }
+  @media (max-width: 56.25em) {
+    .feature-box {
+      padding: 2rem; } }
   .feature-box__icon {
     /* The size of an icon can be changed using font-size property. */
     font-size: 6.2rem;
@@ -760,6 +826,9 @@ body {
     background-image: linear-gradient(to right, #7ed56f, #28b485);
     -webkit-background-clip: text;
     color: transparent; }
+    @media (max-width: 56.25em) {
+      .feature-box__icon {
+        margin-bottom: 0; } }
   .feature-box__text {
     /* We don't need to specify the font-size for this class, at least there. But you may ask why in website, the <p> element
      that has this class, has 1.5rem font-size? Even without specifying that property in this class? Well because of inheritance.
@@ -1765,8 +1834,7 @@ body {
    top right corner and ... . For first coordinate, we don't want to move it in any direction (axis).
 
    Important: The X and Y distances of all of our coordinates are calculated from the origin.The origin is the top left corner of
-   the element.
-
+    the element.
     Axises in CSS:  --------------------> X
                     |
                     |
@@ -1806,7 +1874,12 @@ body {
    to have a position of relative. In other words this element is the origin or reference from which top and left for the .logo-box
    start to count.*/
   position: relative;
-  background-attachment: fixed; }
+  background-attachment: fixed;
+  /* This media query checks if the current width of device is less or equal than 600px, then it will apply it's body. */ }
+  @media (max-width: 37.5em) {
+    .header {
+      -webkit-clip-path: polygon(0 0, 100% 0, 100% 85vh, 0 100%);
+      clip-path: polygon(0 0, 100% 0, 100% 85vh, 0 100%); } }
   .header__text-box {
     /* How center .text-box, inside the .header element vertically and horizontally? We should use absolute positioning. But for top and
       left properties, they would be a bit different.
@@ -2033,8 +2106,15 @@ statement of media queries.)*/
    The width of .col-3-of-4 is equal to have 3 .col-1-of-4 plus the gutters between them and we have 2 gutter between them. Right?
 
    For other projects you can change the value of $gutter-horizontal (the space between each of the columns in one row.)*/ }
+  @media (max-width: 56.25em) {
+    .row {
+      max-width: 50rem;
+      padding: 0 3rem; } }
   .row:not(:last-child) {
     margin-bottom: 8rem; }
+    @media (max-width: 56.25em) {
+      .row:not(:last-child) {
+        margin-bottom: 6rem; } }
   .row::after {
     content: "";
     display: table;
@@ -2043,9 +2123,47 @@ statement of media queries.)*/
     float: left;
     /* The gutter between each of the columns in one row is some kind of margin-right for the all of the columns except the last
      column. Right? Because last column does not have a space at the right side of it. So it hasan't a gutter so it hasen't a margin-right.
-     So in all of the types of col-x-of-y we want all of the columns to have margin-right except the last column.*/ }
+     So in all of the types of col-x-of-y we want all of the columns to have margin-right except the last column.
+
+     It doesn't matter you already included the media query mixin in outer {} of this &:not(:last-child) selector. It doesn't matter.
+     YOU NEED TO include it again in each {} scope that you want to make it responsive.
+
+     Also we need to give the columns some margin-bottom instead of having margin-right on smaller screens. Also right now, the
+     columns are way too wide. But now the rows and columns(which on smaller screens columns are like rows because they have width of
+     100% therefore their width is equal to their .row parent.)
+
+     Right now, the row is occupying 100% of it's available width, because the viewport width is smaller than $grid-width, so because
+     we wrote that the width of the .row must not go beyond $grid-width which is 114rem. So the MAXIMUM width of a .row must be
+     114rem and it CAN has less width than that number, because that number is the MAXIMUM width of .row that it can has.
+     SO IF .row couldn't have the max-width specified for it, it can has less width. When that happens? When the viewport width is
+     smaller than max-width of .row.
+     Learn: So when the width of the viewport is smaller than specified max-width of an element, then that element can't get it's
+      max-width that we specified for it so it would get all of the width that it actually can!
+      So what max-width does, is it checks if the width of viewport is lower than the specified value of max-width, then the element
+      which has that max-width will simply occupy of it's available width.
+
+     So now let's change the width of columns when we're on smaller screens too. Because currently they have width of 100% but
+     we can make the width of their parent to a lower number and therefore these columns which on smaller screens get a width of 100%,
+     would still get all of the width of their parent but now that width of their parent would be lower because we make the max-width
+     of their parent to a smaller value.
+
+     After these changes, we still have some responsive problems with individual components like composition. Because right now we're
+     working to make the overall layout, responsive.
+
+     Now let's work on header. The bottom line of header on smaller screens is way too steep, in comparison to the top line of
+     features section(currently we are in 600px of viewport width and smaller width-so basically mobile screen). So let's change that
+     bottom line of header for phones. So go to layout/header.scss*/ }
     .row [class^="col-"]:not(:last-child) {
       margin-right: 6rem; }
+      @media (max-width: 56.25em) {
+        .row [class^="col-"]:not(:last-child) {
+          margin-right: 0;
+          margin-bottom: 6rem; } }
+    @media (max-width: 56.25em) {
+      .row [class^="col-"] {
+        /* Here I used !important, because I want to really make sure that the width props of col-1-of-2 and ... are overwritten by
+      this responsive width.*/
+        width: 100% !important; } }
   .row .col-1-of-2 {
     width: calc((100% - 6rem) / 2); }
   .row .col-1-of-3 {
@@ -2066,10 +2184,16 @@ statement of media queries.)*/
   padding: 10rem 0;
   font-size: 1.4rem;
   color: #f7f7f7; }
+  @media (max-width: 56.25em) {
+    .footer {
+      padding: 8rem 0; } }
   .footer__logo-box {
     /* The <img> is an inline element and therefore for centering it horizontally we can use text-align: center; on it's parent. */
     text-align: center;
     margin-bottom: 8rem; }
+    @media (max-width: 56.25em) {
+      .footer__logo-box {
+        margin-bottom: 6rem; } }
   .footer__logo {
     width: 15rem;
     height: auto; }
@@ -2081,6 +2205,10 @@ statement of media queries.)*/
      element. So because inline-block elements also don't occupy the 100% available width but only the amount of width which
      it's content needs.*/
     display: inline-block; }
+    @media (max-width: 56.25em) {
+      .footer__navigation {
+        width: 100%;
+        text-align: center; } }
   .footer__list {
     list-style: none; }
   .footer__item {
@@ -2119,6 +2247,10 @@ statement of media queries.)*/
     width: 80%;
     /* We use float here to move the element as far to right as it can. */
     float: right; }
+    @media (max-width: 56.25em) {
+      .footer__copyright {
+        width: 100%;
+        float: none; } }
 
 .navigation {
   /* When the &__checkbox is checked, then we want to FIRST select the .navigation__button which is adjacent sibling of
@@ -2213,7 +2345,16 @@ statement of media queries.)*/
     z-index: 2000;
     box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1);
     text-align: center;
-    cursor: pointer; }
+    cursor: pointer;
+    /* This media query checks if the current width of device is less or equal than 600px, then it will apply it's body. */ }
+    @media (max-width: 56.25em) {
+      .navigation__button {
+        top: 4rem;
+        right: 4rem; } }
+    @media (max-width: 37.5em) {
+      .navigation__button {
+        top: 3rem;
+        right: 3rem; } }
   .navigation__background {
     /* The <div class="navigation__background">&nbsp;</div> is just a circle expanding from the button(<label>) and when the nav is open
     if we click on the button again, it would go back to that button like a circle but decreasing in size.
@@ -2258,7 +2399,17 @@ statement of media queries.)*/
     Now with this, a circle which is this class and the element that this class sits on it, we will take almost the entire of page.
     Also for value of scale() , we can give it 80 in order to this class covers the bigger screens too.
     Now let's style the links of list items, which those links are in &__link . */
-    transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1); }
+    transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+    /* Put the media query for smaller screens, latest ones. */
+    /* This media query checks if the current width of device is less or equal than 600px, then it will apply it's body. */ }
+    @media (max-width: 56.25em) {
+      .navigation__background {
+        top: 4.5rem;
+        right: 4.5rem; } }
+    @media (max-width: 37.5em) {
+      .navigation__background {
+        top: 3.5rem;
+        right: 3.5rem; } }
   .navigation__nav {
     visibility: hidden;
     /* We could don't specify a width of 100% for this class, because the element that uses this class is a block element and
@@ -2537,6 +2688,9 @@ statement of media queries.)*/
   /* height of .header is 95vh and in that .header declaration, we have a polygon() which in it's right side goes until 75vh.
   So the difference is 20vh (95vh - 75vh). So we can move up this .section-about by giving it a negative margin-top . */
   margin-top: -20vh; }
+  @media (max-width: 56.25em) {
+    .section-about {
+      padding: 20rem 0; } }
 
 .section-features {
   /*padding: <left and right padding> <top and bottom> */
@@ -2576,21 +2730,33 @@ statement of media queries.)*/
 
     Recap: We skewed in opposite direction to compensate for the skewing of entire direction.*/
     transform: skewY(7deg); }
+  @media (max-width: 56.25em) {
+    .section-features {
+      padding: 10rem 0; } }
 
 .section-tours {
   background-color: #f7f7f7;
-  padding: 25rem 0;
+  padding: 25rem 0 15rem 0;
   margin-top: -10rem; }
+  @media (max-width: 56.25em) {
+    .section-tours {
+      padding: 20rem 0 10rem 0; } }
 
 .section-stories {
   /* padding: <value1> <value2>
    value1 is top and bottom and value2 is left and right.*/
   padding: 15rem 0;
   position: relative; }
+  @media (max-width: 56.25em) {
+    .section-stories {
+      padding: 10rem 0; } }
 
 .section-book {
   padding: 15rem 0;
   background-image: linear-gradient(to right bottom, #7ed56f, #28b485); }
+  @media (max-width: 56.25em) {
+    .section-book {
+      padding: 10rem 0; } }
 
 .book {
   /* linear-gradient(FIRST_COLOR, SECOND_COLOR, ...)  Why we used rgba() in this case? Because we want to specify the opacity
@@ -3595,4 +3761,119 @@ worse, imagine that some day you would decide to change your breakpoints, then y
 So there's an even better of that. So when you write a mixin, when you @include it, it would basically paste the code that it has in the
 place that it was included. */
 /* 4. Writing media queries - base typography and layout:
-*/
+Now that we have a media query manager, let's start using it. But before we do it, let's think about the order of the media quereis that
+we wrote in _base.scss . Why the current order of them is right and not the other way around?
+Imagine we have 700px for width of screen. In that case both first ones of media queries in that file will apply, but since the
+both media queries apply, the last one would really apply and that's what we want. Because in that case, 900px(the smaller breakpoint) is
+the one which is closer to 700px(in other words, the latter media query must be the one that is closest to smallest viewport width(we're
+talking about max-width based media queries now!)). But the other way around, then at screen size of 700px, we would have a font-size
+of 56%, which was actually only supposed to be used in the range between 900 and 1200px and this is wrong.
+Important: All of these stuff, are related to desktop-first approach. If you were writing mobile-first approach it was completely
+ other way around. So in that case, we have to start with the lower width media query and move up to larger ones. Because in that
+ case you start by writing min-width media queries and at the end would have a max-width media query, so everything would be opposite.
+
+The good order of writing the media queries is to first start with: base and typography, then moving on to more general layout, like
+header, footer, navigation and ... and also the grid. Then the more specific page layout and then finally changing the styles of
+components. So:
+
+Important:
+ Order of making website responsive:
+ base + typography(the styles in _typography.scss file) then general layout(folder) + grid then page layout then components
+
+Also remember that we don't need to change many things because the responsive overall font-size of our web page which is set in
+_base.scss , takes care of the most changes that we want to make for making site responsive. So we just need some adjustments that we
+need to do which are pretty minor.
+So now, the first thing is to make typography responsive, so let's go to _typography file. Now when you're on toggle device toolbar
+in chrome devtools, click on those 3 vertical dots(more icon) and then click the show media queries. Now you can see that the
+56.25em range is the smallest viewport width of our media queries.
+In this mode, you can easily see which one of your media queries is currently applying, so when a range becomes darker, it means
+it is applying. Now when you click on a range, it will move the website to the breakpoint of that range.
+Also remember that in show media queries mode in chrome devtools, the blue ranges are max-width based media queries and the
+orange ranges, are min-width base media queries and up the page, we have "responsive" mode where we can decrease or increase freely
+our screen there also we have a list of devices.
+
+Now for making the typography responsive, let's take a look at the selectors that we have in that file in our website.
+So let's decrease the size of viewport and see if those classes have problems in smaller sizes.
+
+Also we need to get rid of our entire white border on small screen sizes. So let's do that in tab-port mode. So let's get rid of
+padding for body which is in _base.scss file on smaller screens. So until 900px of viewport width, we don't need to have an overall
+padding on body.
+
+Also don't forget to check your responsive design on real phones and tablets too. Rather than only check it on responsive mode
+or other devices in chrome devtools.
+
+After make typography responsive, let's go to layout folder and in there let's first make the grid responsive. In order to do that,
+go back to website and see what happens to grid when the viewport width gets less(why testing less? Because we are using desktop-first
+approach- if we were on mobile-first, the things were opposite.)
+Now you see the grid with 4 columns gets really small and where we should change it is in 900px breakpoint. Because even in for
+example 860px the columns are too narrow and we can't wait to reach the smaller breakpoint which is 600px, because it would be
+horrible. In other words, even BEFORE we arrive at 600px breakpoint we had a HORRIBLE design, so it's not good to just make those
+grids responsive only when we arrive to 600px. So we must make things about grid right, in 900px breakpoint.(We only have those
+2 breakpoints there and there's not other breakpoint between them.)
+
+Important: We can simply make the width of all of those columns in grid to 100% and that's what usually is done on MOBILE DEVICES.
+ So all the columns are transformed into rows actually because of making them to have width of 100%. So the entire mobile version of
+ our webpage will have only one single column basically.
+So let's add our mixin media query to {} of [class^="col-"] , because we want to make all of our columns responsive and all of them
+has this shared style. Since the columns are no longer side by side, we don't need that horizontal gutter.
+Also we need to remove any margin from those columns. Because right now, they all have a horizontal-gutter on their margin-right.
+So let's again include that mixin into {} of where that margin-right is declared.
+Important: Where ever you have some styles and you want to make them responsive, you MUST include that mixin into {} of those styles.
+ Even if you already included that mixin in parent selector of the selector of styles that you want to make them responsive, you
+ must include it AGAIN. For example see _grid.scss .
+
+Now we need to also change the vertical gutter which currently on all devices is 8rem but it's too much for smaller devices(also
+remember on smaller devices 1rem is no longer 10px, because we changed the font-size of html in base.scss for those devices.).
+So let's create a new variable for vertical gutter for smaller devices.
+
+After making the header responsive, the navigation button is moving to the center of page so let's take it back to corner in order to
+be aligned in one line with the logo of page. So let's go to _navigation.scss and there we have to change &__button and we know that
+the navigation button, starts to coming to center of page from around the tab-port breakpoint.
+Also because you change the position of &__button in that point, you also need to change the &__background at that point, because
+it is right under the &__button. And because both are cocentric. For values of top and right for respond media query of &__background,
+we say that for &__button, we decrease the top and right by 2rem therefore we need to ALSO decrease those props for &__background by
+2rem, because they most stay cocentric. Because in &__button, we had 6rem - 2rem = 4rem(the new top and right for tab-port and also
+this happens for &__background). Also remember, because those 2 classes are cocnetric, if one of them have a media query for phones, the
+other one also must have it with it's special values. Because we can't move on of them in one device but the other one stays there.
+
+Now the final layout to make it responsive is footer. Now you can see that the CONTENT of .row class in footer is not in center(but
+.row itself is centered). And let's also give it 100% width just like what we did with columns. So go to .footer.scss
+
+Remember: The most crucial breakpoints are tab-port and phone and for other breakpoints the change that we do would be probably
+only the root font-size which causes entire elements of page to smaller and just that change was enough for tab-land in order to
+make the page looking good for 900-1200px viewport.
+
+We should also have some padding on the .row on the left and right side of it, on smaller screens. Because on very small screen like
+under 470, because we have some columns which are direct children of a .row and the .row in that point has a width of 50rem and
+we set the width of columns in that small width, to be 100%. So that's why the content of footer is very close to edges of viewport
+and we don't want that, so we can give row some padding in those small devices. Also the same thing is happening at those 3 cards section
+and ... . So let's go to grid and give padding to left and right of .row.
+
+Also now(under 900px viewport), the webpage is larger than device screen! therefore we need to fix it. So we got a horizontal scrollbar.*/
+/* 5. Writing media queries - Layout, features and about sections:
+Important: It turns out that the horizontal scrollbar that I mentioned was it had nothing to do with media queries, it was
+ a bug in devtools and I have to was to click on toggle device toolbar and again click back.
+Now let's remove the space in footer and go to &__logo-box of footer.
+
+Now we took care all of our layouts in layout folder. After that let's go to pages folder and home.scss . But first let's take
+a look at our website, before making any changes for responsive. As you can see we have a lot of space in general in our page.
+So all of the sections have too much padding and you can see those spaces at 900px and in that breakpoint, we can see it already
+starts to have too much padding in each section.
+Also you can even decrease those paddings for mobile devices as well.
+
+I saw too much space that u-margin-bottom-big is causing which it's sitting on the first direct child of section-tours.
+So as you saw, you can add media queries to utilities file as well and since the normal styles in there have !important, we also
+need to give the styles in media queries !important as well.
+
+Now after layouts, let's go to components folder.
+In composition component, we want images to be side by side in smaller screens and the middle image is a bit bigger than the other
+2 and is on top of the other ones. So we need to make a lot of changes for that.
+Now let's see where the composition starts to look really bad?
+Close to 900px range.
+
+Learn: If you want to give an element a float, it shouldn't have position: absolute; otherwise it wouldn't work. But if you really
+ need that element to be positioned with top and right and ... and also need a float prop, you can give it a relative postion instead
+ of absolute one.
+
+After composition made responsive, let's go to feature-box and give it less padding than what it currently has.*/
+/* 6. Writing media queries - tours, stories and booking sections: */

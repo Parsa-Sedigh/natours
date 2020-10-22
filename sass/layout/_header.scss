@@ -36,8 +36,7 @@
    top right corner and ... . For first coordinate, we don't want to move it in any direction (axis).
 
    Important: The X and Y distances of all of our coordinates are calculated from the origin.The origin is the top left corner of
-   the element.
-
+    the element.
     Axises in CSS:  --------------------> X
                     |
                     |
@@ -79,6 +78,11 @@
    start to count.*/
   position: relative;
   background-attachment: fixed;
+
+  @include respond(phone) {
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 85vh, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 85vh, 0 100%);
+  }
 
   &__text-box {
     /* How center .text-box, inside the .header element vertically and horizontally? We should use absolute positioning. But for top and
