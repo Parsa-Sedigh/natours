@@ -1060,9 +1060,89 @@ Learn: If you want to give an element a float, it shouldn't have position: absol
  of absolute one.
 
 After composition made responsive, let's go to feature-box and give it less padding than what it currently has.*/
-/* 6. Writing media queries - tours, stories and booking sections: */
+/* 6. Writing media queries - tours, stories and booking sections:
+Right now, we actually have to touch the tour cards in order to rotate the card. Because in touch devices, there's no such thing as
+a hover. So the only way to actually rotate the card is to click it and that's not practical. So we must find a way to change the
+entire cart. So on smaller screens, the part that was originally on the back, will be at the bottom of each card and we do that,
+once the width of screen is smaller than 900px. So let's go to card.scss . But this time making responsive is different, because
+this time we need a whole rewrite of an entire thing which in this case is card and therefore we're not just tweaking some stuff
+there. So let's include our media query at the end of the .card(why not including it for each selector of that thing? Because
+we wanna change a lot of the styles in that selectors and that's not good to include that mixin multiple times, so we put that
+mixin at the (end of the) .card and then we put the selectors and their styles that we want to change based on the breakpoint of
+that media query in there) which that thing exists on that file.
+Why not including it at the end of the FILE itself?
+Well because if we put it at the end of the file, there's no selector that we're writing our media query for it and therefore
+you need to again write .card inside the block of code you pass to @content and that's a duplication. So put it inside .card and
+then if you want to change the styles of for example .card-<x> you need to add that selector in {} of that mixin and then write
+the styles for that selector.
+Because remember, with this approach(using that mixin for media query and ...), we actually need to change the styles of A SELECTOR.
+So we need to specify that selector in {} of mixin to pass that selector and it's styles to @content in order to apply the media
+query for them.
 
+After making the _card.scss responsive, let's go to _story.scss and in there let's make the story class from non-rectangular
+to a rectangular, so it can really fit more text, therefore we don't waste all of the white space that we have on the sides of
+story section. Because currently we have a big waste of space and we don't need that much space on small screens.
+So for .story of story component, include the media query mixin.
 
+If you have a page, online somewhere, then you can enter it's url in sizzy.co and then it will show you that website on a lot of
+different devices.
+
+Now let's make the popup responsive. We can put those 2 images on top of the popup or at the bottom. TODO*/
+
+/* 7. An overview of responsive images
+Currently, we do have flexible images already. In other words, our images currently nicely scale with the viewport width, but
+responsive images take things to a whole new level and that's because responsive images are not only in aspect of responsive design,
+but even more importantly of web performance. So responsive images are crucial for web performance.
+(Remember we had: Responsive design-maintainable and scalable code-web performance)
+
+What are responsive images anyway?
+The goal(philosophy behind) of responsive images is to serve the right image for the right screen size and device, by using different
+techniques in HTML and css, so that users don't have to download images that are way too large for their devices(in other words,
+in order to avoid downloading unnecessary large images on smaller screens.).
+For example, let's suppose the image for hero section is 1MB large. Now it may be absolutely ok to send that 1MB image to a
+desktop user but it's not ok to send that 1MB to phone user which may have slow or expensive data plan somewhere in the world.
+So we must use responsive images. So instead of sending 1MB to whatever device is using the page, we need to send 1MB image to device
+with a large screen and much smaller version of that image to the device with small screen, which doesn't need such a large image
+anyway.
+
+Now in which situation, should we actually use responsive images?(When to use responsive images?-The 3 use cases.)
+1) The first use case is called resolution switching and all that we do in resolution switching is to serve up the same image for
+a smaller screen but with a smaller resolution. In other words, we decrease the image resolution on smaller screens. So same image,
+but a smaller version for devices that don't need such a big image.
+
+2) Density switching which is a special case of resolution switching, where the screen size doesn't matter but the screen pixel density
+does instead.
+But what is pixel density?
+Pixel density is amount of pixels found in an inch or a centimeter.
+Now what matters to devs is that there are low resolution screens and high resolution screens. Low resolution screens are just
+typical PC screens and they can be called 1x screens. Because they use one pixel to display one pixel of our design. So if we say
+an image should be 100 pixels high, those typical screens would use 100 physical pixels on the screen to display these 100px that
+we specified for that image.
+But high resolution screens are the ones found in all modern smart phones and even some computers like macBooks with retina displays.
+These are high resolution screens and they can be called 2x screens because they actually use 2 physical pixels to display 1 pixel of
+our design. So if we say we want an image to be 100 pixels high, it will actually be 200 pixels in a physical modern screen and that
+all happens automatically of course. Now what does that mean for all of our images?
+It means that if we want our images to look sharp on high-resolution screens which use double of amount of pixels, then we actually
+have to serve an image with double the resolution of that original image and that's what density switching is for.
+Learn: So density switching is for serve one image to a high resolution screen and another image if the screen is low resolution.
+So if we have @2x screens(high-res) and want to serve the image that we had there, on @1x screen(low-res) we need to serve half the
+image resolution on that @ix screen.
+
+3) Art direction: This happens when you don't just want to serve the SAME image BUT in smaller resolution version of that image, but
+A WHOLE different image for a different screen size. For example you may want to keep the important details in an image but remove
+parts of that image around these details, just like the example of slides, where the size of the details(those square and triangle are
+details) doesn't even change on a smaller screen and just stays the same. Or you could also load a completely different image altogether
+and responsive images actually allow you to do that. So in art direction in small screens, image details were preserved but the image
+is different, so different image on smaller screen.
+
+Important: In conclusion: Resolution and density switching, are for when you want to serve the SAME image but with
+ different resolutions and art direction is when you want to serve a completely different image on smaller screens.
+
+Now why we're even talking about these different situations?
+Because it's crucial to distinguish between the different those use cases, because they require us to use different solutions in
+our HTML and css code. So we have to choose accordingly. */
+/* 8. Responsive images in HTML - Art direction and density switching:
+*/
 
 
 

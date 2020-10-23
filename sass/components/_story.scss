@@ -44,6 +44,24 @@
   we can use direct child selector on the box that is skewed.*/
   transform: skewX(-12deg);
 
+  @include respond(tab-port) {
+    /* After giving .story this width: 100%; , you still see that there's still some space in sides, but that's because of .row .
+     Also you see up until 600px, it's ok but in viewport width less than 600px, it starts to look bad. So we can decrease the
+     padding in between 600-900 too.
+
+     Important: The smaller media query must be AFTER the media queries with larger max-width. */
+    width: 100%;
+    padding: 4rem;
+    padding-left: 7rem;
+  }
+
+  @include respond(phone) {
+    /* We also need to make the transform prop in &__shape to 0deg, because in there we're compensating the transform that we did
+     here, but in smaller screens like phones we don't use transform in .story , so we must not do any transform in &__shape too.
+     So I added a 0deg for transform functions in &__shape too, when we're in small screens.*/
+    transform: skewX(0deg);
+  }
+
   /* Important: This selector actually would select direct childes of .story which are .story__shape and .story__text
       Right now if you do write this, it's not going to work for .story__shape and that's because we are already using transform
       prop in .story__shape with value of translateX() and that transform which is inside the direct child, takes precedence over
@@ -92,7 +110,8 @@
     We want to make some space between a floated element and elements that are around it:
     Learn: The best way to move around an element which is floated is to actually NOT mess with margins or anything like that and
      we should just use a transform prop on the floated element.
-     */
+
+    We AGAIN skewed this class, in order to compensate the skew that we did in .story . */
     width: 15rem;
     height: 15rem;
     float: left;
@@ -107,6 +126,13 @@
      the padding is VISUALLY 6rem everywhere(but in box model it's kind of not!)*/
 
     position: relative;
+
+    @include respond(phone) {
+      /* Because we're changing ONE of the functions that we used in transform in larger devices, we also need to bring the things
+       that we don't want to change them, like translateX() in this case, in order to say: We don't want to change that, we just
+       need to change the skewX() .*/
+      transform: translateX(-3rem) skewX(0deg);
+    }
   }
 
   &__img {
@@ -122,7 +148,14 @@
     transition: all .5s;
     backface-visibility: hidden;
   }
-  &__text {}
+
+  &__text {
+    transform: skewX(12deg);
+
+    @include respond(phone) {
+      transform: skewX(0);
+    }
+  }
 
   &__caption {
     /* hover on the .story: First the image would zoom out and then text moving in and also the image getting blurred.

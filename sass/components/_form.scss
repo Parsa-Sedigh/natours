@@ -46,6 +46,10 @@
     display: block;
     color: inherit;
 
+    @include respond(tab-port) {
+      width: 100%;
+    }
+
     /* When you select or focus <input> element, it would get a black border by default or a blue border in older versions of chrome
  browser BY DEFAULT. So we must set outline to none. So we can use focus pseudo element.
  But the :focus specially with inputs is very important because, because for people who use the webpage which has <input> with
@@ -245,6 +249,11 @@
         */
     width: 49%;
     display: inline-block;
+
+    @include respond(tab-port) {
+      width: 100%;
+      margin-bottom: 2rem;
+    }
   }
 
   &__radio-label {

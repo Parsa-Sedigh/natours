@@ -189,15 +189,54 @@
    When a <div> hasn't got any content in it, it would have a height of 0 . So actually for seeing that <div> in the beginning,
    we can give it some height explicitely. So this is just for testing purposes. Because later on, we want the content of that
    <div> to define the height of that container <div> .*/
-  background-size: cover;
-  height: 50rem;
+  background-size: 100%;
+  /* This was for testing purposes, when we were building this class.
+   height: 50rem; */
   border-radius: $book-border-radius;
   box-shadow: 0 1.5rem 4rem rgba($color-black, .5);
+
+  /* The .book starts to look bad in between tab-land and tab-port so we must fix that, in tab-land media query.
+
+   Also when we approach the 900px breakpoint, the background-image starting to look weird.
+   Learn: So what we'll do is to make that image occupying the entire height and not the entire width which it's doing
+    right now because of background-size: 100%; which it is similar to background-size: cover; but it's not really the same.
+    Because what the background-size: 100%; does, is to ensure that the image fits it's container in the X direction. But what
+    we want in smaller screens is really the background-size: cover; instead of background-size: 100%; .
+    So now image on smaller screens in covering the entire element. */
+  @include respond(tab-land) {
+    background-image: linear-gradient(
+                    105deg,
+                    rgba($color-white, .9) 0%,
+                    rgba($color-white, .9) 65%,
+                    transparent 65%),
+    url(../../img/nat-10.jpg);
+    background-size: cover;
+  }
+
+  /* In this media query, we really don't care about the direction of linear-gradient, so let's put to right value. Also we don't
+  want any green gradient, because the screen is too small in that point and there isn't enough space to show a gradient.*/
+  @include respond(tab-port) {
+    background-image: linear-gradient(
+                    to right,
+                    rgba($color-white, .9) 0%,
+                    rgba($color-white, .9) 100%),
+    url(../../img/nat-10.jpg);
+  }
 
   &__form {
     width: 50%;
     padding: 6rem;
-    height: 50px;
+    //height: 50px;
+
+    @include respond(tab-land) {
+      /* We changed the width of the first part, so the gradients must also go forward, to match the width of this class.
+       Therefore, I set the gradient to change in 65% point, in background-image prop of .book .*/
+      width: 65%;
+    }
+
+    @include respond(tab-port) {
+      width: 100%;
+    }
   }
 }
 
