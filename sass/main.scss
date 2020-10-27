@@ -1144,6 +1144,11 @@ our HTML and css code. So we have to choose accordingly. */
 /* 8. Responsive images in HTML - Art direction and density switching:
 */
 
+/* My notes:
+The universal selector is one of the worst performers, alongside attribute selectors (like [href="#"]) and pseudo-classes and 
+pseudo-elements. IDs and classes are the best for speedy performance.
+Therefore, when writing selectors, it's best to put something performant like a class or ID at the end.*/
+
 
 
 
