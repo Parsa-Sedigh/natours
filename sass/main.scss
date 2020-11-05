@@ -130,8 +130,10 @@ vh and vw are viewport-based units. 1vh is just 1 percent of the viewport's heig
  RECAP:
  *Inheritance passes the values for some specific properties from parents to children.Inheritance allows developers to write less
  code and code will be mor maintainable.
+
  *Properties related to text are inherited, like font-family, color and ... (in specification you will find if the property is
  automatically inherited or not?)- Other properties like margin and padding are not inherited, because it would be impracticable.
+
  *Important: The computed value is what get's inherited, not the declared value.
  *Inheritance of a property works if no one (neither developer nor browser) declares a value for that property.
  *We can use inherit keyword to force the inheritance of a certain property.
@@ -157,9 +159,7 @@ vh and vw are viewport-based units. 1vh is just 1 percent of the viewport's heig
  Remember: WE WANTED OUR ROOT font-size TO BE 10px so 1rem would be 10px and ... . But the default font-size of browser is 16px.
  So we have to divide what we want. So 10/16 = 62.5%.
  So now imagine, if the root font-size is 16, so 16*0.625 = 10 and if root font-size is 20px, root font-size would be 12.5px.
- rems are not supported below IE9.
-
-  */
+ rems are not supported below IE9. */
 /* Whenever we CAN use inheritance, we shouldn't use it in universal selector so we must use it in body selector and after this
 in * selector we set the value to inherit. For example : box-sizing property itself is not inherited.But by setting box-sizing property on
 each and every element on entire page to inherit (by setting box-sizing:inherit on * selector), it will automatically inherit whatever
@@ -1142,12 +1142,31 @@ Now why we're even talking about these different situations?
 Because it's crucial to distinguish between the different those use cases, because they require us to use different solutions in
 our HTML and css code. So we have to choose accordingly. */
 /* 8. Responsive images in HTML - Art direction and density switching:
-*/
+Let's implement density switching in art direction in HTML. In this lecture you'll learn:
+1) How to use srcset attr on the <img> and <source> elements, together with density descriptors
+2) How and why to use <picture> element for art direction
+3) How to write media queries IN HTML
+So this lecture would be about responsive images in html. Now what's the difference between images in HTML and in CSS?
+Basically, with images in HTML, we simply mean all the img text, so all the image text where in that image text, we specify a source for
+that image. For example in our logo, the img in html(img text) is: http://127.0. ... and the images in css, are when we use a background-image
+in our styles, where in there we specify the url() . In our project, the background image of form, the images on cards(which are background-images,
+right? Because in css, for specifying an image, you must use background-image.). So that's the difference of images in html and css.
+
+Important: For making images, responsive, if that image was a css based image, we will use css in order to make it responsive and for the
+ other images(the html images), we will do stuff in html and not css in order to make them responsive.
+Now, let's start with html based images, because there are actually more technologies for doing responsive images in html(making the html
+images responsive.) */
 
 /* My notes:
 The universal selector is one of the worst performers, alongside attribute selectors (like [href="#"]) and pseudo-classes and 
 pseudo-elements. IDs and classes are the best for speedy performance.
-Therefore, when writing selectors, it's best to put something performant like a class or ID at the end.*/
+Therefore, when writing selectors, it's best to put something performant like a class or ID at the end.
+
+One way for align inline elements inside their containers is to set line-height of those inline elements, equal to height of their
+container, so PROBABLY you need to set an explicit height for that container, but if you don't set any height for it, it's height would
+be calculated based on it's content, which if we ONLY had that inline element which we set a line-height for it, the height of that
+container would be equal to the line-height of that alone inline element. But anything that you do, always remember, for centering an
+inline element vertically inside it's container, the line-height of inline element and height of it's parent must be equal.*/
 
 
 
