@@ -1166,7 +1166,12 @@ One way for align inline elements inside their containers is to set line-height 
 container, so PROBABLY you need to set an explicit height for that container, but if you don't set any height for it, it's height would
 be calculated based on it's content, which if we ONLY had that inline element which we set a line-height for it, the height of that
 container would be equal to the line-height of that alone inline element. But anything that you do, always remember, for centering an
-inline element vertically inside it's container, the line-height of inline element and height of it's parent must be equal.*/
+inline element vertically inside it's container, the line-height of inline element and height of it's parent must be equal.
+
+The :not() selector doesn't add any specifity by itself, but what is inside of :not(), does, so :not(.foo) adds the same weight as .foo does.
+
+Important: List the “real” property last and the vendor prefixes first. So for example, first you must place the -webkit- version of prop and
+ THEN the real version of that prop.*/
 
 
 
