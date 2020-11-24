@@ -81,11 +81,15 @@ html {
   }
 
   /* @include respond(phone) {
-      font-size: 50%; // 1rem
+      font-size: 50%; // 1rem, 8/16 = 50%
     } */
 
   @include respond(big-desktop) {
-    font-size: 75%; // 1rem = 12px
+    /* Important: Here, in big desktops, we set the font-size to sth more than our default font-size which the default font-size is
+        62.5% of the browser's default font-size. But in big desktops we use a bigger font for our page which is 75% of browser's font-size.
+        Remember: As you can see, we never used the actual default browser's font-size, because that browser is way too big for most of devices!
+        So as you saw, we never set the font-size in html selector to 100%.*/
+    font-size: 75%; // 1rem = 12px, 12/16
   }
 
 }

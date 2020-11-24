@@ -103,7 +103,7 @@ that this mixin will inject in the place that it was included, depends on the na
 Now when you want to use this new mixin, you must pass it either phone or tab-port or ... .
 
 Also it's not good to use px units in media queries and that's because if the user changes the default font-size(which is 16px)
-in the browser, then the media queries
+in the browser, then the media queries TODO
 
 So we can react ACCORDINGLY to the root font-size of the browser, even if the user changes it, by using rem units in media queries too
 and therefore REFLECT that new root font-size in our media queries and then the rem unit will converted into px unit in the browser and

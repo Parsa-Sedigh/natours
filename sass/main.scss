@@ -773,6 +773,12 @@ As an example, we have a pixel spectrum, going from 0 to infinity, with a couple
 0px       600px      900px     1200px           |
                                                 |
                                              Our initial desktop-first code goes here. So our initial code is on the right side of spectrum.
+So based on spectrum:
+0 - 600px:      Phone
+600 - 900px:    Tablet portrait
+900 - 1200px:   Tablet landscape
+[1200 - 1800] is where our normal styles apply
+1800px + :      Big desktop
 
 max-width: 600px or is width <= 600px ? .A media query with testing max-width, checks if the current viewport width is smaller or equal to
 600px and if it is, then all the CSS code which is in this media query will apply and if not, that specific code in that media query won't
@@ -1171,7 +1177,26 @@ inline element vertically inside it's container, the line-height of inline eleme
 The :not() selector doesn't add any specifity by itself, but what is inside of :not(), does, so :not(.foo) adds the same weight as .foo does.
 
 Important: List the “real” property last and the vendor prefixes first. So for example, first you must place the -webkit- version of prop and
- THEN the real version of that prop.*/
+ THEN the real version of that prop.
+---------------------------------------------
+Block formatting contexts:
+
+Important: Margins of block level elements fall outside the bounds of their container by default. To make sure they stay inside,
+ you need to make the container a block formatting context root.
+ There are several ways to do this. One is to give the container a property of overflow:hidden
+ For example when you have <h1> in it's container, if you give <h1> some margin-top, that margin-top CAN(if that margin is enough
+ to be able to get outside of bounds of the container) go outside bounds of the container of that <h1>.
+
+Floats, absolutely positioned elements, inline-blocks, table-cells, table-captions, and elements with ‘overflow’ other than
+‘visible’ (except when that value has been propagated to the viewport) establish new block formatting contexts.
+In other words, a block formatting context is an HTML box that satisfies at least one of the following conditions:
+-The value of float is not none
+-The value of position is neither static nor relative
+-The value of display is table-cell, table-caption, inline-block, flex, or inline-flex
+-The value of overflow is not visible.
+
+Reference: https://www.sitepoint.com/understanding-block-formatting-contexts-in-css/*/
+
 
 
 
