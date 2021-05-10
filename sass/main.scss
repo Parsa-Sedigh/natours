@@ -1195,7 +1195,17 @@ In other words, a block formatting context is an HTML box that satisfies at leas
 -The value of display is table-cell, table-caption, inline-block, flex, or inline-flex
 -The value of overflow is not visible.
 
-Reference: https://www.sitepoint.com/understanding-block-formatting-contexts-in-css/*/
+Reference: https://www.sitepoint.com/understanding-block-formatting-contexts-in-css/
+
+Reremember: When having a modifier clasws, you need to apply it in html like this: 
+Example: <div class="<base class> <base-class>--modifier"> so: <div class="arrow arrow--up">
+and in sass you would have:
+.arrow {
+ ...
+&--up {
+ ...
+}
+}*/
 
 
 
